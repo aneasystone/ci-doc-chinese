@@ -1,16 +1,13 @@
 ######################
-Database Configuration
+数据库配置
 ######################
 
-CodeIgniter has a config file that lets you store your database
-connection values (username, password, database name, etc.). The config
-file is located at application/config/database.php. You can also set
-database connection values for specific
-:doc:`environments <../libraries/config>` by placing **database.php**
-it the respective environment config folder.
+CodeIgniter 有一个配置文件用来保存数据库连接值（用户名、密码、数据库名等等），
+这个配置文件位于 ``application/config/database.php`` 。
+你也可以放置不同的 **database.php** 文件到特定的环境配置文件夹里
+来设置 :doc:`特定环境 <../libraries/config>` 的数据库连接值。
 
-The config settings are stored in a multi-dimensional array with this
-prototype::
+配置存放在一个多维数组里，原型如下::
 
 	$db['default'] = array(
 		'dsn'	=> '',
@@ -33,10 +30,8 @@ prototype::
 		'failover' => array()
 	);
 
-Some database drivers (such as PDO, PostgreSQL, Oracle, ODBC) might
-require a full DSN string to be provided. If that is the case, you
-should use the 'dsn' configuration setting, as if you're using the
-driver's underlying native PHP extension, like this::
+有些数据库驱动（譬如：PDO，PostgreSQL，Oracle，ODBC）可能需要提供完整的 DSN 字符串。
+在这种情况下，你需要使用 'dsn' 配置参数，就好像使用该驱动的 PHP 原生扩展一样。譬如::
 
 	// PDO
 	$db['default']['dsn'] = 'pgsql:host=localhost;port=5432;dbname=database_name';
@@ -44,15 +39,13 @@ driver's underlying native PHP extension, like this::
 	// Oracle
 	$db['default']['dsn'] = '//localhost/XE';
 
-.. note:: If you do not specify a DSN string for a driver that requires it, CodeIgniter
-	will try to build it with the rest of the provided settings.
+.. note:: 如果你没有为需要 DSN 参数的驱动指定 DSN 字符串，CodeIgniter 将使用你提供的其他配置信息自动生成它。
 
-.. note:: If you provide a DSN string and it is missing some valid settings (e.g. the
-	database character set), which are present in the rest of the configuration
-	fields, CodeIgniter will append them.
+.. note:: 如果你提供了一个 DSN 字符串，但是缺少了某些配置（譬如：数据库的字符集），
+	如果该配置存在在其他的配置项中，CodeIgniter 将自动在 DSN 上附加上该配置。
 
-You can also specify failovers for the situation when the main connection cannot connect for some reason.
-These failovers can be specified by setting the failover for a connection like this::
+当主数据库由于某些原因无法连接时，你还可以配置故障转移（failover）。
+可以像下面这样为一个连接配置故障转移::
 
 	$db['default']['failover'] = array(
 			array(
@@ -93,14 +86,12 @@ These failovers can be specified by setting the failover for a connection like t
 			)
 		);
 
-You can specify as many failovers as you like.
+你可以指定任意多个故障转移。
 
-The reason we use a multi-dimensional array rather than a more simple
-one is to permit you to optionally store multiple sets of connection
-values. If, for example, you run multiple environments (development,
-production, test, etc.) under a single installation, you can set up a
-connection group for each, then switch between groups as needed. For
-example, to set up a "test" environment you would do this::
+我们使用多维数组的原因是为了让你随意的存储多个连接值的设置，
+譬如：如果你有多个环境（开发、生产、测试 等等），
+你能为每个环境建立独立的连接组，并在组之间进行切换。
+举个例子，如果要设置一个 "test" 环境，你可以这样做::
 
 	$db['test'] = array(
 		'dsn'	=> '',
@@ -123,73 +114,63 @@ example, to set up a "test" environment you would do this::
 		'failover' => array()
 	);
 
-Then, to globally tell the system to use that group you would set this
-variable located in the config file::
+然后，设置位于配置文件中的 ``$active_group`` 变量，告诉系统要使用 "test" 组::
 
 	$active_group = 'test';
 
-.. note:: The name 'test' is arbitrary. It can be anything you want. By
-	default we've used the word "default" for the primary connection,
-	but it too can be renamed to something more relevant to your project.
+.. note:: 分组的名称 "test" 是任意的，你可以取任意的名字。默认情况下，
+	主连接使用 "default" 这个名称。当然，您可以基于您的项目为它起一个更有意义的名字。
 
-Query Builder
+查询构造器
 -------------
 
-The :doc:`Query Builder Class <query_builder>` is globally enabled or
-disabled by setting the $query_builder variable in the database
-configuration file to TRUE/FALSE (boolean). The default setting is TRUE.
-If you are not using the
-query builder class, setting it to FALSE will utilize fewer resources
-when the database classes are initialized.
+可以通过数据库配置文件里的 ``$query_builder`` 变量对 :doc:`查询构造器类 <query_builder>` 
+进行全局的设定（启用设成 TRUE，禁用设成 FALSE，默认是 TRUE）。
+如果你不用这个类，那么你可以通过将这个变量值设置成 FALSE 来减少在数据库类初始化时对电脑资源的消耗。
 
 ::
 
 	$query_builder = TRUE;
 
-.. note:: that some CodeIgniter classes such as Sessions require Query
-	Builder to be enabled to access certain functionality.
+.. note:: 一些 CodeIgniter 的类，例如 Sessions，在执行一些函数的时候需要查询构造器的支持。
 
-Explanation of Values:
+参数解释：
 ----------------------
 
 ======================  ==================================================================================================
- Name Config             Description
+ 配置名                                   描述
 ======================  ==================================================================================================
-**dsn**			The DSN connect string (an all-in-one configuration sequence).
-**hostname** 		The hostname of your database server. Often this is 'localhost'.
-**username**		The username used to connect to the database.
-**password**		The password used to connect to the database.
-**database**		The name of the database you want to connect to.
-**dbdriver**		The database type. ie: mysqli, postgre, odbc, etc. Must be specified in lower case.
-**dbprefix**		An optional table prefix which will added to the table name when running
-			:doc:`Query Builder <query_builder>` queries. This permits multiple CodeIgniter
-			installations to share one database.
-**pconnect**		TRUE/FALSE (boolean) - Whether to use a persistent connection.
-**db_debug**		TRUE/FALSE (boolean) - Whether database errors should be displayed.
-**cache_on**		TRUE/FALSE (boolean) - Whether database query caching is enabled,
-			see also :doc:`Database Caching Class <caching>`.
-**cachedir**		The absolute server path to your database query cache directory.
-**char_set**		The character set used in communicating with the database.
-**dbcollat**		The character collation used in communicating with the database
+**dsn**			DSN 连接字符串（该字符串包含了所有的数据库配置信息）
+**hostname**			数据库的主机名，通常位于本机，可以表示为 "localhost"
+**username**			需要连接到数据库的用户名
+**password**			登陆数据库的密码
+**database**			你需要连接的数据库名
+**dbdriver**			数据库类型。如：mysql、postgres、odbc 等。必须为小写字母。
+**dbprefix**			当使用 :doc:`查询构造器 <query_builder>` 查询时，可以选择性的为表加个前缀，
+				它允许在一个数据库上安装多个 CodeIgniter 程序。
+**pconnect**			TRUE/FALSE (boolean) - 是否使用持续连接
+**db_debug**			TRUE/FALSE (boolean) - 是否显示数据库错误信息
+**cache_on**			TRUE/FALSE (boolean) - 是否开启数据库查询缓存，
+				详情请见 :doc:`数据库缓存类 <caching>`。
+**cachedir**			数据库查询缓存目录所在的服务器绝对路径
+**char_set**			与数据库通信时所使用的字符集
+**dbcollat**			与数据库通信时所使用的字符规则
 
-			.. note:: Only used in the 'mysql' and 'mysqli' drivers.
+				.. note:: 只使用于 'mysql' 和 'mysqli' 数据库驱动
 
-**swap_pre**		A default table prefix that should be swapped with dbprefix. This is useful for distributed
-			applications where you might run manually written queries, and need the prefix to still be
-			customizable by the end user.
-**schema**		The database schema, defaults to 'public'. Used by PostgreSQL and ODBC drivers.
-**encrypt**		Whether or not to use an encrypted connection.
-**compress**		Whether or not to use client compression (MySQL only).
-**stricton**		TRUE/FALSE (boolean) - Whether to force "Strict Mode" connections, good for ensuring strict SQL
-			while developing an application.
-**port**		The database port number. To use this value you have to add a line to the database config array.
-			::
+**swap_pre**			替换默认的 ``dbprefix`` 表前缀，该项设置对于分布式应用是非常有用的，
+				你可以在查询中使用由最终用户定制的表前缀。
+**schema**			数据库模式，默认为 'public'，用于 PostgreSQL 和 ODBC 驱动
+**encrypt**			TRUE/FALSE (boolean) - 是否使用加密连接
+**compress**			TRUE/FALSE (boolean) - 是否使用客户端压缩协议（只用于MySQL）
+**stricton**			TRUE/FALSE (boolean) - 是否强制使用 "Strict Mode" 连接, 
+				在开发程序时，使用 strict SQL 是一个好习惯。
+**port**			数据库端口号，要使用这个值，你应该添加一行代码到数据库配置数组。
+				::
 
-				$db['default']['port'] = 5432;
+					$db['default']['port'] = 5432;
 ======================  ==================================================================================================
 
-.. note:: Depending on what database platform you are using (MySQL, PostgreSQL,
-	etc.) not all values will be needed. For example, when using SQLite you
-	will not need to supply a username or password, and the database name
-	will be the path to your database file. The information above assumes
-	you are using MySQL.
+.. note:: 根据你使用的数据库平台（MySQL, PostgreSQL 等），并不是所有的参数都是必须的。譬如，
+	当你使用 SQLite 时，你无需指定用户名和密码，数据库名称直接是你的数据库文件的路径。
+	以上内容假设你使用的是 MySQL 数据库。
