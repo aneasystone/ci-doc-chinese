@@ -1,61 +1,51 @@
 ###########################
-Connecting to your Database
+连接你的数据库
 ###########################
 
-There are two ways to connect to a database:
+有两种方法连接数据库：
 
-Automatically Connecting
+自动连接
 ========================
 
-The "auto connect" feature will load and instantiate the database class
-with every page load. To enable "auto connecting", add the word database
-to the library array, as indicated in the following file:
+“自动连接” 特性将在每一个页面加载时自动实例化数据库类。要启用“自动连接”，
+可在 ``application/config/autoload.php`` 中的 library 数组里添加 database::
 
-application/config/autoload.php
+$autoload['libraries'] = array('database');
 
-Manually Connecting
+手动连接
 ===================
 
-If only some of your pages require database connectivity you can
-manually connect to your database by adding this line of code in any
-function where it is needed, or in your class constructor to make the
-database available globally in that class.
+如果你只有一部分页面需要数据库连接，你可以在那些有需要的函数里手工添加
+如下代码来连接数据库，或者写在类的构造函数里，让整个类都可以访问：
 
 ::
 
 	$this->load->database();
 
-If the above function does **not** contain any information in the first
-parameter it will connect to the group specified in your database config
-file. For most people, this is the preferred method of use.
+如果 ``database()`` 函数没有指定第一个参数，它将使用数据库配置文件中
+指定的组连接数据库。对大多数人而言，这是首选方案。
 
-Available Parameters
+可用的参数
 --------------------
 
-#. The database connection values, passed either as an array or a DSN
-   string.
-#. TRUE/FALSE (boolean). Whether to return the connection ID (see
-   Connecting to Multiple Databases below).
-#. TRUE/FALSE (boolean). Whether to enable the Query Builder class. Set
-   to TRUE by default.
+#. 数据库连接值，用数组或DSN字符串传递；
+#. TRUE/FALSE (boolean) - 是否返回连接ID（参考下文的“连接多数据库”）；
+#. TRUE/FALSE (boolean) - 是否启用查询构造器类，默认为 TRUE 。
 
-Manually Connecting to a Database
+手动连接到数据库
 ---------------------------------
 
-The first parameter of this function can **optionally** be used to
-specify a particular database group from your config file, or you can
-even submit connection values for a database that is not specified in
-your config file. Examples:
+这个函数的第一个参数是**可选的**，被用来从你的配置文件中
+指定一个特定的数据库组，甚至可以使用没有在配置文件中定义的
+数据库连接值。下面是例子：
 
-To choose a specific group from your config file you can do this::
+从你的配置文件中选择一个特定分组::
 
 	$this->load->database('group_name');
 
-Where group_name is the name of the connection group from your config
-file.
+其中 ``group_name`` 是你的配置文件中连接组的名字。
 
-To connect manually to a desired database you can pass an array of
-values::
+连接一个完全手动指定的数据库，可以传一个数组参数::
 
 	$config['hostname'] = 'localhost';
 	$config['username'] = 'myusername';
@@ -71,84 +61,72 @@ values::
 	$config['dbcollat'] = 'utf8_general_ci';
 	$this->load->database($config);
 
-For information on each of these values please see the :doc:`configuration
-page <configuration>`.
+这些值的详细信息请参考 :doc: `数据库配置 <configuration>` 页面。
 
-.. note:: For the PDO driver, you should use the $config['dsn'] setting
-	instead of 'hostname' and 'database':
+.. note:: 对于 PDO 驱动，你应该使用 ``$config['dsn']`` 取代 'hostname' 和 'database' 参数：
 
 	|
 	| $config['dsn'] = 'mysql:host=localhost;dbname=mydatabase';
 
-Or you can submit your database values as a Data Source Name. DSNs must
-have this prototype::
+或者你可以使用数据源名称（DSN，Data Source Name）作为参数，DSN 的格式必须类似于下面这样::
 
 	$dsn = 'dbdriver://username:password@hostname/database';  
 	$this->load->database($dsn);
 
-To override default config values when connecting with a DSN string, add
-the config variables as a query string.
+当用 DSN 字符串连接时，要覆盖默认配置，可以像添加查询字符串一样添加配置变量。
 
 ::
 
 	$dsn = 'dbdriver://username:password@hostname/database?char_set=utf8&dbcollat=utf8_general_ci&cache_on=true&cachedir=/path/to/cache';  
 	$this->load->database($dsn);
 
-Connecting to Multiple Databases
+连接到多个数据库
 ================================
 
-If you need to connect to more than one database simultaneously you can
-do so as follows::
+如果你需要同时连接到多个不同的数据库，可以这样::
 
 	$DB1 = $this->load->database('group_one', TRUE); 
 	$DB2 = $this->load->database('group_two', TRUE);
 
-Note: Change the words "group_one" and "group_two" to the specific
-group names you are connecting to (or you can pass the connection values
-as indicated above).
+注意：将 "group_one" 和 "group_two" 修改为你要连接的组名称
+（或者像上面介绍的那样传入连接值数组）
 
-By setting the second parameter to TRUE (boolean) the function will
-return the database object.
+第二个参数 TRUE 表示函数将返回数据库对象。
 
-.. note:: When you connect this way, you will use your object name to issue
-	commands rather than the syntax used throughout this guide. In other
-	words, rather than issuing commands with:
+.. note:: 当你使用这种方式连接数据库时，你将通过你的对象名来执行数据库命令，
+	而不再是通过这份指南中通篇介绍的，就像下面这样的语法了：
 	
 	|
 	| $this->db->query();
 	| $this->db->result();
 	| etc...
 	|
-	| You will instead use:
+	| 取而代之的，你将这样执行数据库命令：
 	|
 	| $DB1->query();
 	| $DB1->result();
 	| etc...
 
-.. note:: You don't need to create separate database configurations if you
-	only need to use a different database on the same connection. You
-	can switch to a different database when you need to, like this:
+.. note:: 如果你只是需要切换到同一个连接的另一个不同的数据库，你没必要创建
+	独立的数据库配置，你可以像下面这样切换到另一个数据库：
 
 	| $this->db->db_select($database2_name);
 
-Reconnecting / Keeping the Connection Alive
+重新连接 / 保持连接有效
 ===========================================
 
-If the database server's idle timeout is exceeded while you're doing
-some heavy PHP lifting (processing an image, for instance), you should
-consider pinging the server by using the reconnect() method before
-sending further queries, which can gracefully keep the connection alive
-or re-establish it.
+当你在处理一些重量级的 PHP 操作时（例如处理图片），如果超过了数据库的超时值，
+你应该考虑在执行后续查询之前先调用 ``reconnect()`` 方法向数据库发送 ping 命令，
+这样可以优雅的保持连接有效或者重新建立起连接。
 
 ::
 
 	$this->db->reconnect();
 
-Manually closing the Connection
+手动关闭连接
 ===============================
 
-While CodeIgniter intelligently takes care of closing your database
-connections, you can explicitly close the connection.
+虽然 CodeIgniter 可以智能的管理并自动关闭数据库连接，你仍可以用下面的方法显式的关闭连接：
 
 ::
 
