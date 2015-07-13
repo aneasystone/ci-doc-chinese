@@ -121,5 +121,9 @@
 		'date' => $date
 	);
 	
-	$this->db->insert('mytable', $data);  // 生成这样的SQL代码: INSERT INTO mytable (title, name, date) VALUES ('{$title}', '{$name}', '{$date}')
+	//
+	// 生成这样的SQL代码: 
+	//   INSERT INTO mytable (title, name, date) VALUES ('{$title}', '{$name}', '{$date}')
+	//
+	$this->db->insert('mytable', $data);
 
