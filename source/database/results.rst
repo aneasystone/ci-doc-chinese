@@ -1,22 +1,21 @@
 ########################
-Generating Query Results
+生成查询结果
 ########################
 
-There are several ways to generate query results:
+有几种不同方法可以生成查询结果：
 
 .. contents::
     :local:
     :depth: 2
 
 *************
-Result Arrays
+结果数组
 *************
 
-**result()**
+**result()** 方法
 
-This method returns the query result as an array of **objects**, or
-**an empty array** on failure. Typically you'll use this in a foreach
-loop, like this::
+该方法以**对象数组**形式返回查询结果，如果查询失败返回**空数组**。
+一般情况下，你会像下面这样在一个 foreach 循环中使用它::
 
 	$query = $this->db->query("YOUR QUERY");
 	
@@ -27,10 +26,10 @@ loop, like this::
 		echo $row->body;
 	}
 
-The above method is an alias of ``result_object()``.
+该方法是 ``result_object()`` 方法的别名。
 
-If you run queries that might **not** produce a result, you are
-encouraged to test the result first::
+如果你的查询可能会没有结果，推荐在处理结果之前，先使用方法
+``num_rows()`` 检验一下::
 
 	$query = $this->db->query("YOUR QUERY");
 	
@@ -44,8 +43,8 @@ encouraged to test the result first::
 		}
 	}
 
-You can also pass a string to result() which represents a class to
-instantiate for each result object (note: this class must be loaded)
+你还可以传一个字符串参数给 ``result()`` 方法，这个字符串参数代表
+你想要把每个结果转换成某个类的类名（这个类必须已经加载）
 
 ::
 
@@ -57,11 +56,10 @@ instantiate for each result object (note: this class must be loaded)
 		echo $user->reverse_name(); // or methods defined on the 'User' class
 	}
 
-**result_array()**
+**result_array()** 方法
 
-This method returns the query result as a pure array, or an empty
-array when no result is produced. Typically you'll use this in a foreach
-loop, like this::
+这个方法以**一个纯粹的数组**形式返回查询结果，如果无结果，则返回一个空数组。
+一般情况下，你会像下面这样在一个 foreach 循环中使用它::
 
 	$query = $this->db->query("YOUR QUERY");
 	
@@ -73,14 +71,13 @@ loop, like this::
 	}
 
 ***********
-Result Rows
+结果行
 ***********
 
-**row()**
+**row()** 方法
 
-This method returns a single result row. If your query has more than
-one row, it returns only the first row. The result is returned as an
-**object**. Here's a usage example::
+这个方法返回单独一行结果。如果你的查询不止一行结果，它只返回第一行。
+返回的结果是**对象**形式，这里是用例::
 
 	$query = $this->db->query("YOUR QUERY");
 	
@@ -93,13 +90,11 @@ one row, it returns only the first row. The result is returned as an
 		echo $row->body;
 	}
 
-If you want a specific row returned you can submit the row number as a
-digit in the first parameter::
+如果你要返回特定行的数据，你可以将行号作为第一个参数传给这个方法::
 
 	$row = $query->row(5);
 
-You can also add a second String parameter, which is the name of a class
-to instantiate the row with::
+你还可以加上第二个参数，该参数为字符串类型，代表你想要把结果转换成某个类的类名::
 
 	$query = $this->db->query("SELECT * FROM users LIMIT 1;");
 	$row = $query->row(0, 'User');
@@ -107,10 +102,10 @@ to instantiate the row with::
 	echo $row->name; // access attributes
 	echo $row->reverse_name(); // or methods defined on the 'User' class
 
-**row_array()**
+**row_array()** 方法
 
-Identical to the above ``row()`` method, except it returns an array.
-Example::
+这个方法除了返回结果是一个数组而不是一个对象之外，其他的和上面的 ``row()`` 方法完全一样。
+举例::
 
 	$query = $this->db->query("YOUR QUERY");
 	
@@ -123,36 +118,32 @@ Example::
 		echo $row['body'];
 	}
 
-If you want a specific row returned you can submit the row number as a
-digit in the first parameter::
+如果你要返回特定行的数据，你可以将行号作为第一个参数传给这个方法::
 
 	$row = $query->row_array(5);
 
-In addition, you can walk forward/backwards/first/last through your
-results using these variations:
+另外，你可以使用下面这些方法从你的结果集中获取前一个、后一个、
+第一个或者最后一个结果：
 
 	| **$row = $query->first_row()**
 	| **$row = $query->last_row()**
 	| **$row = $query->next_row()**
 	| **$row = $query->previous_row()**
 
-By default they return an object unless you put the word "array" in the
-parameter:
+这些方法默认返回对象，如果需要返回数组形式，将单词 "array" 作为参数传入方法即可：
 
 	| **$row = $query->first_row('array')**
 	| **$row = $query->last_row('array')**
 	| **$row = $query->next_row('array')**
 	| **$row = $query->previous_row('array')**
 
-.. note:: All the methods above will load the whole result into memory
-	(prefetching). Use ``unbuffered_row()`` for processing large
-	result sets.
+.. note:: 上面所有的这些方法都会把所有的结果加载到内存里（预读取），
+	当处理大结果集时最好使用 ``unbuffered_row()`` 方法。
 
-**unbuffered_row()**
+**unbuffered_row()** 方法
 
-This method returns a single result row without prefetching the whole
-result in memory as ``row()`` does. If your query has more than one row,
-it returns the current row and moves the internal data pointer ahead. 
+这个方法和 ``row()`` 方法一样返回单独一行结果，但是它不会预读取所有的结果数据到内存中。
+如果你的查询结果不止一行，它将返回当前一行，并通过内部实现的指针来移动到下一行。
 
 ::
 
@@ -165,49 +156,43 @@ it returns the current row and moves the internal data pointer ahead.
 		echo $row->body;
 	}
 
-You can optionally pass 'object' (default) or 'array' in order to specify
-the returned value's type::
+为了指定返回值的类型，可以传一个字符串参数 'object'（默认值） 或者 'array' 给这个方法::
 
 	$query->unbuffered_row();		// object
 	$query->unbuffered_row('object');	// object
 	$query->unbuffered_row('array');	// associative array
 
 *********************
-Result Helper Methods
+结果辅助方法
 *********************
 
-**num_rows()**
+**num_rows()** 方法
 
-The number of rows returned by the query. Note: In this example, $query
-is the variable that the query result object is assigned to::
+该方法返回查询结果的行数。注意：在这个例子中，``$query`` 变量为查询结果对象::
 
 	$query = $this->db->query('SELECT * FROM my_table');
 	
 	echo $query->num_rows();
 
-.. note:: Not all database drivers have a native way of getting the total
-	number of rows for a result set. When this is the case, all of
-	the data is prefetched and ``count()`` is manually called on the
-	resulting array in order to achieve the same result.
+.. note:: 并不是所有的数据库驱动器都有原生的方法来获取查询结果的总行数。
+	当遇到这种情况时，所有的数据会被预读取到内存中，并调用 ``count()`` 函数
+	来取得总行数。
 	
-**num_fields()**
+**num_fields()** 方法
 
-The number of FIELDS (columns) returned by the query. Make sure to call
-the method using your query result object::
+该方法返回查询结果的字段数（列数）。在你的查询结果对象上调用该方法::
 
 	$query = $this->db->query('SELECT * FROM my_table');
 	
 	echo $query->num_fields();
 
-**free_result()**
+**free_result()** 方法
 
-It frees the memory associated with the result and deletes the result
-resource ID. Normally PHP frees its memory automatically at the end of
-script execution. However, if you are running a lot of queries in a
-particular script you might want to free the result after each query
-result has been generated in order to cut down on memory consumption.
+该方法释放掉查询结果所占的内存，并删除结果的资源标识。通常来说，
+PHP 会在脚本执行结束后自动释放内存。但是，如果你在某个脚本中执行大量的查询，
+你可能需要在每次查询之后释放掉查询结果，以此来降低内存消耗。
 
-Example::
+举例::
 
 	$query = $this->db->query('SELECT title FROM my_table');
 	
@@ -224,13 +209,11 @@ Example::
 	echo $row->name;
 	$query2->free_result(); // The $query2 result object will no longer be available
 
-**data_seek()**
+**data_seek()** 方法
 
-This method sets the internal pointer for the next result row to be
-fetched. It is only useful in combination with ``unbuffered_row()``.
+这个方法用来设置下一个结果行的内部指针，它只有在和 ``unbuffered_row()`` 方法一起使用才有效果。
 
-It accepts a positive integer value, which defaults to 0 and returns
-TRUE on success or FALSE on failure.
+它接受一个正整数参数（默认值为0）表示想要读取的下一行，返回值为 TRUE 或 FALSE 表示成功或失败。
 
 ::
 
@@ -238,8 +221,8 @@ TRUE on success or FALSE on failure.
 	$query->data_seek(5); // Skip the first 5 rows
 	$row = $query->unbuffered_row();
 
-.. note:: Not all database drivers support this feature and will return FALSE.
-	Most notably - you won't be able to use it with PDO.
+.. note:: 并不是所有的数据库驱动器都支持这一特性，调用这个方法将会返回 FALSE，
+	譬如你无法在 PDO 上使用它。
 
 ***************
 Class Reference
