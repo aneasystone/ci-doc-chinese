@@ -239,7 +239,7 @@ Class Reference
 		A wrapper for the ``result_array()``, ``result_object()``
 		and ``custom_result_object()`` methods.
 
-		Usage: see `Result Arrays`_.
+		Usage: see `结果数组`_.
 
 	.. php:method:: result_array()
 
@@ -249,7 +249,7 @@ Class Reference
 		Returns the query results as an array of rows, where each
 		row is itself an associative array.
 
-		Usage: see `Result Arrays`_.
+		Usage: see `结果数组`_.
 
 	.. php:method:: result_object()
 
@@ -259,7 +259,7 @@ Class Reference
 		Returns the query results as an array of rows, where each
 		row is an object of type ``stdClass``.
 
-		Usage: see `Result Arrays`_.
+		Usage: see `结果数组`_.
 
 	.. php:method:: custom_result_object($class_name)
 
@@ -280,7 +280,7 @@ Class Reference
 		A wrapper for the ``row_array()``, ``row_object() and 
 		``custom_row_object()`` methods.
 
-		Usage: see `Result Rows`_.
+		Usage: see `结果行`_.
 
 	.. php:method:: unbuffered_row([$type = 'object'])
 
@@ -291,7 +291,7 @@ Class Reference
 		Fetches the next result row and returns it in the
 		requested form.
 
-		Usage: see `Result Rows`_.
+		Usage: see `结果行`_.
 
 	.. php:method:: row_array([$n = 0])
 
@@ -301,7 +301,7 @@ Class Reference
 
 		Returns the requested result row as an associative array.
 
-		Usage: see `Result Rows`_.
+		Usage: see `结果行`_.
 
 	.. php:method:: row_object([$n = 0])
 
@@ -312,7 +312,7 @@ Class Reference
 		Returns the requested result row as an object of type
 		``stdClass``.
 
-		Usage: see `Result Rows`_.
+		Usage: see `结果行`_.
 
 	.. php:method:: custom_row_object($n, $type)
 
@@ -332,7 +332,7 @@ Class Reference
 
 		Moves the internal results row pointer to the desired offset.
 
-		Usage: see `Result Helper Methods`_.
+		Usage: see `结果辅助方法`_.
 
 	.. php:method:: set_row($key[, $value = NULL])
 
@@ -381,7 +381,7 @@ Class Reference
 
 		Returns the number of rows in the result set.
 
-		Usage: see `Result Helper Methods`_.
+		Usage: see `结果辅助方法`_.
 
 	.. php:method:: num_fields()
 
@@ -390,7 +390,7 @@ Class Reference
 
 		Returns the number of fields in the result set.
 
-		Usage: see `Result Helper Methods`_.
+		Usage: see `结果辅助方法`_.
 
 	.. php:method:: field_data()
 
@@ -406,7 +406,7 @@ Class Reference
 
 		Frees a result set.
 
-		Usage: see `Result Helper Methods`_.
+		Usage: see `结果辅助方法`_.
 
 	.. php:method:: list_fields()
 
