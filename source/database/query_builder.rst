@@ -418,8 +418,8 @@ outer 和 right outer 。
 
 该方法用于生成 ORDER BY 子句。
 
-第一个参数为你想要排序的字段名，第二个参数用于设置排序的方向，可选项有：
-**ASC**（升序），**DESC**（降序）和 **RANDOM**（随机）。
+第一个参数为你想要排序的字段名，第二个参数用于设置排序的方向，
+可选项有： ASC（升序），DESC（降序）和 RANDOM （随机）。
 
 ::
 
@@ -439,7 +439,7 @@ outer 和 right outer 。
 	$this->db->order_by('name', 'ASC');
 	// Produces: ORDER BY `title` DESC, `name` ASC
 
-如果你选择了 **RANDOM**（随机排序），第一个参数会被忽略，但是你可以传入一个
+如果你选择了 **RANDOM** （随机排序），第一个参数会被忽略，但是你可以传入一个
 数字值，作为随机数的 seed。
 
 ::
