@@ -1,6 +1,6 @@
  - [x]      8 ./source/helpers/index.rst
  - [x]      8 ./source/libraries/index.rst
- - [ ]     14 ./source/overview/index.rst
+ - [x]     14 ./source/overview/index.rst
  - [ ]     18 ./source/installation/troubleshooting.rst
  - [ ]     20 ./source/general/requirements.rst
  - [ ]     21 ./source/general/credits.rst
@@ -117,6 +117,6 @@
  - [ ]    720 ./source/helpers/form_helper.rst
  - [ ]   1057 ./source/libraries/sessions.rst
  - [ ]   1135 ./source/libraries/form_validation.rst
- - [ ]   1462 ./source/database/query_builder.rst
+ - [x]   1462 ./source/database/query_builder.rst
  - [ ]   3100 ./source/changelog.rst
  - [ ]  29720 总用量
