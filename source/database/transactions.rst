@@ -1,39 +1,31 @@
 ############
-Transactions
+事务
 ############
 
-CodeIgniter's database abstraction allows you to use transactions with
-databases that support transaction-safe table types. In MySQL, you'll
-need to be running InnoDB or BDB table types rather than the more common
-MyISAM. Most other database platforms support transactions natively.
+CodeIgniter 允许你在支持事务安全的表上使用事务。在 MySQL 中，你需要将
+表的存储引擎设置为 InnoDb 或 BDB，而不是通常我们使用的 MyISAM 。大多数
+其他数据库平台都原生支持事务。
 
-If you are not familiar with transactions we recommend you find a good
-online resource to learn about them for your particular database. The
-information below assumes you have a basic understanding of
-transactions.
+如果你对事务还不熟悉，我们推荐针对你正在使用的数据库，先在网上寻找一些
+在线资源学习一下。下面将假设你已经明白事务的基本概念。
 
-CodeIgniter's Approach to Transactions
+CodeIgniter 的事务方法
 ======================================
 
-CodeIgniter utilizes an approach to transactions that is very similar to
-the process used by the popular database class ADODB. We've chosen that
-approach because it greatly simplifies the process of running
-transactions. In most cases all that is required are two lines of code.
+CodeIgniter 使用的事务处理方法与流行的数据库类 ADODB 的处理方法非常相似。
+我们选择这种方式是因为它极大的简化了事务的处理过程。大多数情况下，你只需
+编写两行代码就行了。
 
-Traditionally, transactions have required a fair amount of work to
-implement since they demand that you keep track of your queries and
-determine whether to commit or rollback based on the success or failure
-of your queries. This is particularly cumbersome with nested queries. In
-contrast, we've implemented a smart transaction system that does all
-this for you automatically (you can also manage your transactions
-manually if you choose to, but there's really no benefit).
+传统的事务处理需要实现大量的工作，你必须随时跟踪你的查询，并根据查询的成功
+或失败来决定提交还是回滚。当遇到嵌套查询时将会更加麻烦。相比之下，我们实现了
+一个智能的事务系统，它将自动的为你做这些工作。（你仍然可以选择手工管理你的
+事务，但这实在是没啥好处）
 
-Running Transactions
+运行事务
 ====================
 
-To run your queries using transactions you will use the
-$this->db->trans_start() and $this->db->trans_complete() functions as
-follows::
+要使用事务来运行你的查询，你可以使用 $this->db->trans_start() 和
+$this->db->trans_complete() 两个方法，像下面这样::
 
 	$this->db->trans_start();
 	$this->db->query('AN SQL QUERY...');
@@ -41,29 +33,26 @@ follows::
 	$this->db->query('AND YET ANOTHER QUERY...');
 	$this->db->trans_complete();
 
-You can run as many queries as you want between the start/complete
-functions and they will all be committed or rolled back based on success
-or failure of any given query.
+在 start 和 complete 之间，你可以运行任意多个查询，根据查询执行
+成功或失败，系统将自动提交或回滚。
 
-Strict Mode
-===========
+严格模式 （Strict Mode）
+=======================
 
-By default CodeIgniter runs all transactions in Strict Mode. When strict
-mode is enabled, if you are running multiple groups of transactions, if
-one group fails all groups will be rolled back. If strict mode is
-disabled, each group is treated independently, meaning a failure of one
-group will not affect any others.
+CodeIgniter 默认使用严格模式运行所有的事务，在严格模式下，如果你正在
+运行多组事务，只要有一组失败，所有组都会被回滚。如果禁用严格模式，那么
+每一组都被视为独立的组，这意味着其中一组失败不会影响其他的组。
 
-Strict Mode can be disabled as follows::
+严格模式可以用下面的方法禁用::
 
 	$this->db->trans_strict(FALSE);
 
-Managing Errors
+错误处理
 ===============
 
-If you have error reporting enabled in your config/database.php file
-you'll see a standard error message if the commit was unsuccessful. If
-debugging is turned off, you can manage your own errors like this::
+如果你的数据库配置文件 config/database.php 中启用了错误报告（db_debug = TRUE），
+当提交没有成功时，你会看到一条标准的错误信息。如果没有启用错误报告，
+你可以像下面这样来管理你的错误::
 
 	$this->db->trans_start();
 	$this->db->query('AN SQL QUERY...');
@@ -75,12 +64,11 @@ debugging is turned off, you can manage your own errors like this::
 		// generate an error... or use the log_message() function to log your error
 	}
 
-Enabling Transactions
+启用事务
 =====================
 
-Transactions are enabled automatically the moment you use
-$this->db->trans_start(). If you would like to disable transactions you
-can do so using $this->db->trans_off()::
+当执行 $this->db->trans_start() 方法时，事务将自动启用，如果
+你要禁用事务，可以使用 $this->db->trans_off() 方法来实现::
 
 	$this->db->trans_off();
 	
@@ -88,25 +76,23 @@ can do so using $this->db->trans_off()::
 	$this->db->query('AN SQL QUERY...');
 	$this->db->trans_complete();
 
-When transactions are disabled, your queries will be auto-commited, just
-as they are when running queries without transactions.
+当事务被禁用时，你的查询会自动提交，就跟没有使用事务一样。
 
-Test Mode
-=========
+测试模式（Test Mode）
+======================
 
-You can optionally put the transaction system into "test mode", which
-will cause your queries to be rolled back -- even if the queries produce
-a valid result. To use test mode simply set the first parameter in the
-$this->db->trans_start() function to TRUE::
+你可以选择性的将你的事务系统设置为 “测试模式”，这将导致你的所有
+查询都被回滚，就算查询成功执行也一样。要使用 “测试模式”，你只需要
+将 $this->db->trans_start() 函数的第一个参数设置为 TRUE 即可::
 
 	$this->db->trans_start(TRUE); // Query will be rolled back
 	$this->db->query('AN SQL QUERY...');
 	$this->db->trans_complete();
 
-Running Transactions Manually
+手工运行事务
 =============================
 
-If you would like to run transactions manually you can do so as follows::
+如果你想手工运行事务，可以像下面这样做::
 
 	$this->db->trans_begin();
 	
@@ -123,5 +109,5 @@ If you would like to run transactions manually you can do so as follows::
 		$this->db->trans_commit();
 	}
 
-.. note:: Make sure to use $this->db->trans_begin() when running manual
-	transactions, **NOT** $this->db->trans_start().
+.. note:: 手动运行事务时，请务必使用 $this->db->trans_begin() 方法，
+	**而不是** $this->db->trans_start() 方法。
