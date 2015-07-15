@@ -1,18 +1,18 @@
 ###############
-Troubleshooting
+疑难解答
 ###############
 
-If you find that no matter what you put in your URL only your default
-page is loading, it might be that your server does not support the
-REQUEST_URI variable needed to serve search-engine friendly URLs. As a
-first step, open your application/config/config.php file and look for
-the URI Protocol information. It will recommend that you try a couple
-alternate settings. If it still doesn't work after you've tried this
-you'll need to force CodeIgniter to add a question mark to your URLs. To
-do this open your **application/config/config.php** file and change this::
+如果你发现无论你输入什么 URL 都只能显示默认页，那么可能是你的服务器
+不支持 REQUEST_URI 变量，该变量用来提供搜索引擎友好的 URL 。
+解决这个问题的第一步是打开 application/config/config.php 文件，找到
+URI Protocol 信息，根据注释提示，该值可以有几种不同的设置方式，你可以
+逐个尝试一下。
+如果还是不起作用，你需要让 CodeIgniter 强制在你的 URL 中添加一个问号，
+要做到这点，你可以打开 **application/config/config.php** 文件，然后
+将下面的代码::
 
 	$config['index_page'] = "index.php";
 
-To this::
+修改为这样::
 
 	$config['index_page'] = "index.php?";

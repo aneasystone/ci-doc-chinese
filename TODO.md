@@ -1,7 +1,7 @@
  - [x]      8 ./source/helpers/index.rst
  - [x]      8 ./source/libraries/index.rst
  - [x]     14 ./source/overview/index.rst
- - [ ]     18 ./source/installation/troubleshooting.rst
+ - [x]     18 ./source/installation/troubleshooting.rst
  - [ ]     20 ./source/general/requirements.rst
  - [ ]     21 ./source/general/credits.rst
  - [ ]     22 ./source/license.rst
