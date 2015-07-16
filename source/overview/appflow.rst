@@ -1,23 +1,17 @@
 ######################
-Application Flow Chart
+应用程序流程图
 ######################
 
-The following graphic illustrates how data flows throughout the system:
+下图说明了整个系统的数据流程：
 
-|CodeIgniter application flow|
+|CodeIgniter 程序流程|
 
-#. The index.php serves as the front controller, initializing the base
-   resources needed to run CodeIgniter.
-#. The Router examines the HTTP request to determine what should be done
-   with it.
-#. If a cache file exists, it is sent directly to the browser, bypassing
-   the normal system execution.
-#. Security. Before the application controller is loaded, the HTTP
-   request and any user submitted data is filtered for security.
-#. The Controller loads the model, core libraries, helpers, and any
-   other resources needed to process the specific request.
-#. The finalized View is rendered then sent to the web browser to be
-   seen. If caching is enabled, the view is cached first so that on
-   subsequent requests it can be served.
+#. index.php 文件作为前端控制器，初始化运行 CodeIgniter 所需的基本资源；
+#. Router 检查 HTTP 请求，以确定如何处理该请求；
+#. 如果存在缓存文件，将直接输出到浏览器，不用走下面正常的系统流程；
+#. 在加载应用程序控制器之前，对 HTTP 请求以及任何用户提交的数据进行安全检查；
+#. 控制器加载模型、核心类库、辅助函数以及其他所有处理请求所需的资源；
+#. 最后一步，渲染视图并发送至浏览器，如果开启了缓存，视图被会先缓存起来用于
+   后续的请求。
 
-.. |CodeIgniter application flow| image:: ../images/appflowchart.gif
+.. |CodeIgniter 程序流程| image:: ../images/appflowchart.gif
