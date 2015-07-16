@@ -1,22 +1,18 @@
-#######
-Credits
-#######
+#######################
+关于 CodeIgniter
+#######################
 
-CodeIgniter was originally developed by `Rick Ellis <https://ellislab.com/>`_
-(CEO of `EllisLab, Inc. <https://ellislab.com/>`_). The framework was written for
-performance in the real world, with many of the class libraries, helpers, and
-sub-systems borrowed from the code-base of `ExpressionEngine
-<https://ellislab.com/expressionengine>`_.
+CodeIgniter 最早是由 `Rick Ellis <https://ellislab.com/>`_ 开发（ `EllisLab 公司 <https://ellislab.com/>`_ 的 CEO ）的。这个框架为真实应用而编写，集成了很多类库，辅助
+函数，以及从 `ExpressionEngine <https://ellislab.com/expressionengine>`_ 的代码中
+借鉴过来的子系统。
 
-It was, for years, developed and maintained by EllisLab, the ExpressionEngine
-Development Team and a group of community members called the Reactor Team.
+在之前的很多年里，CodeIgniter 一直都是由 EllisLab 公司、ExpressionEngine 开发团队、
+以及一群叫做 Reactor 团队的社区成员开发并维护。
 
-In 2014, CodeIgniter was acquired by the `British Columbia Institute of Technology
-<http://www.bcit.ca/>`_ and was then officially announced as a community-maintained
-project.
+2014 年，CodeIgniter 由 `不列颠哥伦比亚理工学院 <http://www.bcit.ca/>`_ 接手，之后
+正式宣布 CodeIgniter 成为一个由社区维护的项目。
 
-Bleeding edge development is spearheaded by the handpicked contributors
-of the Reactor Team.
+CodeIgniter 的最新发展是由 Reactor 团队中的一部分精英带头推动的。
 
-A hat tip goes to Ruby on Rails for inspiring us to create a PHP framework, and
-for bringing frameworks into the general consciousness of the web community.
+来自 Ruby on Rails 的灵感启发我们去开发一个 PHP 框架，然后将框架的概念和意识
+带到 Web 开发社区中去。

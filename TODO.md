@@ -3,7 +3,7 @@
  - [x]     14 ./source/overview/index.rst
  - [x]     18 ./source/installation/troubleshooting.rst
  - [x]     20 ./source/general/requirements.rst
- - [ ]     21 ./source/general/credits.rst
+ - [x]     21 ./source/general/credits.rst
  - [ ]     22 ./source/license.rst
  - [ ]     23 ./source/overview/appflow.rst
  - [ ]     24 ./source/database/index.rst
