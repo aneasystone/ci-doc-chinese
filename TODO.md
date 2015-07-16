@@ -6,8 +6,8 @@
  - [x]     21 ./source/general/credits.rst
  - [x]     22 ./source/license.rst
  - [x]     23 ./source/overview/appflow.rst
- - [ ]     24 ./source/database/index.rst
- - [ ]     24 ./source/general/creating_drivers.rst
+ - [x]     24 ./source/database/index.rst
+ - [x]     24 ./source/general/creating_drivers.rst
  - [ ]     24 ./source/installation/downloads.rst
  - [ ]     24 ./source/overview/getting_started.rst
  - [ ]     26 ./source/general/autoloader.rst
