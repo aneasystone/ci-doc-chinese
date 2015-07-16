@@ -10,7 +10,7 @@
  - [x]     24 ./source/general/creating_drivers.rst
  - [x]     24 ./source/installation/downloads.rst
  - [x]     24 ./source/overview/getting_started.rst
- - [ ]     26 ./source/general/autoloader.rst
+ - [x]     26 ./source/general/autoloader.rst
  - [ ]     26 ./source/tutorial/conclusion.rst
  - [ ]     27 ./source/DCO.rst
  - [ ]     27 ./source/overview/mvc.rst

@@ -1,27 +1,24 @@
 ######################
-Auto-loading Resources
+自动加载资源
 ######################
 
-CodeIgniter comes with an "Auto-load" feature that permits libraries,
-helpers, and models to be initialized automatically every time the
-system runs. If you need certain resources globally throughout your
-application you should consider auto-loading them for convenience.
+CodeIgniter 的"自动加载"特性可以允许系统每次运行时自动初始化类库、辅助函数和模型。
+如果你需要在整个应用程序中全局使用某些资源，为方便起见可以考虑自动加载它们。
 
-The following items can be loaded automatically:
+支持自动加载的有下面这些：
 
--  Classes found in the *libraries/* directory
--  Helper files found in the *helpers/* directory
--  Custom config files found in the *config/* directory
--  Language files found in the *system/language/* directory
--  Models found in the *models/* folder
+-  *libraries/* 目录下的核心类
+-  *helpers/* 目录下的辅助函数
+-  *config/* 目录下的用户自定义配置文件
+-  *system/language/* 目录下的语言文件
+-  *models/* 目录下的模型类
 
-To autoload resources, open the **application/config/autoload.php**
-file and add the item you want loaded to the autoload array. You'll
-find instructions in that file corresponding to each type of item.
+要实现自动加载资源，你可以打开 **application/config/autoload.php** 文件，然后将
+你需要自动加载的项添加到 autoload 数组中。你可以在该文件中的每种类型的 autoload 
+数组的注释中找到相应的提示。
 
-.. note:: Do not include the file extension (.php) when adding items to
-	the autoload array.
+.. note:: 添加 autoload 数组时不用包含文件扩展名（.php）
 
-Additionally, if you want CodeIgniter to use a `Composer <https://getcomposer.org/>`_
-auto-loader, just set ``$config['composer_autoload']`` to ``TRUE`` or
-a custom path in **application/config/config.php**.
+另外，如果你想让 CodeIgniter 使用 `Composer <https://getcomposer.org/>`_ 的自动加载，
+只需将 **application/config/config.php** 配置文件中的 ``$config['composer_autoload']`` 
+设置为 ``TRUE`` 或者设置为你自定义的路径。
