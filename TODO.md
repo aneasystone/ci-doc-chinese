@@ -11,7 +11,7 @@
  - [x]     24 ./source/installation/downloads.rst
  - [x]     24 ./source/overview/getting_started.rst
  - [x]     26 ./source/general/autoloader.rst
- - [ ]     26 ./source/tutorial/conclusion.rst
+ - [x]     26 ./source/tutorial/conclusion.rst
  - [ ]     27 ./source/DCO.rst
  - [ ]     27 ./source/overview/mvc.rst
  - [ ]     31 ./source/general/libraries.rst
