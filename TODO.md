@@ -9,7 +9,7 @@
  - [x]     24 ./source/database/index.rst
  - [x]     24 ./source/general/creating_drivers.rst
  - [x]     24 ./source/installation/downloads.rst
- - [ ]     24 ./source/overview/getting_started.rst
+ - [x]     24 ./source/overview/getting_started.rst
  - [ ]     26 ./source/general/autoloader.rst
  - [ ]     26 ./source/tutorial/conclusion.rst
  - [ ]     27 ./source/DCO.rst
@@ -42,24 +42,24 @@
  - [ ]     82 ./source/helpers/directory_helper.rst
  - [ ]     87 ./source/general/reserved_names.rst
  - [ ]     89 ./source/general/profiling.rst
- - [ ]     92 ./source/database/helpers.rst
+ - [x]     92 ./source/database/helpers.rst
  - [ ]     95 ./source/helpers/inflector_helper.rst
  - [ ]     99 ./source/general/urls.rst
  - [ ]    105 ./source/helpers/security_helper.rst
  - [ ]    106 ./source/libraries/typography.rst
- - [ ]    113 ./source/database/transactions.rst
+ - [x]    113 ./source/database/transactions.rst
  - [ ]    114 ./source/overview/at_a_glance.rst
  - [ ]    120 ./source/general/core_classes.rst
  - [ ]    121 ./source/general/errors.rst
  - [ ]    122 ./source/index.rst
- - [ ]    124 ./source/database/metadata.rst
+ - [x]    124 ./source/database/metadata.rst
  - [ ]    126 ./source/general/hooks.rst
- - [ ]    129 ./source/database/examples.rst
- - [ ]    132 ./source/database/connecting.rst
+ - [x]    129 ./source/database/examples.rst
+ - [x]    132 ./source/database/connecting.rst
  - [ ]    132 ./source/helpers/array_helper.rst
  - [ ]    144 ./source/general/helpers.rst
  - [ ]    147 ./source/contributing/index.rst
- - [ ]    150 ./source/database/queries.rst
+ - [x]    150 ./source/database/queries.rst
  - [ ]    153 ./source/tutorial/create_news_items.rst
  - [ ]    162 ./source/database/caching.rst
  - [ ]    163 ./source/helpers/captcha_helper.rst
@@ -67,7 +67,7 @@
  - [ ]    168 ./source/helpers/smiley_helper.rst
  - [ ]    170 ./source/tutorial/static_pages.rst
  - [ ]    173 ./source/libraries/security.rst
- - [ ]    175 ./source/database/configuration.rst
+ - [x]    175 ./source/database/configuration.rst
  - [ ]    182 ./source/general/models.rst
  - [ ]    184 ./source/libraries/migration.rst
  - [ ]    187 ./source/general/common_functions.rst
@@ -105,7 +105,7 @@
  - [ ]    404 ./source/libraries/email.rst
  - [ ]    407 ./source/helpers/html_helper.rst
  - [ ]    408 ./source/database/forge.rst
- - [ ]    417 ./source/database/results.rst
+ - [x]    417 ./source/database/results.rst
  - [ ]    419 ./source/database/db_driver_reference.rst
  - [ ]    436 ./source/helpers/date_helper.rst
  - [ ]    460 ./source/libraries/loader.rst

@@ -1,24 +1,16 @@
 ################################
-Getting Started With CodeIgniter
+开始学习 CodeIgniter
 ################################
 
-Any software application requires some effort to learn. We've done our
-best to minimize the learning curve while making the process as
-enjoyable as possible.
+任何应用程序的学习都需要花费一定的精力。我们尽自己最大的努力使大家在学习中少走弯路，并且充满乐趣。
 
-The first step is to :doc:`install <../installation/index>`
-CodeIgniter, then read all the topics in the **Introduction** section of
-the Table of Contents.
+第一步就是 :doc:`安装 <../installation/index>` CodeIgniter，然后阅读目录中 **介绍部分** 的所有主题。
 
-Next, read each of the **General Topics** pages in order. Each topic
-builds on the previous one, and includes code examples that you are
-encouraged to try.
+接下来，按顺序阅读 **常规主题** 里面的每一篇内容，那里每一篇的内容都是承接前一篇的，
+并且提供了样例代码，你可以尝试一下。
 
-Once you understand the basics you'll be ready to explore the **Class
-Reference** and **Helper Reference** pages to learn to utilize the
-native libraries and helper files.
+一旦你掌握了这些基础概念，你就可以去看看 **类库参考** 和 **辅助函数参考**，
+去学习如何使用 CodeIgniter 原生的类库和辅助函数文件。
 
-Feel free to take advantage of our `Community
-Forums <http://forum.codeigniter.com/>`_ if you have questions or
-problems, and our `Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_ to see code
-examples posted by other users.
+如果遇到了问题可以到我们的 `开发者社区 <http://forum.codeigniter.com/>`_ 寻找解答，另外，
+也可以去我们的 `维基页面 <https://github.com/bcit-ci/CodeIgniter/wiki>`_，里面有其他用户分享的例子代码。
