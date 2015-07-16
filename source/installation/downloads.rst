@@ -1,8 +1,8 @@
 #######################
-Downloading CodeIgniter
+下载 CodeIgniter
 #######################
 
--  `CodeIgniter v3.0.0 (Current version) <https://codeload.github.com/bcit-ci/CodeIgniter/zip/develop>`_
+-  `CodeIgniter v3.0.0 （当前版本） <https://codeload.github.com/bcit-ci/CodeIgniter/zip/develop>`_
 -  `CodeIgniter v2.2.1 <https://codeload.github.com/bcit-ci/CodeIgniter/zip/2.2.1>`_
 -  `CodeIgniter v2.2.0 <https://codeload.github.com/bcit-ci/CodeIgniter/zip/2.2.0>`_
 -  `CodeIgniter v2.1.4 <https://codeload.github.com/bcit-ci/CodeIgniter/zip/2.1.4>`_
@@ -15,11 +15,10 @@ Downloading CodeIgniter
 GitHub
 ******
 
-`Git <http://git-scm.com/about>`_ is a distributed version control system.
+`Git <http://git-scm.com/about>`_ 是一个分布式版本控制系统。
 
-Public Git access is available at `GitHub <https://github.com/bcit-ci/CodeIgniter>`_.
-Please note that while every effort is made to keep this code base
-functional, we cannot guarantee the functionality of code taken from
-the develop branch.
+CodeIgniter 可以在 `GitHub <https://github.com/bcit-ci/CodeIgniter>`_ 上公开访问。
+请注意，尽管我们在保持代码的基础功能上做出了大量的努力，但是我们并不能为开发分支
+的代码中的功能作担保。
 
-Beginning with version 2.0.3, stable versions are also available via `GitHub Releases <https://github.com/bcit-ci/CodeIgniter/releases>`_.
+从 2.0.3 版本开始，每个版本的稳定版都可以从 `GitHub Releases <https://github.com/bcit-ci/CodeIgniter/releases>`_ 获取。
