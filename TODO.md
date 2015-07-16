@@ -4,7 +4,7 @@
  - [x]     18 ./source/installation/troubleshooting.rst
  - [x]     20 ./source/general/requirements.rst
  - [x]     21 ./source/general/credits.rst
- - [ ]     22 ./source/license.rst
+ - [x]     22 ./source/license.rst
  - [ ]     23 ./source/overview/appflow.rst
  - [ ]     24 ./source/database/index.rst
  - [ ]     24 ./source/general/creating_drivers.rst
