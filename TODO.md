@@ -18,7 +18,7 @@
  - [x]     31 ./source/general/welcome.rst
  - [x]     32 ./source/general/index.rst
  - [x]     32 ./source/overview/goals.rst
- - [ ]     38 ./source/database/call_function.rst
+ - [x]     38 ./source/database/call_function.rst
  - [ ]     39 ./source/general/drivers.rst
  - [ ]     41 ./source/installation/upgrading.rst
  - [ ]     42 ./source/helpers/language_helper.rst
