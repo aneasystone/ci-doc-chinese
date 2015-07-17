@@ -20,7 +20,7 @@
  - [x]     32 ./source/overview/goals.rst
  - [x]     38 ./source/database/call_function.rst
  - [x]     39 ./source/general/drivers.rst
- - [ ]     41 ./source/installation/upgrading.rst
+ - [x]     41 ./source/installation/upgrading.rst
  - [ ]     42 ./source/helpers/language_helper.rst
  - [ ]     45 ./source/tutorial/index.rst
  - [ ]     46 ./source/overview/features.rst
