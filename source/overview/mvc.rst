@@ -1,27 +1,18 @@
-#####################
-Model-View-Controller
-#####################
+#########################
+模型-视图-控制器
+#########################
 
-CodeIgniter is based on the Model-View-Controller development pattern.
-MVC is a software approach that separates application logic from
-presentation. In practice, it permits your web pages to contain minimal
-scripting since the presentation is separate from the PHP scripting.
+CodeIgniter 的开发基于 MVC（模型-视图-控制器）设计模式。MVC 是一种
+用于将应用程序的逻辑层和表现层分离出来的软件方法。在实践中，由于这种分离
+所以你的页面中只包含很少的 PHP 脚本。
 
--  The **Model** represents your data structures. Typically your model
-   classes will contain functions that help you retrieve, insert, and
-   update information in your database.
--  The **View** is the information that is being presented to a user. A
-   View will normally be a web page, but in CodeIgniter, a view can also
-   be a page fragment like a header or footer. It can also be an RSS
-   page, or any other type of "page".
--  The **Controller** serves as an *intermediary* between the Model, the
-   View, and any other resources needed to process the HTTP request and
-   generate a web page.
+-  **模型** 代表你的数据结构。通常来说，模型类将包含帮助你对数据库进行增删改查的方法。
+-  **视图** 是要展现给用户的信息。一个视图通常就是一个网页，但是在 CodeIgniter 中，
+   一个视图也可以是一部分页面（譬如页头、页尾），它也可以是一个 RSS 页面，
+   或其他任何类型的页面。
+-  **控制器** 是模型、视图以及其他任何处理 HTTP 请求所必须的资源之间的中介，并生成网页。
 
-CodeIgniter has a fairly loose approach to MVC since Models are not
-required. If you don't need the added separation, or find that
-maintaining models requires more complexity than you want, you can
-ignore them and build your application minimally using Controllers and
-Views. CodeIgniter also enables you to incorporate your own existing
-scripts, or even develop core libraries for the system, enabling you to
-work in a way that makes the most sense to you.
+CodeIgniter 在 MVC 使用上非常宽松，因为模型不是必需的。如果你不需要使用模型这一层，或是
+认为维护模型比你想象中的复杂很多，那么你可以忽略它，而只使用控制器和视图创建你的应用程序。
+CodeIgniter 可以让你直接调用你现有的脚本，甚至你也可以为系统开发核心类，总之，
+CodeIgniter 让你以你感觉最舒适的方式进行开发。

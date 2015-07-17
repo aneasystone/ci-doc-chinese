@@ -13,7 +13,7 @@
  - [x]     26 ./source/general/autoloader.rst
  - [x]     26 ./source/tutorial/conclusion.rst
  - [ ]     27 ./source/DCO.rst
- - [ ]     27 ./source/overview/mvc.rst
+ - [x]     27 ./source/overview/mvc.rst
  - [ ]     31 ./source/general/libraries.rst
  - [ ]     31 ./source/general/welcome.rst
  - [ ]     32 ./source/general/index.rst
