@@ -1,16 +1,13 @@
 ##############################
-Design and Architectural Goals
+设计与架构目标
 ##############################
 
-Our goal for CodeIgniter is maximum performance, capability, and
-flexibility in the smallest, lightest possible package.
+CodeIgniter 的目标是在最小化，最轻量级的开发包中得到最大的执行效率、功能和灵活性。
 
-To meet this goal we are committed to benchmarking, re-factoring, and
-simplifying at every step of the development process, rejecting anything
-that doesn't further the stated objective.
+为了达到这个目标，我们在开发过程的每一步都致力于基准测试、重构和简化工作，
+拒绝加入任何对实现目标没有帮助的东西。
 
-From a technical and architectural standpoint, CodeIgniter was created
-with the following objectives:
+从技术和架构角度看，CodeIgniter 按照下列目标创建：
 
 -  **Dynamic Instantiation.** In CodeIgniter, components are loaded and
    routines executed only when requested, rather than globally. No
