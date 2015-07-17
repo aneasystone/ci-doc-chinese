@@ -16,7 +16,7 @@
  - [x]     27 ./source/overview/mvc.rst
  - [x]     31 ./source/general/libraries.rst
  - [x]     31 ./source/general/welcome.rst
- - [ ]     32 ./source/general/index.rst
+ - [x]     32 ./source/general/index.rst
  - [ ]     32 ./source/overview/goals.rst
  - [ ]     38 ./source/database/call_function.rst
  - [ ]     39 ./source/general/drivers.rst

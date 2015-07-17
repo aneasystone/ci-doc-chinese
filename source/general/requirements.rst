@@ -12,8 +12,8 @@
   - MySQL (5.1+)，驱动有：*mysql* （已废弃），*mysqli* 和 *pdo*
   - Oracle，驱动有：*oci8* 和 *pdo*
   - PostgreSQL，驱动有：*postgre* 和 *pdo*
-  - MS SQL，驱动有：*mssql*，*sqlsrv*（2005及以上版本）和 *pdo*
-  - SQLite，驱动有：*sqlite*（版本2），*sqlite3*（版本3）和 *pdo*
+  - MS SQL，驱动有：*mssql*，*sqlsrv* （2005及以上版本）和 *pdo*
+  - SQLite，驱动有：*sqlite* （版本2），*sqlite3* （版本3）和 *pdo*
   - CUBRID，驱动有：*cubrid* 和 *pdo*
   - Interbase/Firebird，驱动有：*ibase* 和 *pdo*
   - ODBC：驱动有：*odbc* 和 *pdo* （需要知道的是，ODBC 其实只是数据库抽象层）

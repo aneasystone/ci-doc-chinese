@@ -1,5 +1,5 @@
 ##############
-General Topics
+常规主题
 ##############
 
 .. toctree::
@@ -10,7 +10,7 @@ General Topics
 	reserved_names
 	views
 	models
-	Helpers <helpers>
+	helpers
 	libraries
 	creating_libraries
 	drivers
@@ -23,11 +23,11 @@ General Topics
 	compatibility_functions
 	routing
 	errors
-	Caching <caching>
+	caching
 	profiling
 	cli
 	managing_apps
 	environments
 	alternative_php
 	security
-	PHP Style Guide <styleguide>
+	styleguide
