@@ -1,9 +1,8 @@
 ###############
-Language Helper
+语言辅助库
 ###############
 
-The Language Helper file contains functions that assist in working with
-language files.
+语言辅助库文件包含了用于处理语言文件的一些函数。
 
 .. contents::
   :local:
@@ -12,18 +11,17 @@ language files.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('language');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: lang($line[, $for = ''[, $attributes = array()]])
 
@@ -33,9 +31,8 @@ The following functions are available:
  	:returns:	HTML-formatted language line label
 	:rtype:	string
 
-	This function returns a line of text from a loaded language file with
-	simplified syntax that may be more desirable for view files than
-	``CI_Lang::line()``.
+	此函数使用简单的语法从已加载的语言文件中返回一行文本。
+	这种简单的写法在视图文件中可能比调用 ``CI_Lang::line()`` 更顺手。
 
 	Example::
 

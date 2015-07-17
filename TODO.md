@@ -21,7 +21,7 @@
  - [x]     38 ./source/database/call_function.rst
  - [x]     39 ./source/general/drivers.rst
  - [x]     41 ./source/installation/upgrading.rst
- - [ ]     42 ./source/helpers/language_helper.rst
+ - [x]     42 ./source/helpers/language_helper.rst
  - [ ]     45 ./source/tutorial/index.rst
  - [ ]     46 ./source/overview/features.rst
  - [ ]     51 ./source/general/environments.rst
