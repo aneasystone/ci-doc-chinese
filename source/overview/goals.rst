@@ -9,21 +9,14 @@ CodeIgniter 的目标是在最小化，最轻量级的开发包中得到最大�
 
 从技术和架构角度看，CodeIgniter 按照下列目标创建：
 
--  **Dynamic Instantiation.** In CodeIgniter, components are loaded and
-   routines executed only when requested, rather than globally. No
-   assumptions are made by the system regarding what may be needed
-   beyond the minimal core resources, so the system is very light-weight
-   by default. The events, as triggered by the HTTP request, and the
-   controllers and views you design will determine what is invoked.
--  **Loose Coupling.** Coupling is the degree to which components of a
-   system rely on each other. The less components depend on each other
-   the more reusable and flexible the system becomes. Our goal was a
-   very loosely coupled system.
--  **Component Singularity.** Singularity is the degree to which
-   components have a narrowly focused purpose. In CodeIgniter, each
-   class and its functions are highly autonomous in order to allow
-   maximum usefulness.
+-  **动态实例化。** 在 CodeIgniter 中，组件的导入和函数的执行都是在被请求的时候
+   才执行，而不是全局的。除核心资源外，系统不需要任何其他资源，因此系统默认是
+   非常轻量级的。HTTP 请求所触发的事件以及你设计的控制器和视图将决定哪些资源是
+   需要加载的。
+-  **松耦合。** 耦合是指一个系统中组件之间的依赖程度。组件之间的依赖程度越低，
+   系统的重用性和灵活性就越好。我们的目标就是打造一个松耦合的系统。
+-  **组件专一性** 专一性指的是组件对某个目标的专注程度。在 CodeIgniter 中，
+   每一个类和方法都是高度独立的，从而可以最大程序的被复用。
 
-CodeIgniter is a dynamically instantiated, loosely coupled system with
-high component singularity. It strives for simplicity, flexibility, and
-high performance in a small footprint package.
+CodeIgniter 是一个动态实例化，高度组件专一性的松耦合系统。它在小巧的基础上力求做到
+简单、灵活和高性能。
