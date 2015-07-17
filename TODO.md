@@ -22,7 +22,7 @@
  - [x]     39 ./source/general/drivers.rst
  - [x]     41 ./source/installation/upgrading.rst
  - [x]     42 ./source/helpers/language_helper.rst
- - [ ]     45 ./source/tutorial/index.rst
+ - [x]     45 ./source/tutorial/index.rst
  - [ ]     46 ./source/overview/features.rst
  - [ ]     51 ./source/general/environments.rst
  - [ ]     51 ./source/helpers/number_helper.rst
