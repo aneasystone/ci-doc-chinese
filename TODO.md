@@ -14,7 +14,7 @@
  - [x]     26 ./source/tutorial/conclusion.rst
  - [ ]     27 ./source/DCO.rst
  - [x]     27 ./source/overview/mvc.rst
- - [ ]     31 ./source/general/libraries.rst
+ - [x]     31 ./source/general/libraries.rst
  - [ ]     31 ./source/general/welcome.rst
  - [ ]     32 ./source/general/index.rst
  - [ ]     32 ./source/overview/goals.rst
