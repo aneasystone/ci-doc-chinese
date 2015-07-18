@@ -29,9 +29,9 @@
  - [x]     52 ./source/helpers/path_helper.rst
  - [x]     54 ./source/helpers/xml_helper.rst
  - [x]     55 ./source/helpers/download_helper.rst
- - [ ]     57 ./source/installation/index.rst
+ - [x]     57 ./source/installation/index.rst
  - [ ]     60 ./source/general/managing_apps.rst
- - [ ]     61 ./README.rst
+ - [x]     61 ./README.rst
  - [ ]     70 ./source/general/caching.rst
  - [ ]     74 ./source/general/alternative_php.rst
  - [ ]     74 ./source/helpers/email_helper.rst

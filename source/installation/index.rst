@@ -1,50 +1,43 @@
 #########################
-Installation Instructions
+安装说明
 #########################
 
-CodeIgniter is installed in four steps:
+通过下面四步来安装 CodeIgniter：
 
-#. Unzip the package.
-#. Upload the CodeIgniter folders and files to your server. Normally the
-   index.php file will be at your root.
-#. Open the application/config/config.php file with a text editor and
-   set your base URL. If you intend to use encryption or sessions, set
-   your encryption key.
-#. If you intend to use a database, open the
-   application/config/database.php file with a text editor and set your
-   database settings.
+#. 解压缩安装包；
+#. 将 CodeIgniter 文件夹及里面的文件上传到服务器，通常 index.php
+   文件将位于网站的根目录；
+#. 使用文本编辑器打开 application/config/config.php 文件设置你网站的
+   根 URL，如果你想使用加密或会话，在这里设置上你的加密密钥；
+#. 如果你打算使用数据库，打开 application/config/database.php 文件
+   设置数据库参数。
 
-If you wish to increase security by hiding the location of your
-CodeIgniter files you can rename the system and application folders to
-something more private. If you do rename them, you must open your main
-index.php file and set the $system_path and $application_folder
-variables at the top of the file with the new name you've chosen.
+如果你想通过隐藏 CodeIgniter 的文件位置来增加安全性，你可以将 system
+和 application 目录修改为其他的名字，然后打开主目录下的 index.php 文件
+将 $system_path 和 $application_folder 两个变量设置为你修改的名字。
 
-For the best security, both the system and any application folders
-should be placed above web root so that they are not directly accessible
-via a browser. By default, .htaccess files are included in each folder
-to help prevent direct access, but it is best to remove them from public
-access entirely in case the web server configuration changes or doesn't
-abide by the .htaccess.
+为了达到更好的安全性，system 和 application 目录都应该放置在 Web 
+根目录之外，这样它们就不能通过浏览器直接访问。CodeIgniter 
+默认在每个目录下都包含了一个 .htaccess 文件，用于阻止直接访问，
+但是最好还是将它们移出能公开访问的地方，防止出现 Web 服务器配置
+更改或者 .htaccess 文件不被支持这些情况。
 
-If you would like to keep your views public it is also possible to move
-the views folder out of your application folder.
+如果你想让 views 目录保持公开，也可以将你的 views 目录移出 application 
+目录。
 
-After moving them, open your main index.php file and set the
-$system_path, $application_folder and $view_folder variables,
-preferably with a full path, e.g. '/www/MyUser/system'.
+移动完目录之后，打开 index.php 文件，分别设置好 $system_path、
+$application_folder 和 $view_folder 三个变量的值，最好设置成绝对路径，
+譬如：'/www/MyUser/system' 。
 
-One additional measure to take in production environments is to disable
-PHP error reporting and any other development-only functionality. In
-CodeIgniter, this can be done by setting the ENVIRONMENT constant, which
-is more fully described on the :doc:`security
-page <../general/security>`.
+在生产环境还要额外再多一步，就是禁用 PHP 错误报告以及所有其他仅在
+开发环境使用的功能。在 CodeIgniter 中，可以通过设置 ENVIRONMENT
+常量来做到这一点，这在 :doc:`安全 <../general/security>` 
+这篇指南中有着更详细的介绍。
 
-That's it!
+以上就是全部安装过程！
 
-If you're new to CodeIgniter, please read the :doc:`Getting
-Started <../overview/getting_started>` section of the User Guide
-to begin learning how to build dynamic PHP applications. Enjoy!
+如果你刚刚接触 CodeIgniter，请阅读用户指南的 :doc`开始 <../overview/getting_started>` 
+部分，学习如何构造动态的 PHP 应用，开始享受吧！
 
 .. toctree::
 	:hidden:
