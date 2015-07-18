@@ -1,9 +1,8 @@
-##########
-XML Helper
-##########
+############
+XML 辅助库
+############
 
-The XML Helper file contains functions that assist in working with XML
-data.
+XML 辅助库文件包含了用于处理 XML 数据的一些函数。
 
 .. contents::
   :local:
@@ -12,19 +11,17 @@ data.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code
-
-::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('xml');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
+该辅助库有下列可用函数：
 
 .. php:function:: xml_convert($str[, $protect_all = FALSE])
 
@@ -33,22 +30,21 @@ The following functions are available:
 	:returns: XML-converted string
 	:rtype:	string
 
-	Takes a string as input and converts the following reserved XML
-	characters to entities:
+	将输入字符串中的下列 XML 保留字符转换为实体（Entity）：
 
-	  - Ampersands: &
-	  - Less than and greater than characters: < >
-	  - Single and double quotes: ' "
-	  - Dashes: -
+	  - 和号：&
+	  - 小于号和大于号：< >
+	  - 单引号和双引号：' "
+	  - 减号：-
 
-	This function ignores ampersands if they are part of existing numbered
-	character entities, e.g. &#123;. Example::
+	如果 & 符号是作为实体编号的一部分，譬如： ``&#123;`` ，该函数将不予处理。
+	举例::
 
 		$string = '<p>Here is a paragraph & an entity (&#123;).</p>';
 		$string = xml_convert($string);
 		echo $string;
 
-	outputs:
+	输出结果:
 
 	.. code-block:: html
 
