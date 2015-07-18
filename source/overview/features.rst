@@ -1,46 +1,43 @@
 ####################
-CodeIgniter Features
+CodeIgniter 特性
 ####################
 
-Features in and of themselves are a very poor way to judge an
-application since they tell you nothing about the user experience, or
-how intuitively or intelligently it is designed. Features don't reveal
-anything about the quality of the code, or the performance, or the
-attention to detail, or security practices. The only way to really judge
-an app is to try it and get to know the code.
-:doc:`Installing <../installation/index>` CodeIgniter is child's play so
-we encourage you to do just that. In the mean time here's a list of
-CodeIgniter's main features.
+通过一个程序支持的特性并不能断定一个程序的好坏，因为特性
+不能体现出它良好的用户体验，不能体现出它优雅的设计，也不能
+显示出它代码质量如何，性能如何，细节处理的如何，安全性如何。
+判断程序好坏唯一的方法是体验一下并深入研究下它的代码。
 
--  Model-View-Controller Based System
--  Extremely Light Weight
--  Full Featured database classes with support for several platforms.
--  Query Builder Database Support
--  Form and Data Validation
--  Security and XSS Filtering
--  Session Management
--  Email Sending Class. Supports Attachments, HTML/Text email, multiple
-   protocols (sendmail, SMTP, and Mail) and more.
--  Image Manipulation Library (cropping, resizing, rotating, etc.).
-   Supports GD, ImageMagick, and NetPBM
--  File Uploading Class
--  FTP Class
--  Localization
--  Pagination
--  Data Encryption
--  Benchmarking
--  Full Page Caching
--  Error Logging
--  Application Profiling
--  Calendaring Class
--  User Agent Class
--  Zip Encoding Class
--  Template Engine Class
--  Trackback Class
--  XML-RPC Library
--  Unit Testing Class
--  Search-engine Friendly URLs
--  Flexible URI Routing
--  Support for Hooks and Class Extensions
--  Large library of "helper" functions
+:doc:`安装 <../installation/index>` CodeIgniter 非常简单，所以
+我们鼓励你去安装它，同时，这里是一份 CodeIgniter 支持的主要
+特性列表。
+
+-  基于 MVC 体系
+-  超轻量级
+-  对数种数据库平台的全特性支持
+-  支持查询构造器
+-  表单与数据验证
+-  安全性与 XSS 过滤
+-  会话管理
+-  发送邮件类，支持附件、HTML 或文本邮件、多协议（sendmail、SMTP、Mail）及更多
+-  图像处理库（裁剪、缩放、旋转等），支持 GD、ImageMagick 和 NetPBM
+-  文件上传类
+-  FTP 类
+-  本地化
+-  分页
+-  数据加密
+-  基准测试
+-  全页面缓存
+-  错误日志
+-  应用程序评测
+-  日历类
+-  User-Agent 类
+-  Zip 编码类
+-  模板引擎类
+-  Trackback 类
+-  XML-RPC 类
+-  单元测试类
+-  搜索引擎友好的 URL
+-  灵活的 URL 路由
+-  支持钩子和类扩展
+-  大量的辅助函数
 
