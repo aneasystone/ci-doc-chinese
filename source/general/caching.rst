@@ -1,68 +1,55 @@
 ################
-Web Page Caching
+网页缓存
 ################
 
-CodeIgniter lets you cache your pages in order to achieve maximum
-performance.
+CodeIgniter 可以让你通过缓存页面来达到更好的性能。
 
-Although CodeIgniter is quite fast, the amount of dynamic information
-you display in your pages will correlate directly to the server
-resources, memory, and processing cycles utilized, which affect your
-page load speeds. By caching your pages, since they are saved in their
-fully rendered state, you can achieve performance that nears that of
-static web pages.
+尽管 CodeIgniter 已经相当高效了，但是网页中的动态内容、主机的内存
+CPU 和数据库读取速度等因素直接影响了网页的加载速度。 依靠网页缓存，
+你的网页可以达到近乎静态网页的加载速度，因为程序的输出结果
+已经保存下来了。
 
-How Does Caching Work?
+缓存是如何工作的？
 ======================
 
-Caching can be enabled on a per-page basis, and you can set the length
-of time that a page should remain cached before being refreshed. When a
-page is loaded for the first time, the cache file will be written to
-your application/cache folder. On subsequent page loads the cache file
-will be retrieved and sent to the requesting user's browser. If it has
-expired, it will be deleted and refreshed before being sent to the
-browser.
+可以针对到每个独立的页面进行缓存，并且你可以设置每个页面缓存的更新时间。
+当页面第一次加载时，缓存将被写入到 application/cache 目录下的文件中去。
+之后请求这个页面时，就可以直接从缓存文件中读取内容并输出到用户的浏览器。
+如果缓存过期，会在输出之前被删除并重新刷新。
 
-.. note: The Benchmark tag is not cached so you can still view your page
-	load speed when caching is enabled.
+.. note: 基准测试标签不会被缓存，所以在开启缓存的情况下基准测试仍然可以用。
 
-Enabling Caching
+开启缓存
 ================
 
-To enable caching, put the following tag in any of your controller
-methods::
+将下面的代码放到任何一个控制器的方法内，你就可以开启缓存了::
 
 	$this->output->cache($n);
 
-Where ``$n`` is the number of **minutes** you wish the page to remain
-cached between refreshes.
+其中 ``$n`` 是缓存更新的时间（单位分钟）。
 
-The above tag can go anywhere within a method. It is not affected by
-the order that it appears, so place it wherever it seems most logical to
-you. Once the tag is in place, your pages will begin being cached.
+上面的代码可以放在方法的任何位置，它出现的顺序对缓存没有影响，
+所以你可以把它放到任何你认为合理的地方。一旦该代码被放在方法内，
+你的页面就开始被缓存了。
 
-.. important:: Because of the way CodeIgniter stores content for output,
-	caching will only work if you are generating display for your
-	controller with a :doc:`view <./views>`.
+.. important:: 由于 CodeIgniter 存储缓存的方式，只有通过 :doc:`view <./views>` 
+	输出的页面才能缓存。
 
-.. important:: If you change configuration options that might affect
-	your output, you have to manually delete your cache files.
+.. important:: 如果你修改了可能影响页面输出的配置，你需要手工删除掉
+	你的缓存文件。
 
-.. note:: Before the cache files can be written you must set the file
-	permissions on your *application/cache/* directory such that
-	it is writable.
+.. note:: 在写入缓存文件之前，你需要把 *application/cache/* 目录的权限
+	设置为可写。
 
-Deleting Caches
+删除缓存
 ===============
 
-If you no longer wish to cache a file you can remove the caching tag and
-it will no longer be refreshed when it expires.
+如果你不再需要缓存某个页面，你可以删除掉该页面上的缓存代码，
+这样它在过期之后就不会刷新了。
 
-.. note:: Removing the tag will not delete the cache immediately. It will
-	have to expire normally.
+.. note:: 删除缓存代码之后并不是立即生效，必须等到缓存过期才会生效。
 
-If you need to manually delete the cache, you can use the ``delete_cache()``
-method::
+如果你需要手工删除缓存，你可以使用 ``delete_cache()`` 方法::
 
 	// Deletes cache for the currently requested URI
 	$this->output->delete_cache();
