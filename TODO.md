@@ -28,7 +28,7 @@
  - [x]     51 ./source/helpers/number_helper.rst
  - [x]     52 ./source/helpers/path_helper.rst
  - [x]     54 ./source/helpers/xml_helper.rst
- - [ ]     55 ./source/helpers/download_helper.rst
+ - [x]     55 ./source/helpers/download_helper.rst
  - [ ]     57 ./source/installation/index.rst
  - [ ]     60 ./source/general/managing_apps.rst
  - [ ]     61 ./README.rst

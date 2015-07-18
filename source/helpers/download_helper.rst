@@ -1,8 +1,8 @@
 ###############
-Download Helper
+下载辅助库
 ###############
 
-The Download Helper lets you download data to your desktop.
+下载辅助库文件包含了下载相关的一些函数。
 
 .. contents::
   :local:
@@ -11,18 +11,17 @@ The Download Helper lets you download data to your desktop.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('download');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: force_download([$filename = ''[, $data = ''[, $set_mime = FALSE]]])
 
@@ -31,17 +30,14 @@ The following functions are available:
 	:param	bool	$set_mime: Whether to try to send the actual MIME type
 	:rtype:	void
 
-	Generates server headers which force data to be downloaded to your
-	desktop. Useful with file downloads. The first parameter is the **name
-	you want the downloaded file to be named**, the second parameter is the
-	file data.
+	生成 HTTP 头强制下载数据到客户端，这在实现文件下载时很有用。
+	第一个参数为下载文件名称，第二个参数为文件数据。
 
-	If you set the second parameter to NULL and ``$filename`` is an existing, readable
-	file path, then its content will be read instead.
+	如果第二个参数为空，并且 ``$filename`` 参数是一个存在并可读的文件路径，
+	那么这个文件的内容将被下载。
 
-	If you set the third parameter to boolean TRUE, then the actual file MIME type
-	(based on the filename extension) will be sent, so that if your browser has a
-	handler for that type - it can use it.
+	如果第三个参数设置为 TRUE，那么将发送文件实际的 MIME 类型（根据文件的扩展名），
+	这样你的浏览器会根据该 MIME 类型来处理。
 
 	Example::
 
@@ -49,8 +45,7 @@ The following functions are available:
 		$name = 'mytext.txt';
 		force_download($name, $data);
 
-	If you want to download an existing file from your server you'll need to
-	do the following::
+	下载一个服务器上已存在的文件的例子如下::
 
 		// Contents of photo.jpg will be automatically read
 		force_download('/path/to/photo.jpg', NULL);
