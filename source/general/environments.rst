@@ -1,52 +1,46 @@
 ##############################
-Handling Multiple Environments
+处理多环境
 ##############################
 
-Developers often desire different system behavior depending on whether
-an application is running in a development or production environment.
-For example, verbose error output is something that would be useful
-while developing an application, but it may also pose a security issue
-when "live".
+开发者常常希望当系统运行在开发环境或生产环境中时能有不同的行为，
+譬如，在开发环境如果程序能输出详细的错误信息将非常有用，但是在
+生产环境这将造成一些安全问题。
 
-The ENVIRONMENT Constant
+ENVIRONMENT 常量
 ========================
 
-By default, CodeIgniter comes with the environment constant set to use
-the value provided in ``$_SERVER['CI_ENV']``, otherwise defaults to
-'development'. At the top of index.php, you will see::
+CodeIgniter 默认使用 ``$_SERVER['CI_ENV']`` 的值作为 ENVIRONMENT 常量，
+如果 $_SERVER['CI_ENV'] 的值没有设置，则设置为 'development'。在 index.php
+文件的顶部，你可以看到::
 
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
-This server variable can be set in your .htaccess file, or Apache 
-config using `SetEnv <https://httpd.apache.org/docs/2.2/mod/mod_env.html#setenv>`_. 
-Alternative methods are available for nginx and other servers, or you can 
-remove this logic entirely and set the constant based on the server's IP address.
+$_SERVER['CI_ENV'] 的值可以在 .htaccess 文件或 Apache 的配置文件中
+使用 `SetEnv <https://httpd.apache.org/docs/2.2/mod/mod_env.html#setenv>`_
+命令进行设置，Nginx 或其他 Web 服务器也有类似的设置方法。
+或者你可以直接删掉这个逻辑，根据服务器的 IP 地址来设置该常量。
 
-In addition to affecting some basic framework behavior (see the next
-section), you may use this constant in your own development to
-differentiate between which environment you are running in.
+使用这个常量，除了会影响到一些基本的框架行为外（见下一节），
+你还可以在开发过程中使用它来区分当前运行的是什么环境。
 
-Effects On Default Framework Behavior
+对默认框架行为的影响
 =====================================
 
-There are some places in the CodeIgniter system where the ENVIRONMENT
-constant is used. This section describes how default framework behavior
-is affected.
+CodeIgniter 系统中有几个地方用到了 ENVIRONMENT 常量。这一节将描述
+它对框架行为有哪些影响。
 
-Error Reporting
+错误报告
 ---------------
 
-Setting the ENVIRONMENT constant to a value of 'development' will cause
-all PHP errors to be rendered to the browser when they occur.
-Conversely, setting the constant to 'production' will disable all error
-output. Disabling error reporting in production is a :doc:`good security
-practice <security>`.
+如果将 ENVIRONMENT 常量设置为 'development' ，当发生 PHP 
+错误时错误信息会显示到浏览器上。与之相对的，如果将常量设置为
+'production' 错误输出则会被禁用。在生产环境禁用错误输出是个
+:doc:`不错的安全实践 <security>`。
 
-Configuration Files
+配置文件
 -------------------
 
-Optionally, you can have CodeIgniter load environment-specific
-configuration files. This may be useful for managing things like
-differing API keys across multiple environments. This is described in
-more detail in the environment section of the :doc:`Config Class
-<../libraries/config>`_ documentation.
+另外，CodeIgniter 还可以根据不同的环境加载不同的配置文件，
+这在处理譬如不同环境下有着不同的 API key 的情况时相当有用。
+这在 :doc:`配置类 <../libraries/config>` 文档中的“环境”这一节
+有着更详细的介绍。
