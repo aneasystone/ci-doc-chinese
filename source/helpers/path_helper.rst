@@ -1,9 +1,8 @@
 ###########
-Path Helper
+路径辅助库
 ###########
 
-The Path Helper file contains functions that permits you to work with
-file paths on the server.
+路径辅助库文件包含了用于处理服务端文件路径的一些函数。
 
 .. contents::
   :local:
@@ -12,18 +11,17 @@ file paths on the server.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('path');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: set_realpath($path[, $check_existance = FALSE])
 
@@ -32,9 +30,8 @@ The following functions are available:
 	:returns:	An absolute path
 	:rtype:	string
 
-	This function will return a server path without symbolic links or
-	relative directory structures. An optional second argument will
-	cause an error to be triggered if the path cannot be resolved.
+	该函数返回指定路径在服务端的绝对路径（不是符号路径或相对路径），
+	可选的第二个参数用于指定当文件路径不存在时是否报错。
 
 	Examples::
 

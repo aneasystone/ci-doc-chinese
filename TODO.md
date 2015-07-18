@@ -26,7 +26,7 @@
  - [x]     46 ./source/overview/features.rst
  - [x]     51 ./source/general/environments.rst
  - [x]     51 ./source/helpers/number_helper.rst
- - [ ]     52 ./source/helpers/path_helper.rst
+ - [x]     52 ./source/helpers/path_helper.rst
  - [ ]     54 ./source/helpers/xml_helper.rst
  - [ ]     55 ./source/helpers/download_helper.rst
  - [ ]     57 ./source/installation/index.rst
