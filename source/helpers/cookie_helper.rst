@@ -1,9 +1,8 @@
 #############
-Cookie Helper
+Cookie 辅助库
 #############
 
-The Cookie Helper file contains functions that assist in working with
-cookies.
+Cookie 辅助库文件包含了一些帮助你处理 Cookie 的函数。
 
 .. contents::
   :local:
@@ -12,18 +11,17 @@ cookies.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('cookie');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: set_cookie($name[, $value = ''[, $expire = ''[, $domain = ''[, $path = '/'[, $prefix = ''[, $secure = FALSE[, $httponly = FALSE]]]]]]]])
 
@@ -37,10 +35,9 @@ The following functions are available:
 	:param	bool	$httponly: Whether to hide the cookie from JavaScript
 	:rtype:	void
 
-	This helper function gives you friendlier syntax to set browser
-	cookies. Refer to the :doc:`Input Library <../libraries/input>` for
-	a description of its use, as this function is an alias for
-	``CI_Input::set_cookie()``.
+	该辅助函数提供给你一种更友好的语法来设置浏览器 Cookie，参考
+	:doc:`输入类 <../libraries/input>` 获取它的详细用法，另外，它是
+	``CI_Input::set_cookie()`` 函数的别名。
 
 .. php:function:: get_cookie($index[, $xss_clean = NULL]])
 
@@ -49,12 +46,11 @@ The following functions are available:
 	:returns:	The cookie value or NULL if not found
 	:rtype:	mixed
 
-	This helper function gives you friendlier syntax to get browser
-	cookies. Refer to the :doc:`Input Library <../libraries/input>` for
-	detailed description of its use, as this function acts very
-	similarly to ``CI_Input::cookie()``, except it will also prepend
-	the ``$config['cookie_prefix']`` that you might've set in your
-	*application/config/config.php* file.
+	该辅助函数提供给你一种更友好的语法来获取浏览器 Cookie，参考
+	:doc:`输入类 <../libraries/input>` 获取它的详细用法，同时，这个函数
+	和 ``CI_Input::cookie()`` 函数非常类似，只是它会根据配置文件
+	*application/config/config.php* 中的 ``$config['cookie_prefix']`` 参数
+	来作为 Cookie 的前缀。
 
 .. php:function:: delete_cookie($name[, $domain = ''[, $path = '/'[, $prefix = '']]]])
 
@@ -64,16 +60,15 @@ The following functions are available:
 	:param	string	$prefix: Cookie name prefix
 	:rtype:	void
 
-	Lets you delete a cookie. Unless you've set a custom path or other
-	values, only the name of the cookie is needed.
+	删除一条 Cookie，只需要传入 Cookie 名即可，也可以设置路径或其他参数
+	来删除特定 Cookie。
 	::
 
 		delete_cookie('name');
 
-	This function is otherwise identical to ``set_cookie()``, except that it
-	does not have the value and expiration parameters. You can submit an
-	array of values in the first parameter or you can set discrete
-	parameters.
+	这个函数和 ``set_cookie()`` 比较类似，只是它并不提供 Cookie 的值和
+	过期时间等参数。第一个参数也可以是个数组，包含多个要删除的 Cookie 。
+	另外，你也可以像下面这样删除特定条件的 Cookie 。
 	::
 
 		delete_cookie($name, $domain, $path, $prefix);
