@@ -1,40 +1,33 @@
 ###################
-Running via the CLI
+以 CLI 方式运行
 ###################
 
-As well as calling an applications :doc:`Controllers <./controllers>`
-via the URL in a browser they can also be loaded via the command-line
-interface (CLI).
+除了从浏览器中通过 URL 来调用程序的 :doc:`控制器 <./controllers>` 之外，
+你也可以通过 CLI （命令行界面）的方式来调用。
 
-.. contents:: Page Contents
+.. contents:: 页面内容
 
-What is the CLI?
+什么是 CLI ？
 ================
 
-The command-line interface is a text-based method of interacting with
-computers. For more information, check the `Wikipedia
-article <http://en.wikipedia.org/wiki/Command-line_interface>`_.
+CLI （命令行界面）是一种基于文本的和计算机交互的方式。 更多信息，
+请查看 `维基百科 <http://en.wikipedia.org/wiki/Command-line_interface>`_ 。
 
-Why run via the command-line?
+为什么使用命令行？
 =============================
 
-There are many reasons for running CodeIgniter from the command-line,
-but they are not always obvious.
+虽然不是很明显，但是有很多情况下我们需要使用命令行来运行 CodeIgniter。
 
--  Run your cron-jobs without needing to use *wget* or *curl*
--  Make your cron-jobs inaccessible from being loaded in the URL by
-   checking the return value of :php:func:`is_cli()`.
--  Make interactive "tasks" that can do things like set permissions,
-   prune cache folders, run backups, etc.
--  Integrate with other applications in other languages. For example, a
-   random C++ script could call one command and run code in your models!
+-  使用 cron 定时运行任务，而不需要使用 *wget* 或 *curl*
+-  通过函数 :php:func:`is_cli()` 的返回值来让你的 cron 页面不能通过 URL 访问到
+-  制作交互式的任务，譬如：设置权限，清除缓存，备份等等
+-  与其他语言进行集成，譬如可以通过 C++ 调用一条指令来运行你模型中的代码。
 
-Let's try it: Hello World!
-==========================
+让我们试一试：Hello World！
+=============================
 
-Let's create a simple controller so you can see it in action. Using your
-text editor, create a file called Tools.php, and put the following code
-in it::
+让我们先创建一个简单的控制器，打开你的文本编辑器，新建一个文件并命名为
+Tools.php，然后输入如下的代码::
 
 	<?php
 	class Tools extends CI_Controller {
@@ -45,34 +38,33 @@ in it::
 		}
 	}
 
-Then save the file to your *application/controllers/* folder.
+然后将文件保存到 *application/controllers/* 目录下。
 
-Now normally you would visit the your site using a URL similar to this::
+现在你可以通过类似下面的 URL 来访问它::
 
 	example.com/index.php/tools/message/to
 
-Instead, we are going to open Terminal in Mac/Linux or go to Run > "cmd"
-in Windows and navigate to our CodeIgniter project.
+或者，我们可以通过 CLI 来访问。在 Mac/Linux 下你可以打开一个终端，在 Windows
+下你可以打开 “运行”，然后输入 "cmd"，进入 CodeIgniter 项目所在的目录。
 
 .. code-block:: bash
 
 	$ cd /path/to/project;
 	$ php index.php tools message
 
-If you did it right, you should see *Hello World!* printed.
+如果你操作正确，你应该会看到 *Hello World!* 。
 
 .. code-block:: bash
 
 	$ php index.php tools message "John Smith"
 
-Here we are passing it a argument in the same way that URL parameters
-work. "John Smith" is passed as a argument and output is::
+这里我们传一个参数给它，这和使用 URL 参数是一样的。"John Smith" 
+被作为参数传入并显示出::
 
 	Hello John Smith!
 
-That's it!
-==========
+就这么简单！
+============
 
-That, in a nutshell, is all there is to know about controllers on the
-command line. Remember that this is just a normal controller, so routing
-and ``_remap()`` works fine.
+简单来说，这就是你需要知道的关于如何在命令行中使用控制器的所有事情了。
+记住，这只是一个普通的控制器，所以路由和 _remap 也照样工作。
