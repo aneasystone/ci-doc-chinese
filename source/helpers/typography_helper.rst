@@ -1,9 +1,8 @@
 #################
-Typography Helper
+排版辅助库
 #################
 
-The Typography Helper file contains functions that help your format text
-in semantically relevant ways.
+排版辅助库文件包含了文本排版相关的一些函数。
 
 .. contents::
   :local:
@@ -12,18 +11,17 @@ in semantically relevant ways.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('typography');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: auto_typography($str[, $reduce_linebreaks = FALSE])
 
@@ -32,21 +30,17 @@ The following functions are available:
 	:returns:	HTML-formatted typography-safe string
 	:rtype: string
 
-	Formats text so that it is semantically and typographically correct
-	HTML.
+	格式化 HTML 文本，使其在语义和排版上都是正确的。
 
-	This function is an alias for ``CI_Typography::auto_typography``.
-	For more info, please see the :doc:`Typography Library
-	<../libraries/typography>` documentation.
+	这个函数是 ``CI_Typography::auto_typography`` 函数的别名。
+	更多信息，查看 :doc:`排版类 <../libraries/typography>` 。
 
 	Usage example::
 
 		$string = auto_typography($string);
 
-	.. note:: Typographic formatting can be processor intensive, particularly if
-		you have a lot of content being formatted. If you choose to use this
-		function you may want to consider `caching <../general/caching>` your
-		pages.
+	.. note:: 格式排版可能会消耗大量处理器资源，特别是在排版大量内容时。
+		如果你选择使用这个函数的话，你可以考虑使用 `缓存 <../general/caching>`。
 
 
 .. php:function:: nl2br_except_pre($str)
@@ -55,11 +49,10 @@ The following functions are available:
 	:returns:	String with HTML-formatted line breaks
 	:rtype:	string
 
-	Converts newlines to <br /> tags unless they appear within <pre> tags.
-	This function is identical to the native PHP ``nl2br()`` function,
-	except that it ignores <pre> tags.
+	将换行符转换为 <br /> 标签，忽略 <pre> 标签中的换行符。除了对 <pre> 
+	标签中的换行处理有所不同之外，这个函数和 PHP 函数 ``nl2br()`` 是完全一样的。
 
-	Usage example::
+	使用示例::
 
 		$string = nl2br_except_pre($string);
 
@@ -70,6 +63,5 @@ The following functions are available:
 	:returns:	String with decoded HTML entities
 	:rtype:	string
 
-	This function is an alias for ``CI_Security::entity_decode()``.
-	Fore more info, please see the :doc:`Security Library
-	<../libraries/security>` documentation.
+	这个函数是 ``CI_Security::entity_decode()`` 函数的别名。
+	更多信息，查看 :doc:`安全类 <../libraries/security>` 。

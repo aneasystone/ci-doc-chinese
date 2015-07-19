@@ -35,7 +35,7 @@
  - [x]     70 ./source/general/caching.rst
  - [x]     74 ./source/general/alternative_php.rst
  - [x]     74 ./source/helpers/email_helper.rst
- - [ ]     74 ./source/helpers/typography_helper.rst
+ - [x]     74 ./source/helpers/typography_helper.rst
  - [ ]     77 ./source/general/cli.rst
  - [ ]     79 ./source/helpers/cookie_helper.rst
  - [ ]     80 ./source/general/ancillary_classes.rst
