@@ -41,7 +41,7 @@
  - [x]     80 ./source/general/ancillary_classes.rst
  - [x]     82 ./source/helpers/directory_helper.rst
  - [x]     87 ./source/general/reserved_names.rst
- - [ ]     89 ./source/general/profiling.rst
+ - [x]     89 ./source/general/profiling.rst
  - [x]     92 ./source/database/helpers.rst
  - [ ]     95 ./source/helpers/inflector_helper.rst
  - [ ]     99 ./source/general/urls.rst
