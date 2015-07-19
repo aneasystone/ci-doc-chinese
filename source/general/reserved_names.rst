@@ -1,26 +1,22 @@
 ##############
-Reserved Names
+保留名称
 ##############
 
-In order to help out, CodeIgniter uses a series of function, method,
-class and variable names in its operation. Because of this, some names
-cannot be used by a developer. Following is a list of reserved names
-that cannot be used.
+为了便于编程，CodeIgniter 使用了一些函数、方法、类 和 变量名来实现。
+因此，这些名称不能被开发者所使用，下面是不能使用的保留名称列表。
 
-Controller names
+控制器名称
 ----------------
 
-Since your controller classes will extend the main application
-controller you must be careful not to name your methods identically to
-the ones used by that class, otherwise your local methods will
-override them. The following is a list of reserved names. Do not name
-your controller any of these:
+因为你的控制器类将继承主程序控制器，所以你的方法命名一定不能和
+主程序控制器类中的方法名相同，否则你的方法将会覆盖他们。
+下面列出了已经保留的名称，请不要将你的控制器命名为这些：
 
 -  CI_Controller
 -  Default
 -  index
 
-Functions
+函数
 ---------
 
 -  :php:func:`is_php()`
@@ -43,14 +39,14 @@ Functions
 -  ``_exception_handler()``
 -  ``_stringify_attributes()``
 
-Variables
+变量
 ---------
 
 -  ``$config``
 -  ``$db``
 -  ``$lang``
 
-Constants
+常量
 ---------
 
 -  ENVIRONMENT
