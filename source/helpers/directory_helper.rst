@@ -1,9 +1,8 @@
 ################
-Directory Helper
+目录辅助库
 ################
 
-The Directory Helper file contains functions that assist in working with
-directories.
+目录辅助库文件包含了一些帮助你处理目录的函数。
 
 .. contents::
   :local:
@@ -12,20 +11,17 @@ directories.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code:
-
-::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('directory');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: directory_map($source_dir[, $directory_depth = 0[, $hidden = FALSE]])
 
@@ -35,26 +31,24 @@ The following functions are available:
 	:returns:	An array of files
 	:rtype:	array
 
-	Examples::
+	举例::
 
 		$map = directory_map('./mydirectory/');
 
-	.. note:: Paths are almost always relative to your main index.php file.
+	.. note:: 路径总是相对于你的 index.php 文件。
 
-
-	Sub-folders contained within the directory will be mapped as well. If
-	you wish to control the recursion depth, you can do so using the second
-	parameter (integer). A depth of 1 will only map the top level directory::
+	如果目录内含有子目录，也将被列出。你可以使用第二个参数（整数）
+	来控制递归的深度。如果深度为 1，则只列出根目录::
 
 		$map = directory_map('./mydirectory/', 1);
 
-	By default, hidden files will not be included in the returned array. To
-	override this behavior, you may set a third parameter to true (boolean)::
+	默认情况下，返回的数组中不会包括那些隐藏文件。如果需要显示隐藏的文件，
+	你可以设置第三个参数为 true ::
 
 		$map = directory_map('./mydirectory/', FALSE, TRUE);
 
-	Each folder name will be an array index, while its contained files will
-	be numerically indexed. Here is an example of a typical array::
+	每一个目录的名字都将作为数组的索引，目录所包含的文件将以数字作为索引。
+	下面有个典型的数组示例::
 
 		Array (
 			[libraries] => Array
