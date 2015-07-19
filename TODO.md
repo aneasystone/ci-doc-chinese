@@ -38,7 +38,7 @@
  - [x]     74 ./source/helpers/typography_helper.rst
  - [x]     77 ./source/general/cli.rst
  - [x]     79 ./source/helpers/cookie_helper.rst
- - [ ]     80 ./source/general/ancillary_classes.rst
+ - [x]     80 ./source/general/ancillary_classes.rst
  - [ ]     82 ./source/helpers/directory_helper.rst
  - [ ]     87 ./source/general/reserved_names.rst
  - [ ]     89 ./source/general/profiling.rst
