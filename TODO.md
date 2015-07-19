@@ -33,7 +33,7 @@
  - [x]     60 ./source/general/managing_apps.rst
  - [x]     61 ./README.rst
  - [x]     70 ./source/general/caching.rst
- - [ ]     74 ./source/general/alternative_php.rst
+ - [x]     74 ./source/general/alternative_php.rst
  - [ ]     74 ./source/helpers/email_helper.rst
  - [ ]     74 ./source/helpers/typography_helper.rst
  - [ ]     77 ./source/general/cli.rst

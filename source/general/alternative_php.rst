@@ -1,45 +1,40 @@
 ###################################
-Alternate PHP Syntax for View Files
+在视图文件中使用 PHP 替代语法
 ###################################
 
-If you do not utilize CodeIgniter's :doc:`template
-engine <../libraries/parser>`, you'll be using pure PHP in your
-View files. To minimize the PHP code in these files, and to make it
-easier to identify the code blocks it is recommended that you use PHPs
-alternative syntax for control structures and short tag echo statements.
-If you are not familiar with this syntax, it allows you to eliminate the
-braces from your code, and eliminate "echo" statements.
+如果你不使用 CodeIgniter 的 :doc:`模板引擎 <../libraries/parser>`，
+那么你就只能在视图文件中使用纯 PHP 语法了。为了精简视图文件，
+使其更可读，建议你在写控制结构或 echo 语句时使用 PHP 的替代语法。
+如果你还不熟悉这个语法，下面将介绍如何通过这个语法来消灭你代码
+中的大括号和 echo 语句。
 
-Automatic Short Tag Support
+自动短标记支持
 ===========================
 
-.. note:: If you find that the syntax described in this page does not
-	work on your server it might be that "short tags" are disabled in your
-	PHP ini file. CodeIgniter will optionally rewrite short tags on-the-fly,
-	allowing you to use that syntax even if your server doesn't support it.
-	This feature can be enabled in your *config/config.php* file.
+.. note:: 如果你发现本页所介绍的语法在你的服务器上行不通，那么有可能是
+	你的 PHP.ini 文件中禁用了 “短标记”。CodeIgniter 可以动态的重写
+	所有的短标记，这样即使你的服务器不支持你也可以使用短标记语法。
+	这个特性可以在 *config/config.php* 文件中启用。
 
-Please note that if you do use this feature, if PHP errors are
-encountered in your **view files**, the error message and line number
-will not be accurately shown. Instead, all errors will be shown as
-``eval()`` errors.
+请注意，如果你使用了这个特性，当你的视图文件发生 PHP 错误时，
+错误信息和行号将无法准确显示，因为所有的错误都显示成 ``eval()`` 错误。
 
-Alternative Echos
+Echo 替代语法
 =================
 
-Normally to echo, or print out a variable you would do this::
+通常情况，你会使用下面的方法来打印一个变量::
 
 	<?php echo $variable; ?>
 
-With the alternative syntax you can instead do it this way::
+使用替代语法，你可以写成这样::
 
 	<?=$variable?>
 
-Alternative Control Structures
+控制结构的替代语法
 ==============================
 
-Controls structures, like if, for, foreach, and while can be written in
-a simplified format as well. Here is an example using ``foreach``::
+像 if、for、foreach、while 这样的控制结构也可以写成精简的格式。
+下面以 ``foreach`` 举例::
 
 	<ul>
 
@@ -51,14 +46,14 @@ a simplified format as well. Here is an example using ``foreach``::
 
 	</ul>
 
-Notice that there are no braces. Instead, the end brace is replaced with
-``endforeach``. Each of the control structures listed above has a similar
-closing syntax: ``endif``, ``endfor``, ``endforeach``, and ``endwhile``
+注意这里没有任何括号。所有的结束括号被替换成了 ``endforeach`` 。
+上面说的那些控制结构也都有这相似的结束标志：``endif`` 、 
+``endfor`` 、 ``endforeach`` 和 ``endwhile`` 。
 
-Also notice that instead of using a semicolon after each structure
-(except the last one), there is a colon. This is important!
+另外要注意的一点是，每个分支结构的后面都要跟一个冒号，而不是分号
+（除最后一个），这是非常重要的一点！
 
-Here is another example, using ``if``/``elseif``/``else``. Notice the colons::
+这里是另一个例子，使用了 ``if``/``elseif``/``else`` ，注意看冒号的位置::
 
 	<?php if ($username === 'sally'): ?>
 
