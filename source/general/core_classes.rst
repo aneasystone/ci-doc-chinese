@@ -1,24 +1,20 @@
 ############################
-Creating Core System Classes
+创建核心系统类
 ############################
 
-Every time CodeIgniter runs there are several base classes that are
-initialized automatically as part of the core framework. It is possible,
-however, to swap any of the core system classes with your own versions
-or even extend the core versions.
+每次 CodeIgniter 运行时，都有一些基础类伴随着核心框架自动的被初始化。
+但你也可以使用你自己类来替代这些核心类或者扩展这些核心类。
 
-**Most users will never have any need to do this, but the option to
-replace or extend them does exist for those who would like to
-significantly alter the CodeIgniter core.**
+***大多数用户一般不会有这种需求，但对于那些想较大幅度的改变
+CodeIgniter 的人来说，我们依然提供了替换和扩展核心类的选择。*
 
-.. note:: Messing with a core system class has a lot of implications, so
-	make sure you know what you are doing before attempting it.
+.. note:: 改变系统核心类会产生很大影响，所以在你做之前必须清楚地
+	知道自己正在做什么。
 
-System Class List
+系统类清单
 =================
 
-The following is a list of the core system files that are invoked every
-time CodeIgniter runs:
+以下是系统核心文件的清单，它们在每次 CodeIgniter 启动时被调用：
 
 -  Benchmark
 -  Config
@@ -35,48 +31,43 @@ time CodeIgniter runs:
 -  URI
 -  Utf8
 
-Replacing Core Classes
+替换核心类
 ======================
 
-To use one of your own system classes instead of a default one simply
-place your version inside your local *application/core/* directory::
+要使用你自己的系统类替换默认的系统类只需简单的将你自己的文件
+放入目录 *application/core* 下::
 
 	application/core/some_class.php
 
-If this directory does not exist you can create it.
+如果这个目录不存在，你可以创建一个。
 
-Any file named identically to one from the list above will be used
-instead of the one normally used.
+任何一个和上面清单中同名的文件将被替换成核心类。
 
-Please note that your class must use CI as a prefix. For example, if
-your file is named Input.php the class will be named::
+要注意的是，你的类名必须以 CI 开头，譬如，你的文件是 Input.php ，
+那么类应该命名为::
 
 	class CI_Input {
 
 	}
 
-Extending Core Class
+扩展核心类
 ====================
 
-If all you need to do is add some functionality to an existing library -
-perhaps add a method or two - then it's overkill to replace the entire
-library with your version. In this case it's better to simply extend the
-class. Extending a class is nearly identical to replacing a class with a
-couple exceptions:
+如果你只是想往现有类中添加一些功能，譬如增加一两个方法，这时替换
+整个类感觉就有点杀鸡用牛刀了。在这种情况下，最好是使用扩展类的方法。
+扩展一个类和替换一个类的做法几乎是一样的，除了要注意以下几点：
 
--  The class declaration must extend the parent class.
--  Your new class name and filename must be prefixed with MY\_ (this
-   item is configurable. See below.).
+-  你定义的类必须继承自父类。
+-  你的类名和文件名必须以 MY\_ 开头。（这是可配置的，见下文）
 
-For example, to extend the native Input class you'll create a file named
-application/core/MY_Input.php, and declare your class with::
+举个例子，要扩展原始的 Input 类，你需要新建一个文件
+application/core/MY_Input.php，然后像下面这样定义你的类::
 
 	class MY_Input extends CI_Input {
 
 	}
 
-.. note:: If you need to use a constructor in your class make sure you
-	extend the parent constructor::
+.. note:: 如果在你的类中需要使用构造函数，记得要调用父类的构造函数::
 
 		class MY_Input extends CI_Input {
 
@@ -86,13 +77,11 @@ application/core/MY_Input.php, and declare your class with::
 			}
 		}
 
-**Tip:** Any functions in your class that are named identically to the
-methods in the parent class will be used instead of the native ones
-(this is known as "method overriding"). This allows you to substantially
-alter the CodeIgniter core.
+**提示：** 任何和父类同名的方法将会取代父类中的方法（这又被称作 “方法覆盖”），
+这让你可以充分的利用并修改 CodeIgniter 的核心。
 
-If you are extending the Controller core class, then be sure to extend
-your new class in your application controller's constructors.
+如果你扩展了 控制器 核心类，那么记得在你的应用程序控制器里继承你
+扩展的新类。
 
 ::
 
@@ -109,13 +98,13 @@ your new class in your application controller's constructors.
 		}
 	}
 
-Setting Your Own Prefix
+自定义前缀
 -----------------------
 
-To set your own sub-class prefix, open your
-*application/config/config.php* file and look for this item::
+要想自定义你自己的类的前缀，打开文件 *application/config/config.php*
+然后找到这项::
 
 	$config['subclass_prefix'] = 'MY_';
 
-Please note that all native CodeIgniter libraries are prefixed
-with CI\_ so DO NOT use that as your prefix.
+请注意所有原始的 CodeIgniter 类库都以 CI\_ 开头，所以请不要使用这个
+作为你的自定义前缀。
