@@ -30,7 +30,7 @@
 	:returns:	HTML-formatted typography-safe string
 	:rtype: string
 
-	格式化 HTML 文本，使其在语义和排版上都是正确的。
+	格式化文本以便纠正语义和印刷错误的 HTML 代码。
 
 	这个函数是 ``CI_Typography::auto_typography`` 函数的别名。
 	更多信息，查看 :doc:`排版类 <../libraries/typography>` 。
