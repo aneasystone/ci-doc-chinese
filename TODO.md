@@ -43,7 +43,7 @@
  - [x]     87 ./source/general/reserved_names.rst
  - [x]     89 ./source/general/profiling.rst
  - [x]     92 ./source/database/helpers.rst
- - [ ]     95 ./source/helpers/inflector_helper.rst
+ - [x]     95 ./source/helpers/inflector_helper.rst
  - [ ]     99 ./source/general/urls.rst
  - [ ]    105 ./source/helpers/security_helper.rst
  - [ ]    106 ./source/libraries/typography.rst

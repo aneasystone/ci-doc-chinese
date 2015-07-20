@@ -1,9 +1,8 @@
-################
-Inflector Helper
-################
+###################
+Inflector 辅助库
+###################
 
-The Inflector Helper file contains functions that permits you to change
-words to plural, singular, camel case, etc.
+Inflector 辅助库文件包含了一些帮助你将单词转换为单复数或驼峰格式等等的函数。
 
 .. contents::
   :local:
@@ -12,18 +11,17 @@ words to plural, singular, camel case, etc.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('inflector');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: singular($str)
 
@@ -31,7 +29,7 @@ The following functions are available:
 	:returns:	A singular word
 	:rtype:	string
 
-	Changes a plural word to singular. Example::
+	将一个单词的复数形式变为单数形式。例如::
 
 		echo singular('dogs'); // Prints 'dog'
 
@@ -41,7 +39,7 @@ The following functions are available:
 	:returns:	A plular word
 	:rtype:	string
 
-	Changes a singular word to plural. Example::
+	将一个单词的单数形式变为复数形式。例如::
 
 		echo plural('dog'); // Prints 'dogs'
 
@@ -51,8 +49,7 @@ The following functions are available:
 	:returns:	Camelized string
 	:rtype:	string
 
-	Changes a string of words separated by spaces or underscores to camel
-	case. Example::
+	将一个以空格或下划线分隔的单词转换为驼峰格式。例如::
 
 		echo camelize('my_dog_spot'); // Prints 'myDogSpot'
 
@@ -62,8 +59,7 @@ The following functions are available:
 	:returns:	String containing underscores instead of spaces
 	:rtype:	string
 
-	Takes multiple words separated by spaces and underscores them.
-	Example::
+	将以空格分隔的多个单词转换为下划线分隔格式。例如::
 
 		echo underscore('my dog spot'); // Prints 'my_dog_spot'
 
@@ -74,14 +70,11 @@ The following functions are available:
 	:returns:	Humanized string
 	:rtype:	string
 
-	Takes multiple words separated by underscores and adds spaces between
-	them. Each word is capitalized.
-
-	Example::
+	将以下划线分隔的多个单词转换为以空格分隔，并且每个单词以大写开头。例如::
 
 		echo humanize('my_dog_spot'); // Prints 'My Dog Spot'
 
-	To use dashes instead of underscores::
+	如果单词是以连接符分割的，第二个参数传入连接符::
 
 		echo humanize('my-dog-spot', '-'); // Prints 'My Dog Spot'
 
@@ -91,6 +84,6 @@ The following functions are available:
 	:returns:	TRUE if the word is countable or FALSE if not
 	:rtype:	bool
 
-	Checks if the given word has a plural version. Example::
+	判断某个单词是否有复数形式。例如::
 
 		is_countable('equipment'); // Returns FALSE
