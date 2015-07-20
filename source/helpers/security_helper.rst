@@ -1,8 +1,8 @@
 ###############
-Security Helper
+安全辅助库
 ###############
 
-The Security Helper file contains security related functions.
+安全辅助库文件包含了一些和安全相关的函数。
 
 .. contents::
   :local:
@@ -11,18 +11,17 @@ The Security Helper file contains security related functions.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('security');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: xss_clean($str[, $is_image = FALSE])
 
@@ -31,10 +30,9 @@ The following functions are available:
 	:returns:	XSS-clean string
 	:rtype:	string
 
-	Provides Cross Site Script Hack filtering.
+	该函数提供了 XSS 攻击的过滤。
 
-	This function is an alias for ``CI_Input::xss_clean()``. For more info,
-	please see the :doc:`Input Library <../libraries/input>` documentation.
+	它是 ``CI_Input::xss_clean()`` 函数的别名，更多信息，请查阅 :doc:`输入类 <../libraries/input>` 文档。
 
 .. php:function:: sanitize_filename($filename)
 
@@ -42,11 +40,9 @@ The following functions are available:
 	:returns:	Sanitized file name
 	:rtype:	string
 
-	Provides protection against directory traversal.
+	该函数提供了 目录遍历 攻击的防护。
 
-	This function is an alias for ``CI_Security::sanitize_filename()``.
-	For more info, please see the :doc:`Security Library <../libraries/security>`
-	documentation.
+	它是 ``CI_Security::sanitize_filename()`` 函数的别名，更多信息，请查阅 :doc:`安全类 <../libraries/security>` 文档。
 
 
 .. php:function:: do_hash($str[, $type = 'sha1'])
@@ -56,21 +52,18 @@ The following functions are available:
 	:returns:	Hex-formatted hash
 	:rtype:	string
 
-	Permits you to create one way hashes suitable for encrypting
-	passwords. Will use SHA1 by default.
+	该函数可计算单向散列，一般用于对密码进行加密，默认使用 SHA1 。
 
-	See `hash_algos() <http://php.net/function.hash_algos>`_
-	for a full list of supported algorithms.
+	你可以前往 `hash_algos() <http://php.net/function.hash_algos>`_ 查看所有支持的算法清单。
 
-	Examples::
+	举例::
 
 		$str = do_hash($str); // SHA1
 		$str = do_hash($str, 'md5'); // MD5
 
-	.. note:: This function was formerly named ``dohash()``, which has been
-		removed in favor of ``do_hash()``.
+	.. note:: 这个函数前身为 ``dohash()``，已废弃。
 
-	.. note:: This function is DEPRECATED. Use the native ``hash()`` instead.
+	.. note:: 这个函数也不建议使用，使用原生的 ``hash()`` 函数替代。
 
 
 .. php:function:: strip_image_tags($str)
@@ -79,16 +72,13 @@ The following functions are available:
 	:returns:	The input string with no image tags
 	:rtype:	string
 
-	This is a security function that will strip image tags from a string.
-	It leaves the image URL as plain text.
+	该安全函数从一个字符串中剥除 image 标签，它将 image 标签转为纯图片的 URL 文本。
 
-	Example::
+	举例::
 
 		$string = strip_image_tags($string);
 
-	This function is an alias for ``CI_Security::strip_image_tags()``. For
-	more info, please see the :doc:`Security Library <../libraries/security>`
-	documentation.
+	它是 ``CI_Security::strip_image_tags()`` 函数的别名，更多信息，请查阅 :doc:`安全类 <../libraries/security>` 文档。
 
 
 .. php:function:: encode_php_tags($str)
@@ -97,10 +87,10 @@ The following functions are available:
 	:returns:	Safely formatted string
 	:rtype:	string
 
-	This is a security function that converts PHP tags to entities.
+	该安全函数将 PHP 标签转换为实体对象。
 
-	.. note:: :php:func:`xss_clean()` does this automatically, if you use it.
+	.. note:: 如果你使用函数 :php:func:`xss_clean()` ，会自动转换。
 
-	Example::
+	举例::
 
 		$string = encode_php_tags($string);

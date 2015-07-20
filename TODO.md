@@ -45,7 +45,7 @@
  - [x]     92 ./source/database/helpers.rst
  - [x]     95 ./source/helpers/inflector_helper.rst
  - [x]     99 ./source/general/urls.rst
- - [ ]    105 ./source/helpers/security_helper.rst
+ - [x]    105 ./source/helpers/security_helper.rst
  - [ ]    106 ./source/libraries/typography.rst
  - [x]    113 ./source/database/transactions.rst
  - [ ]    114 ./source/overview/at_a_glance.rst
