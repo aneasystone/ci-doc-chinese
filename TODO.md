@@ -48,7 +48,7 @@
  - [x]    105 ./source/helpers/security_helper.rst
  - [x]    106 ./source/libraries/typography.rst
  - [x]    113 ./source/database/transactions.rst
- - [ ]    114 ./source/overview/at_a_glance.rst
+ - [x]    114 ./source/overview/at_a_glance.rst
  - [ ]    120 ./source/general/core_classes.rst
  - [ ]    121 ./source/general/errors.rst
  - [ ]    122 ./source/index.rst
