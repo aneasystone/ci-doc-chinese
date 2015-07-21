@@ -1,128 +1,101 @@
 ######################
-Database Caching Class
+数据库缓存类
 ######################
 
-The Database Caching Class permits you to cache your queries as text
-files for reduced database load.
+数据库缓存类允许你把数据库查询结果保存在文本文件中以减少数据库访问。
 
-.. important:: This class is initialized automatically by the database
-	driver when caching is enabled. Do NOT load this class manually.
+.. important:: 当缓存启用时，本类会被数据库驱动自动加载，切勿手动加载。
 
-.. important:: Not all query result functions are available when you
-	use caching. Please read this page carefully.
+.. important:: 并非所有查询结果都能被缓存，请仔细阅读本页内容。
 
-Enabling Caching
+启用缓存
 ================
 
-Caching is enabled in three steps:
+启用缓存需要三步：
 
--  Create a writable directory on your server where the cache files can
-   be stored.
--  Set the path to your cache folder in your
-   application/config/database.php file.
--  Enable the caching feature, either globally by setting the preference
-   in your application/config/database.php file, or manually as
-   described below.
+-  在服务器上创建一个可写的目录以便保存缓存文件；
+-  通过文件 application/config/database.php 中的 cachedir 参数设置其目录路径；
+-  通过将文件 application/config/database.php 中的 cache_on 参数设置为 TRUE，
+   也可以用下面的方法手动配置。
 
-Once enabled, caching will happen automatically whenever a page is
-loaded that contains database queries.
+缓存一旦启用，每一次加载页面时，只要该页面含有数据库查询就会自动缓存起来。
 
-How Does Caching Work?
+缓存是如何工作的？
 ======================
 
-CodeIgniter's query caching system happens dynamically when your pages
-are viewed. When caching is enabled, the first time a web page is
-loaded, the query result object will be serialized and stored in a text
-file on your server. The next time the page is loaded the cache file
-will be used instead of accessing your database. Your database usage can
-effectively be reduced to zero for any pages that have been cached.
+当你在访问页面时，CodeIgniter 的查询缓存系统会自动运行。如果缓存被启用，
+当页面第一次加载时，查询结果对象会被序列化并保存到服务器上的一个文本文件中。
+当下次再访问该页面时，会直接使用缓存文件而不用访问数据库了，这样，
+在已缓存的页面，你的数据库访问会降为 0 。
 
-Only read-type (SELECT) queries can be cached, since these are the only
-type of queries that produce a result. Write-type (INSERT, UPDATE, etc.)
-queries, since they don't generate a result, will not be cached by the
-system.
+只有读类型（SELECT）的查询可以被缓存，因为只有这类查询才会产生结果。
+写类型的查询（INSERT、UPDATE 等）并不会生成结果，所以不会被缓存。
 
-Cache files DO NOT expire. Any queries that have been cached will remain
-cached until you delete them. The caching system permits you clear
-caches associated with individual pages, or you can delete the entire
-collection of cache files. Typically you'll want to use the housekeeping
-functions described below to delete cache files after certain events
-take place, like when you've added new information to your database.
+缓存文件永不过期，所有的查询只要缓存下来以后除非你删除它们否则将一直可用。
+你可以针对特定的页面来删除缓存，或者也可以清空掉所有的缓存。一般来说，
+你可以在某些事件发生时（如数据库中添加了数据）用下面的函数来清除缓存。
 
-Will Caching Improve Your Site's Performance?
+缓存能够提升站点的性能吗？
 =============================================
 
-Getting a performance gain as a result of caching depends on many
-factors. If you have a highly optimized database under very little load,
-you probably won't see a performance boost. If your database is under
-heavy use you probably will see an improved response, assuming your
-file-system is not overly taxed. Remember that caching simply changes
-how your information is retrieved, shifting it from being a database
-operation to a file-system one.
+缓存能否获得性能增益，取决于很多因素。如果你有一个低负荷而高度优化的
+数据库，你可能不会看到性能的提升。而如果你的数据库正在被大量访问，
+您可能会看到缓存后的性有所提升，前提是你的文件系统并没有太多的开销。
+要记住一点的是，缓存只是简单的改变了数据获取的途径而已，从访问数据库
+变成了访问文件系统。
 
-In some clustered server environments, for example, caching may be
-detrimental since file-system operations are so intense. On single
-servers in shared environments, caching will probably be beneficial.
-Unfortunately there is no single answer to the question of whether you
-should cache your database. It really depends on your situation.
+例如，在一些集群服务器环境中，由于文件系统的操作太过频繁，缓存其实是
+有害的。在共享的单一服务器环境中，缓存才可能有益。不幸的是，关于是否
+需要缓存你的数据库这个问题并没有唯一的答案，这完全取决于你的情况。
 
-How are Cache Files Stored?
+缓存文件是如何存储的？
 ===========================
 
-CodeIgniter places the result of EACH query into its own cache file.
-Sets of cache files are further organized into sub-folders corresponding
-to your controller functions. To be precise, the sub-folders are named
-identically to the first two segments of your URI (the controller class
-name and function name).
+CodeIgniter 将每个查询都缓存到它单独的缓存文件中，根据调用的控制器方法
+缓存文件被进一步组织到各自的子目录中。更准确的说，子目录是使用你 URI 
+的前两段（控制器名 和 方法名）命名的。
 
-For example, let's say you have a controller called blog with a function
-called comments that contains three queries. The caching system will
-create a cache folder called blog+comments, into which it will write
-three cache files.
+例如，你有一个 blog 控制器和一个 comments 方法，并含有三个不同的查询。
+缓存系统将创建一个名为 blog+comments 的目录，并在该目录下生成三个
+缓存文件。
 
-If you use dynamic queries that change based on information in your URI
-(when using pagination, for example), each instance of the query will
-produce its own cache file. It's possible, therefore, to end up with
-many times more cache files than you have queries.
+如果你的 URI 中含有动态查询时（例如使用分页时），每个查询实例都会
+生成它单独的缓存文件，因此，最终可能会出现缓存文件数是你页面中的
+查询次数的好几倍这样的情况。
 
-Managing your Cache Files
+管理你的缓存文件
 =========================
 
-Since cache files do not expire, you'll need to build deletion routines
-into your application. For example, let's say you have a blog that
-allows user commenting. Whenever a new comment is submitted you'll want
-to delete the cache files associated with the controller function that
-serves up your comments. You'll find two delete functions described
-below that help you clear data.
+由于缓存文件不会过期，那么你的应用程序中应该有删除缓存的机制，
+例如，我们假设你有一个博客并允许用户评论，每当提交一个新评论时，
+你都应该删除掉关于显示评论的那个控制器方法对应的缓存文件。下面将介绍
+有两种不同的方法用来删除缓存数据。
 
-Not All Database Functions Work with Caching
+不是所有的数据库方法都兼容缓存
 ============================================
 
-Lastly, we need to point out that the result object that is cached is a
-simplified version of the full result object. For that reason, some of
-the query result functions are not available for use.
+最后，我们必须得指出被缓存的结果对象只是一个简化版的结果对象，
+正因为这样，有几个查询结果的方法无法使用。
 
-The following functions ARE NOT available when using a cached result
-object:
+下面列出的方法是无法在缓存的结果对象上使用的：
 
 -  num_fields()
 -  field_names()
 -  field_data()
 -  free_result()
 
-Also, the two database resources (result_id and conn_id) are not
-available when caching, since result resources only pertain to run-time
-operations.
+同时，result_id 和 conn_id 这两个 id 也无法使用，因为这两个 id 
+只适用于实时的数据库操作。
 
 ******************
-Function Reference
+函数参考
 ******************
 
 $this->db->cache_on() / $this->db->cache_off()
 ================================================
 
-Manually enables/disables caching. This can be useful if you want to
-keep certain queries from being cached. Example::
+用于手工启用/禁用缓存，当你不想缓存某些查询时，这两个方法会很有用。
+例子::
 
 	// Turn caching on
 	$this->db->cache_on();
@@ -139,24 +112,20 @@ keep certain queries from being cached. Example::
 $this->db->cache_delete()
 ==========================
 
-Deletes the cache files associated with a particular page. This is
-useful if you need to clear caching after you update your database.
+删除特定页面的缓存文件，这当你更新你的数据库之后需要清除缓存时很有用。
 
-The caching system saves your cache files to folders that correspond to
-the URI of the page you are viewing. For example, if you are viewing a
-page at example.com/index.php/blog/comments, the caching system will put
-all cache files associated with it in a folder called blog+comments. To
-delete those particular cache files you will use::
+缓存系统根据你访问页面的 URI 来将缓存写入到相应的缓存文件中去，例如，
+如果你在访问 example.com/index.php/blog/comments 这个页面，缓存系统
+会将缓存文件保存到 blog+comments 目录下，要删除这些缓存文件，你可以使用::
 
 	$this->db->cache_delete('blog', 'comments');
 
-If you do not use any parameters the current URI will be used when
-determining what should be cleared.
+如果你没提供任何参数，将会清除当前 URI 对应的缓存文件。
 
 $this->db->cache_delete_all()
 ===============================
 
-Clears all existing cache files. Example::
+清除所有的缓存文件，例如::
 
 	$this->db->cache_delete_all();
 
