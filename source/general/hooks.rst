@@ -1,30 +1,26 @@
 ####################################
-Hooks - Extending the Framework Core
+钩子 - 扩展框架核心
 ####################################
 
-CodeIgniter's Hooks feature provides a means to tap into and modify the
-inner workings of the framework without hacking the core files. When
-CodeIgniter runs it follows a specific execution process, diagramed in
-the :doc:`Application Flow <../overview/appflow>` page. There may be
-instances, however, where you'd like to cause some action to take place
-at a particular stage in the execution process. For example, you might
-want to run a script right before your controllers get loaded, or right
-after, or you might want to trigger one of your own scripts in some
-other location.
+CodeIgniter 的钩子特性提供了一种方法来修改框架的内部运作流程，而无需修改
+核心文件。CodeIgniter 的运行遵循着一个特定的流程，你可以参考这个页面的
+:doc:`应用程序流程图 <../overview/appflow>` 。但是，有些时候你可能希望在
+执行流程中的某些阶段添加一些动作，例如在控制器加载之前或之后执行一段脚本，
+或者在其他的某些位置触发你的脚本。
 
-Enabling Hooks
+启用钩子
 ==============
 
-The hooks feature can be globally enabled/disabled by setting the
-following item in the **application/config/config.php** file::
+钩子特性可以在 **application/config/config.php** 文件中全局的启用或禁用，
+设置下面这个参数::
 
 	$config['enable_hooks'] = TRUE;
 
-Defining a Hook
+定义钩子
 ===============
 
-Hooks are defined in the **application/config/hooks.php** file.
-Each hook is specified as an array with this prototype::
+钩子是在 **application/config/hooks.php** 文件中被定义的，每个钩子可以定义
+为下面这样的数组格式::
 
 	$hook['pre_controller'] = array(
 		'class'    => 'MyClass',
@@ -34,41 +30,35 @@ Each hook is specified as an array with this prototype::
 		'params'   => array('beer', 'wine', 'snacks')
 	);
 
-**Notes:**
+**注意：**
 
-The array index correlates to the name of the particular hook point you
-want to use. In the above example the hook point is pre_controller. A
-list of hook points is found below. The following items should be
-defined in your associative hook array:
+数组的索引为你想使用的挂钩点名称，譬如上例中挂钩点为 pre_controller ，
+下面会列出所有可用的挂钩点。钩子数组是一个关联数组，数组的键值可以是
+下面这些：
 
--  **class** The name of the class you wish to invoke. If you prefer to
-   use a procedural function instead of a class, leave this item blank.
--  **function** The function (or method) name you wish to call.
--  **filename** The file name containing your class/function.
--  **filepath** The name of the directory containing your script.
-   Note:
-   Your script must be located in a directory INSIDE your *application/*
-   directory, so the file path is relative to that directory. For example,
-   if your script is located in *application/hooks/*, you will simply use
-   'hooks' as your filepath. If your script is located in
-   *application/hooks/utilities/* you will use 'hooks/utilities' as your
-   filepath. No trailing slash.
--  **params** Any parameters you wish to pass to your script. This item
-   is optional.
+-  **class** 你希望调用的类名，如果你更喜欢使用过程式的函数的话，这一项可以留空。
+-  **function** 你希望调用的方法或函数的名称。
+-  **filename** 包含你的类或函数的文件名。
+-  **filepath** 包含你的脚本文件的目录名。
+   注意：
+   你的脚本必须放在 *application/* 目录里面，所以 filepath 是相对 *application/* 
+   目录的路径，举例来说，如果你的脚本位于 *application/hooks/* ，那么 filepath
+   可以简单的设置为 'hooks' ，如果你的脚本位于 *application/hooks/utilities/* ，
+   那么 filepath 可以设置为 'hooks/utilities' ，路径后面不用加斜线。
+-  **params** 你希望传递给你脚本的任何参数，可选。
 
-If you're running PHP 5.3+, you can also use lambda/anoymous functions
-(or closures) as hooks, with a simpler syntax::
+如果你使用 PHP 5.3 以上的版本，你也可以使用 lambda表达式（匿名函数或闭包）作为钩子，
+这样语法更简单::
 
 	$hook['post_controller'] = function()
 	{
 		/* do something here */
 	};
 
-Multiple Calls to the Same Hook
+多次调用同一个挂钩点
 ===============================
 
-If want to use the same hook point with more than one script, simply
-make your array declaration multi-dimensional, like this::
+如果你想在同一个挂钩点处添加多个脚本，只需要将钩子数组变成二维数组即可，像这样::
 
 	$hook['pre_controller'][] = array(
 		'class'    => 'MyClass',
@@ -86,42 +76,33 @@ make your array declaration multi-dimensional, like this::
 		'params'   => array('red', 'yellow', 'blue')
 	);
 
-Notice the brackets after each array index::
+注意数组索引后面多了个中括号::
 
 	$hook['pre_controller'][]
 
-This permits you to have the same hook point with multiple scripts. The
-order you define your array will be the execution order.
+这可以让你在同一个挂钩点处执行多个脚本，多个脚本执行顺序就是你定义数组的顺序。
 
-Hook Points
+挂钩点
 ===========
 
-The following is a list of available hook points.
+以下是所有可用挂钩点的一份列表：
 
 -  **pre_system**
-   Called very early during system execution. Only the benchmark and
-   hooks class have been loaded at this point. No routing or other
-   processes have happened.
+   在系统执行的早期调用，这个时候只有 基准测试类 和 钩子类 被加载了，
+   还没有执行到路由或其他的流程。
 -  **pre_controller**
-   Called immediately prior to any of your controllers being called.
-   All base classes, routing, and security checks have been done.
+   在你的控制器调用之前执行，所有的基础类都已加载，路由和安全检查也已经完成。
 -  **post_controller_constructor**
-   Called immediately after your controller is instantiated, but prior
-   to any method calls happening.
+   在你的控制器实例化之后立即执行，控制器的任何方法都还尚未调用。
 -  **post_controller**
-   Called immediately after your controller is fully executed.
+   在你的控制器完全运行结束时执行。
 -  **display_override**
-   Overrides the ``_display()`` method, used to send the finalized page
-   to the web browser at the end of system execution. This permits you
-   to use your own display methodology. Note that you will need to
-   reference the CI superobject with ``$this->CI =& get_instance()`` and
-   then the finalized data will be available by calling
-   ``$this->CI->output->get_output()``.
+   覆盖 ``_display()`` 方法，该方法用于在系统执行结束时向浏览器发送最终的页面结果。
+   这可以让你有自己的显示页面的方法。注意你可能需要使用 ``$this->CI =& get_instance()``
+   方法来获取 CI 超级对象，以及使用 ``$this->CI->output->get_output()`` 方法来
+   获取最终的显示数据。
 -  **cache_override**
-   Enables you to call your own method instead of the ``_display_cache()``
-   method in the :doc:`Output Library <../libraries/output>`. This permits
-   you to use your own cache display mechanism.
+   使用你自己的方法来替代 :doc:`输出类 <../libraries/output>` 中的 ``_display_cache()``
+   方法，这让你有自己的缓存显示机制。
 -  **post_system**
-   Called after the final rendered page is sent to the browser, at the
-   end of system execution after the finalized data is sent to the
-   browser.
+   在最终的页面发送到浏览器之后、在系统的最后期被调用。

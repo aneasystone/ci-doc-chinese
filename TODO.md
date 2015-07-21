@@ -53,7 +53,7 @@
  - [x]    121 ./source/general/errors.rst
  - [x]    122 ./source/index.rst
  - [x]    124 ./source/database/metadata.rst
- - [ ]    126 ./source/general/hooks.rst
+ - [x]    126 ./source/general/hooks.rst
  - [x]    129 ./source/database/examples.rst
  - [x]    132 ./source/database/connecting.rst
  - [ ]    132 ./source/helpers/array_helper.rst
