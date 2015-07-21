@@ -1,9 +1,8 @@
 ############
-Array Helper
+数组辅助库
 ############
 
-The Array Helper file contains functions that assist in working with
-arrays.
+数组辅助库文件包含了一些帮助你处理数组的函数。
 
 .. contents::
   :local:
@@ -12,19 +11,18 @@ arrays.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('array');
 
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: element($item, $array[, $default = NULL])
 
@@ -34,12 +32,10 @@ The following functions are available:
 	:returns:	NULL on failure or the array item.
 	:rtype:	mixed
 
-	Lets you fetch an item from an array. The function tests whether the
-	array index is set and whether it has a value. If a value exists it is
-	returned. If a value does not exist it returns NULL, or whatever you've
-	specified as the default value via the third parameter.
+	该函数通过索引获取数组中的元素。它会测试索引是否设置并且有值，如果有值，
+	函数将返回该值，如果没有值，默认返回 NULL 或返回通过第三个参数设置的默认值。
 
-	Example::
+	示例::
 
 		$array = array(
 			'color'	=> 'red',
@@ -59,12 +55,11 @@ The following functions are available:
 	:returns:	NULL on failure or the array item.
 	:rtype:	mixed
 
-	Lets you fetch a number of items from an array. The function tests
-	whether each of the array indices is set. If an index does not exist it
-	is set to NULL, or whatever you've specified as the default value via
-	the third parameter.
+	该函数通过多个索引获取数组中的多个元素。它会测试每一个索引是否设置并且有值，
+	如果其中某个索引没有值，返回结果中该索引所对应的元素将被置为 NULL ，或者
+	通过第三个参数设置的默认值。
 
-	Example::
+	示例::
 
 		$array = array(
 			'color' => 'red',
@@ -75,7 +70,7 @@ The following functions are available:
 
 		$my_shape = elements(array('color', 'shape', 'height'), $array);
 
-	The above will return the following array::
+	上面的函数返回的结果如下::
 
 		array(
 			'color' => 'red',
@@ -83,12 +78,12 @@ The following functions are available:
 			'height' => NULL
 		);
 
-	You can set the third parameter to any default value you like.
+	你可以通过第三个参数设置任何你想要设置的默认值。
 	::
 
 		 $my_shape = elements(array('color', 'shape', 'height'), $array, 'foobar');
 
-	The above will return the following array::
+	上面的函数返回的结果如下::
 
 		array(     
 			'color' 	=> 'red',
@@ -96,9 +91,8 @@ The following functions are available:
 			'height'	=> 'foobar'
 		);
 
-	This is useful when sending the ``$_POST`` array to one of your Models.
-	This prevents users from sending additional POST data to be entered into
-	your tables.
+	当你需要将 ``$_POST`` 数组传递到你的模型中时这将很有用，这可以防止用户发送额外的数据
+	被写入到你的数据库。
 
 	::
 
@@ -107,8 +101,7 @@ The following functions are available:
 			elements(array('id', 'title', 'content'), $_POST)
 		);
 
-	This ensures that only the id, title and content fields are sent to be
-	updated.
+	从上例中可以看出，只有 id、title、content 三个字段被更新。
 
 
 .. php:function:: random_element($array)
@@ -117,9 +110,9 @@ The following functions are available:
 	:returns:	A random element from the array
 	:rtype:	mixed
 
-	Takes an array as input and returns a random element from it.
+	传入一个数组，并返回数组中随机的一个元素。
 
-	Usage example::
+	使用示例::
 
 		$quotes = array(
 			"I find that the harder I work, the more luck I seem to have. - Thomas Jefferson",

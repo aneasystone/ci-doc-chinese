@@ -56,7 +56,7 @@
  - [x]    126 ./source/general/hooks.rst
  - [x]    129 ./source/database/examples.rst
  - [x]    132 ./source/database/connecting.rst
- - [ ]    132 ./source/helpers/array_helper.rst
+ - [x]    132 ./source/helpers/array_helper.rst
  - [ ]    144 ./source/general/helpers.rst
  - [ ]    147 ./source/contributing/index.rst
  - [x]    150 ./source/database/queries.rst
