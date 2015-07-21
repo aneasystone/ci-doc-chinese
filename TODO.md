@@ -58,7 +58,7 @@
  - [x]    132 ./source/database/connecting.rst
  - [x]    132 ./source/helpers/array_helper.rst
  - [x]    144 ./source/general/helpers.rst
- - [ ]    147 ./source/contributing/index.rst
+ - [x]    147 ./source/contributing/index.rst
  - [x]    150 ./source/database/queries.rst
  - [ ]    153 ./source/tutorial/create_news_items.rst
  - [ ]    162 ./source/database/caching.rst

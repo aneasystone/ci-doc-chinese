@@ -1,6 +1,6 @@
-###########################
-Contributing to CodeIgniter
-###########################
+##################################
+向 CodeIgniter 贡献你的力量
+##################################
 
 .. toctree::
 	:titlesonly:
@@ -8,140 +8,119 @@ Contributing to CodeIgniter
 	../documentation/index
 	../DCO
 
-CodeIgniter is a community driven project and accepts contributions of code
-and documentation from the community. These contributions are made in the form
-of Issues or `Pull Requests <https://help.github.com/articles/using-pull-requests/>`_ 
-on the `CodeIgniter repository <https://github.com/bcit-ci/CodeIgniter>`_ on GitHub.
+CodeIgniter 是一个社区驱动的项目，它会接受从社区里贡献的文档和代码。
+这些贡献都是通过 GitHub 上 `CodeIgniter 代码仓库 <https://github.com/bcit-ci/CodeIgniter>`_ 
+的 Issues 或者 `Pull Requests <https://help.github.com/articles/using-pull-requests/>`_ 
+的形式来完成的。
 
-Issues are a quick way to point out a bug. If you find a bug or documentation
-error in CodeIgniter then please check a few things first:
+Issues 是一种快速提交 bug 的方式，如果你发现了一个 CodeIgniter 的 bug 或文档错误，那么请先
+看看下面这几点：
 
-- There is not already an open Issue
-- The issue has already been fixed (check the develop branch, or look for
-  closed Issues)
-- Is it something really obvious that you fix it yourself?
+- 是否已经存在一个打开的 Issue
+- 该 Issue 是否已经被修复了（检查下 delevop 分支的代码，或者已关闭的 Issues）
+- 这个 bug 很明显你一个人就能修复吗？
 
-Reporting issues is helpful but an even better approach is to send a Pull
-Request, which is done by "Forking" the main repository and committing to your
-own copy. This will require you to use the version control system called Git.
+提交 Issues 是非常有用的，但是更好的做法是发起一个 Pull Request ，具体的做法是先 fork 
+主仓库的代码，然后将修改的代码提交到你自己的副本中。这需要你会使用版本控制系统 Git 。
 
 *******
-Support
+支持
 *******
 
-Note that GitHub is not for general support questions!
+请注意，GitHub 并不是用来回答一般的技术支持类问题的！
 
-If you are having trouble using a feature of CodeIgniter, ask for help on the forum.
+如果你在使用 CodeIgniter 的某个功能时遇到了问题，请到论坛提问。
 
-If you are wondering if you are using
-something correctly or if you have found a bug, ask on the forum first.
+如果你不知道自己做的对不对，或者不确定自己找到了一个 bug ，也请先到论坛里提问。
 
 ****************************
-Tips for a Good Issue Report
+提交好问题的技巧
 ****************************
 
-Use a descriptive subject line (eg parser library chokes on commas) rather than a vague one (eg. your code broke).
+使用描述性的标题（如：解析器类在处理逗号时出错），而不是使用模糊不清的标题（如：我的代码出错了）
 
-Address a single issue in a report.
+在一份报告中只提交一个问题。
 
-Identify the CodeIgniter version (eg 3.0-develop) and the component if you know it (eg. parser library)
+在问题中指出 CodeIgniter 的版本（如：3.0-develop），以及出问题的组件（如果你知道的话）（如：解析器类）
 
-Explain what you expected to happen, and what did happen.
-Include error messages and stacktrace, if any.
+解释清楚你希望出现什么结果，以及当前出现的结果是什么。
+如果有错误信息的话，并附上错误信息和堆栈信息。
 
-Include short code segments if they help to explain.
-Use a pastebin or dropbox facility to include longer segments of code or screenshots - do not include them in the issue report itself.
-This means setting a reasonable expiry for those, until the issue is resolved or closed.
+如果有助于阐述你的问题的话，你可以包含少量的代码片段。
+如果有大量的代码或截图的话，可以使用类似于 pastebin 或者 dropbox 这样的服务，不要在问题报告中包含这些内容。
+为这些内容设置一个合理的过期时间，至少在问题被解决或关闭之前确保它们能访问。
 
-If you know how to fix the issue, you can do so in your own fork & branch, and submit a pull request.
-The issue report information above should be part of that.
+如果你知道如何修复该问题，你可以 fork 并在你自己的分支中修改，然后提交一个 pull request 。
+并将上面说的问题报告作为 pull request 的一部分。
 
-If your issue report can describe the steps to reproduce the problem, that is great.
-If you can include a unit test that reproduces the problem, that is even better, as it gives whoever is fixing
-it a clearer target!
+如果能在问题报告中描述问题重现的详细步骤，那将是极好的。
+如果你还能提供一个单元测试用例来重现该错误，那将更好，因为这给了修复这个问题的人一个更清晰的目标。
 
 
 **********
-Guidelines
+指导手册
 **********
 
-Before we look into how, here are the guidelines. If your Pull Requests fail
-to pass these guidelines it will be declined and you will need to re-submit
-when you’ve made the changes. This might sound a bit tough, but it is required
-for us to maintain quality of the code-base.
+这里是如何提交 Pull Requests 的一些指南，如果你提交的 Pull Requests 没有遵循这篇指南中提出的这些，
+你的提交可能会被拒绝并要求你重新提交。这可能听起来有点难，但是为了保证我们的代码质量这是必须要做的。
 
-PHP Style
-=========
+PHP 代码规范
+==============
 
-All code must meet the `Style Guide
-<http://www.codeigniter.com/userguide3/general/styleguide.html>`_, which is
-essentially the `Allman indent style
-<http://en.wikipedia.org/wiki/Indent_style#Allman_style>`_, underscores and
-readable operators. This makes certain that all code is the same format as the
-existing code and means it will be as readable as possible.
+所有的代码都必须符合 :doc:`代码规范指南 <../general/styleguide>`，它其实就是
+`Allman 缩进风格 <http://en.wikipedia.org/wiki/Indent_style#Allman_style>`_  
+加上下划线规则以及可读的操作符。遵循代码规则可以让代码的风格保持一致，同时也意味着代的更可读性更好。
 
-Documentation
+文档
 =============
 
-If you change anything that requires a change to documentation then you will
-need to add it. New classes, methods, parameters, changing default values, etc
-are all things that will require a change to documentation. The change-log
-must also be updated for every change. Also PHPDoc blocks must be maintained.
+如果你的修改同时也需要在文档中另加说明，那么你也需要在文档中加上它。新的类、方法、参数、默认值的修改
+等等这些都需要对文档做相应的调整。每一处修改也必须要在代码的变更日志（change-log）中进行更新。另外，
+PHP 的文档注释块（PHPDoc blocks）也要修改。
 
-Compatibility
+兼容性
 =============
 
-CodeIgniter recommends PHP 5.4 or newer to be used, but it should be
-compatible with PHP 5.2.4 so all code supplied must stick to this
-requirement. If PHP 5.3 (and above) functions or features are used then
-there must be a fallback for PHP 5.2.4.
+CodeIgniter 推荐使用 PHP 5.4 或更高的版本，但是同时它也对 PHP 5.2.4 保持兼容，所以所有提交的代码都必须
+满足这一点。如果你用到了 PHP 5.3 （或以上版本）中的函数或新特性，这些代码需要回退到 PHP 5.2.4 版本的。
 
-Branching
+分支
 =========
 
-CodeIgniter uses the `Git-Flow
-<http://nvie.com/posts/a-successful-git-branching-model/>`_ branching model
-which requires all pull requests to be sent to the "develop" branch. This is
-where the next planned version will be developed. The "master" branch will
-always contain the latest stable version and is kept clean so a "hotfix" (e.g:
-an emergency security patch) can be applied to master to create a new version,
-without worrying about other features holding it up. For this reason all
-commits need to be made to "develop" and any sent to "master" will be closed
-automatically. If you have multiple changes to submit, please place all
-changes into their own branch on your fork.
+CodeIgniter 使用了 `Git-Flow <http://nvie.com/posts/a-successful-git-branching-model/>`_ 分支模型，
+这要求所有的 pull request 应该提交到 develop 分支，develop 分支是正在开发的打算在下一版发布的分支，
+master 分支总是包含最新的稳定版并保持干净，这样可以在譬如出现紧急安全漏洞时快速的在 master 分支代码
+上打上补丁并发布新的版本，而无需担心新加的功能会影响它。正是因为这个原因，所有的提交都应该在 develop
+分支，发送到 master 分支的提交会被自动关闭。如果你的提交中包含多处修改，请将每一个修改都放到你独立的分支中。
 
-One thing at a time: A pull request should only contain one change. That does
-not mean only one commit, but one change - however many commits it took. The
-reason for this is that if you change X and Y but send a pull request for both
-at the same time, we might really want X but disagree with Y, meaning we
-cannot merge the request. Using the Git-Flow branching model you can create
-new branches for both of these features and send two requests.
+一次只做一件事：一个 pull request 应该只包含一个修改。这不是意味着说一次提交，而是一次修改（尽管大多数时候
+一次提交就是一次修改）。这样做的原因是如果你在同一个 pull request 中修改了 X 和 Y ，但是我们希望能合并 X
+同时不想合并 Y ，这时我们就无法合并你的请求。你可以使用 Git-Flow 分支模型为每一个功能创建一个独立的分支，
+然后提交两个请求。
 
-Signing
+签名
 =======
-You must sign your work, certifying that you either wrote the work or
-otherwise have the right to pass it on to an open source project. git makes
-this trivial as you merely have to use `--signoff` on your commits to your
-CodeIgniter fork.
+
+你必须对你的工作进行签名，保证这些工作是你原创的或者不是你原创的但是你有将它们添加到开源项目中的权利。
+在 Git 中签名并没有得到足够重视，所以你几乎用不到 `--signoff` 参数，但是在你提交代码到 CodeIgniter 时，
+必须使用该参数。
 
 .. code-block:: bash
 
 	git commit --signoff
 
-or simply
+或简写：
 
 .. code-block:: bash
 
 	git commit -s
 
-This will sign your commits with the information setup in your git config, e.g.
+这个命令会根据你 git 的配置信息在你的提交中添加签名，例如：
 
 	Signed-off-by: John Q Public <john.public@example.com>
 
-If you are using Tower there is a "Sign-Off" checkbox in the commit window. You
-could even alias git commit to use the -s flag so you don’t have to think about
-it.
+如果你正在使用 Tower 客户端，在提交窗口中会有一个 "Sign-Off" 复选框，或者你可以将 ``git commit`` 设置成
+``git commit -s`` 的别名，这样你就不用关心提交中的签名了。
 
-By signing your work in this manner, you certify to a "Developer's Certificate
-or Origin". The current version of this certificate is in the :doc:`/DCO` file
-in the root of this documentation.
+通过这种方式对你的工作进行签名，说明你将遵守 DCO （Developer's Certificate or Origin），:doc:`/DCO` 
+申明的当前版本位于这份文档的根目录下。
