@@ -57,7 +57,7 @@
  - [x]    129 ./source/database/examples.rst
  - [x]    132 ./source/database/connecting.rst
  - [x]    132 ./source/helpers/array_helper.rst
- - [ ]    144 ./source/general/helpers.rst
+ - [x]    144 ./source/general/helpers.rst
  - [ ]    147 ./source/contributing/index.rst
  - [x]    150 ./source/database/queries.rst
  - [ ]    153 ./source/tutorial/create_news_items.rst

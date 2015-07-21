@@ -1,107 +1,87 @@
 ################
-Helper Functions
+辅助函数
 ################
 
-Helpers, as the name suggests, help you with tasks. Each helper file is
-simply a collection of functions in a particular category. There are **URL
-Helpers**, that assist in creating links, there are Form Helpers that help
-you create form elements, **Text Helpers** perform various text formatting
-routines, **Cookie Helpers** set and read cookies, File Helpers help you
-deal with files, etc.
+辅助函数，顾名思义，是帮助我们完成特定任务的函数。每个辅助函数文件都是某一类
+函数的集合。例如， **URL 辅助函数** 帮助我们创建链接，**表单辅助函数**帮助
+我们创建表单元素，**本文辅助函数** 帮助我们处理文本的格式化，**Cookie 辅助函数**
+帮助我们读取或设置 Cookie ，**文件辅助库** 帮助我们处理文件，等等等等。
 
-Unlike most other systems in CodeIgniter, Helpers are not written in an
-Object Oriented format. They are simple, procedural functions. Each
-helper function performs one specific task, with no dependence on other
-functions.
+不同于 CodeIgniter 中的大多数系统，辅助函数没有使用面向对象的方式来实现的。
+它们是简单的过程式函数，每个函数处理一个特定的任务，不依赖于其他的函数。
 
-CodeIgniter does not load Helper Files by default, so the first step in
-using a Helper is to load it. Once loaded, it becomes globally available
-in your :doc:`controller <../general/controllers>` and
-:doc:`views <../general/views>`.
+CodeIgniter 默认不会自己加载辅助库，所以使用辅助函数的第一步就是加载它。
+一旦加载了，它就可以在你的 :doc:`控制器 <../general/controllers>` 和
+:doc:`视图 <../general/views>` 中全局访问了。
 
-Helpers are typically stored in your **system/helpers**, or
-**application/helpers directory**. CodeIgniter will look first in your
-**application/helpers directory**. If the directory does not exist or the
-specified helper is not located there CI will instead look in your
-global *system/helpers/* directory.
+一般情况下，辅助函数位于 **system/helpers** 或者 **application/helpers** 目录
+目录下。CodeIgniter 首先会查找 **application/helpers** 目录，如果该目录不存在，
+或者你加载的辅助库没有在该目录下找到，CodeIgniter 就会去 *system/helpers/* 目录查找。
 
-Loading a Helper
+加载辅助库
 ================
 
-Loading a helper file is quite simple using the following method::
+可以使用下面的方法简单的加载辅助库::
 
 	$this->load->helper('name');
 
-Where **name** is the file name of the helper, without the .php file
-extension or the "helper" part.
+**name** 参数为辅助库的文件名，去掉 .php 文件后缀以及 _helper 部分。
 
-For example, to load the **URL Helper** file, which is named
-**url_helper.php**, you would do this::
+例如，要加载 **URL 辅助库** ，它的文件名为 **url_helper.php** ，你可以这样加载它::
 
 	$this->load->helper('url');
 
-A helper can be loaded anywhere within your controller methods (or
-even within your View files, although that's not a good practice), as
-long as you load it before you use it. You can load your helpers in your
-controller constructor so that they become available automatically in
-any function, or you can load a helper in a specific function that needs
-it.
+辅助库可以在你的控制器方法的任何地方加载（甚至可以在你的视图文件中加载，尽管这不是
+个好的实践），只要确保在使用之前加载它就可以了。你可以在你的控制器的构造函数中加载它，
+这样就可以在该控制器的任何方法中使用它，你也可以在某个需要它的函数中单独加载它。
 
-.. note:: The Helper loading method above does not return a value, so
-	don't try to assign it to a variable. Just use it as shown.
+.. note:: 上面的加载辅助库的方法没有返回值，所以不要将它赋值给变量，直接调用就好了。
 
-Loading Multiple Helpers
+加载多个辅助库
 ========================
 
-If you need to load more than one helper you can specify them in an
-array, like this::
+如果你需要加载多个辅助库，你可以使用一个数组，像下面这样::
 
 	$this->load->helper(
 		array('helper1', 'helper2', 'helper3')
 	);
 
-Auto-loading Helpers
+自动加载辅助库
 ====================
 
-If you find that you need a particular helper globally throughout your
-application, you can tell CodeIgniter to auto-load it during system
-initialization. This is done by opening the **application/config/autoload.php**
-file and adding the helper to the autoload array.
+如果你需要在你的整个应用程序中使用某个辅助库，你可以将其设置为在 CodeIgniter 初始化时
+自动加载它。打开 **application/config/autoload.php** 文件然后将你想加载的辅助库添加到
+autoload 数组中。
 
-Using a Helper
+使用辅助库
 ==============
 
-Once you've loaded the Helper File containing the function you intend to
-use, you'll call it the way you would a standard PHP function.
+一旦你想要使用的辅助库被加载，你就可以像使用标准的 PHP 函数一样使用它们。
 
-For example, to create a link using the ``anchor()`` function in one of
-your view files you would do this::
+譬如，要在你的视图文件中使用 ``anchor()`` 函数创建一个链接，你可以这样做::
 
 	<?php echo anchor('blog/comments', 'Click Here');?>
 
-Where "Click Here" is the name of the link, and "blog/comments" is the
-URI to the controller/method you wish to link to.
+其中，"Click Here" 是链接的名称，"blog/comments" 是你希望链接到 
+controller/method 的 URI 。
 
-"Extending" Helpers
+扩展辅助库
 ===================
 
-To "extend" Helpers, create a file in your **application/helpers/** folder
-with an identical name to the existing Helper, but prefixed with **MY\_**
-(this item is configurable. See below.).
+为了扩展辅助库，你需要在 **application/helpers/** 目录下新建一个文件，
+文件名和已存在的辅助库文件名一样，但是要加上 **MY\_** 前缀（这个可以配置，
+见下文）。
 
-If all you need to do is add some functionality to an existing helper -
-perhaps add a function or two, or change how a particular helper
-function operates - then it's overkill to replace the entire helper with
-your version. In this case it's better to simply "extend" the Helper.
+如果你只是想往现有类中添加一些功能，譬如增加一两个方法，或者修改辅助库中的
+某个函数，这时替换整个类感觉就有点杀鸡用牛刀了。在这种情况下，最好的方法是
+扩展类。
 
-.. note:: The term "extend" is used loosely since Helper functions are
-	procedural and discrete and cannot be extended in the traditional
-	programmatic sense. Under the hood, this gives you the ability to
-	add to or or to replace the functions a Helper provides.
+.. note:: “扩展”一词在这里可能不是很恰当，因为辅助库函数都是过程式的独立函数，
+	在传统编程中并不能被扩展。不过在 CodeIgniter 中，你可以向辅助库中添加函数，
+	或者使用你自己的函数替代辅助库中的函数。
 
-For example, to extend the native **Array Helper** you'll create a file
-named **application/helpers/MY_array_helper.php**, and add or override
-functions::
+譬如，要扩展原始的 **数组辅助库** ，首先你要创建一个文件 **application/helpers/MY_array_helper.php** ，
+然后像下面这样添加或重写函数::
 
 	// any_in_array() is not in the Array Helper, so it defines a new function
 	function any_in_array($needle, $haystack)
@@ -126,20 +106,18 @@ functions::
 		return array_pop($array);
 	}
 
-Setting Your Own Prefix
+设置自定义前缀
 -----------------------
 
-The filename prefix for "extending" Helpers is the same used to extend
-libraries and core classes. To set your own prefix, open your
-**application/config/config.php** file and look for this item::
+用于扩展辅助库的文件名前缀和扩展类库和核心类是一样的。要自定义这个前缀，你可以打开
+**application/config/config.php** 文件然后找到这项::
 
 	$config['subclass_prefix'] = 'MY_';
 
-Please note that all native CodeIgniter libraries are prefixed with **CI\_**
-so DO NOT use that as your prefix.
+请注意所有原始的 CodeIgniter 类库都以 **CI\_** 开头，所以请不要使用这个
+作为你的自定义前缀。
 
-Now What?
+然后？
 =========
 
-In the Table of Contents you'll find a list of all the available Helper
-Files. Browse each one to see what they do.
+在目录里你可以找到所有的辅助库清单，你可以浏览下它们看看它们都是做什么的。
