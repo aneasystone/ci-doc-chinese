@@ -51,7 +51,7 @@
  - [x]    114 ./source/overview/at_a_glance.rst
  - [x]    120 ./source/general/core_classes.rst
  - [x]    121 ./source/general/errors.rst
- - [ ]    122 ./source/index.rst
+ - [x]    122 ./source/index.rst
  - [x]    124 ./source/database/metadata.rst
  - [ ]    126 ./source/general/hooks.rst
  - [x]    129 ./source/database/examples.rst
