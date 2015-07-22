@@ -66,7 +66,7 @@
  - [x]    167 ./source/libraries/benchmark.rst
  - [x]    168 ./source/helpers/smiley_helper.rst
  - [x]    170 ./source/tutorial/static_pages.rst
- - [ ]    173 ./source/libraries/security.rst
+ - [x]    173 ./source/libraries/security.rst
  - [x]    175 ./source/database/configuration.rst
  - [ ]    182 ./source/general/models.rst
  - [ ]    184 ./source/libraries/migration.rst
