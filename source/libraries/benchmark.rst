@@ -1,17 +1,13 @@
 ##################
-Benchmarking Class
+基准测试类
 ##################
 
-CodeIgniter has a Benchmarking class that is always active, enabling the
-time difference between any two marked points to be calculated.
+CodeIgniter 有一个一直都是启用状态的基准测试类，用于计算两个标记点之间的时间差。
 
-.. note:: This class is initialized automatically by the system so there
-	is no need to do it manually.
+.. note:: 该类是由系统自动加载，无需手动加载。
 
-In addition, the benchmark is always started the moment the framework is
-invoked, and ended by the output class right before sending the final
-view to the browser, enabling a very accurate timing of the entire
-system execution to be shown.
+另外，基准测试总是在框架被调用的那一刻开始，在输出类向浏览器发送最终的视图之前结束。
+这样可以显示出整个系统执行的精确时间。
 
 .. contents::
   :local:
@@ -21,19 +17,19 @@ system execution to be shown.
   <div class="custom-index container"></div>
 
 *************************
-Using the Benchmark Class
+使用基准测试类
 *************************
 
-The Benchmark class can be used within your
-:doc:`controllers </general/controllers>`,
-:doc:`views </general/views>`, or your :doc:`models </general/models>`.
-The process for usage is this:
+基准测试类可以在你的 :doc:`控制器 </general/controllers>`、:doc:`视图 </general/views>`
+以及 :doc:`模型 </general/models>` 中使用。
 
-#. Mark a start point
-#. Mark an end point
-#. Run the "elapsed time" function to view the results
+使用流程如下：
 
-Here's an example using real code::
+#. 标记一个起始点
+#. 标记一个结束点
+#. 使用 elapsed_time 函数计算时间差。
+
+这里是个真实的代码示例::
 
 	$this->benchmark->mark('code_start');
 
@@ -43,9 +39,9 @@ Here's an example using real code::
 
 	echo $this->benchmark->elapsed_time('code_start', 'code_end');
 
-.. note:: The words "code_start" and "code_end" are arbitrary. They
-	are simply words used to set two markers. You can use any words you
-	want, and you can set multiple sets of markers. Consider this example::
+.. note:: "code_start" 和 "code_end" 这两个单词是随意的，它们只是两个用于标记
+	的单词而已，你可以任意使用其他你想使用的单词，另外，你也可以设置多个标记点。
+	看如下示例::
 
 		$this->benchmark->mark('dog');
 
@@ -62,13 +58,12 @@ Here's an example using real code::
 		echo $this->benchmark->elapsed_time('dog', 'bird');
 
 
-Profiling Your Benchmark Points
-===============================
+在 性能分析器 中使用基准测试点
+====================================
 
-If you want your benchmark data to be available to the
-:doc:`Profiler </general/profiling>` all of your marked points must
-be set up in pairs, and each mark point name must end with _start and
-_end. Each pair of points must otherwise be named identically. Example::
+如果你希望你的基准测试数据显示在 :doc:`性能分析器 </general/profiling>` 中，
+那么你的标记点就需要成对出现，而且标记点名称需要以 _start 和 _end 结束，
+每一对的标记点名称应该一致。例如::
 
 	$this->benchmark->mark('my_mark_start');
 
@@ -82,53 +77,43 @@ _end. Each pair of points must otherwise be named identically. Example::
 
 	$this->benchmark->mark('another_mark_end');
 
-Please read the :doc:`Profiler page </general/profiling>` for more
-information.
+阅读 :doc:`性能分析器 </general/profiling>` 页面了解更多信息。
 
-Displaying Total Execution Time
+显示总执行时间
 ===============================
 
-If you would like to display the total elapsed time from the moment
-CodeIgniter starts to the moment the final output is sent to the
-browser, simply place this in one of your view templates::
+如果你想显示从 CodeIgniter 运行开始到最终结果输出到浏览器之间花费的总时间，
+只需简单的将下面这行代码放入你的视图文件中::
 
 	<?php echo $this->benchmark->elapsed_time();?>
 
-You'll notice that it's the same function used in the examples above to
-calculate the time between two point, except you are **not** using any
-parameters. When the parameters are absent, CodeIgniter does not stop
-the benchmark until right before the final output is sent to the
-browser. It doesn't matter where you use the function call, the timer
-will continue to run until the very end.
+你大概也注意到了，这个方法和上面例子中的介绍的那个计算两个标记点之间时间差的方法是一样的，
+只是不带任何参数。当不设参数时，CodeIgniter 在向浏览器输出最终结果之前不会停止计时，所以
+无论你在哪里使用该方法，输出的计时结果都是总执行时间。
 
-An alternate way to show your elapsed time in your view files is to use
-this pseudo-variable, if you prefer not to use the pure PHP::
+如果你不喜欢纯 PHP 语法的话，也可以在你的视图中使用另一种伪变量的方式来显示总执行时间::
 
 	{elapsed_time}
 
-.. note:: If you want to benchmark anything within your controller
-	functions you must set your own start/end points.
+.. note:: 如果你想在你的控制器方法中进行基准测试，你需要设置你自己的标记起始点和结束点。
 
-Displaying Memory Consumption
+显示内存占用
 =============================
 
-If your PHP installation is configured with --enable-memory-limit, you
-can display the amount of memory consumed by the entire system using the
-following code in one of your view file::
+如果你的 PHP 在安装时使用了 --enable-memory-limit 参数进行编译，你就可以在你的视图文件中
+使用下面这行代码来显示整个系统所占用的内存大小::
 
 	<?php echo $this->benchmark->memory_usage();?>
 
-.. note:: This function can only be used in your view files. The consumption
-	will reflect the total memory used by the entire app.
+.. note:: 这个方法只能在视图文件中使用，显示的结果代表整个应用所占用的内存大小。
 
-An alternate way to show your memory usage in your view files is to use
-this pseudo-variable, if you prefer not to use the pure PHP::
+如果你不喜欢纯 PHP 语法的话，也可以在你的视图中使用另一种伪变量的方式来显示占用的内存大小::
 
 	{memory_usage}
 
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Benchmark
@@ -138,7 +123,7 @@ Class Reference
 		:param	string	$name: the name you wish to assign to your marker
 		:rtype:	void
 
-		Sets a benchmark marker.
+		设置一个基准测试的标记点。
 
 	.. php:method:: elapsed_time([$point1 = ''[, $point2 = ''[, $decimals = 4]]])
 
@@ -148,12 +133,10 @@ Class Reference
 		:returns:	Elapsed time
 		:rtype:	string
 
-		Calculates and returns the time difference between two marked points.
+		计算并返回两个标记点之间的时间差。
 
-		If the first parameter is empty this function instead returns the
-		``{elapsed_time}`` pseudo-variable. This permits the full system
-		execution time to be shown in a template. The output class will
-		swap the real value for this variable.
+		如果第一个参数为空，方法将返回 ``{elapsed_time}`` 伪变量。这用于在视图中
+		显示整个系统的执行时间，输出类将在最终输出时使用真实的总执行时间替换掉这个伪变量。
 
 
 	.. php:method:: memory_usage()
@@ -161,8 +144,7 @@ Class Reference
 		:returns:	Memory usage info
 		:rtype:	string
 
-		Simply returns the ``{memory_usage}`` marker.
+		只是简单的返回 ``{memory_usage}`` 伪变量。
 
-		This permits it to be put it anywhere in a template without the memory
-		being calculated until the end. The :doc:`Output Class <output>` will
-		swap the real value for this variable.
+		该方法可以在视图的任意位置使用，直到最终输出页面时 :doc:`输出类 <output>`
+		才会将真实的值替换掉这个伪变量。
