@@ -1,20 +1,17 @@
 ######
-Models
+模型
 ######
 
-Models are **optionally** available for those who want to use a more
-traditional MVC approach.
+模型对于那些想使用更传统的 MVC 模式的人来说是可选的。
 
-.. contents:: Page Contents
+.. contents:: 本页内容
 
-What is a Model?
+什么是模型？
 ================
 
-Models are PHP classes that are designed to work with information in
-your database. For example, let's say you use CodeIgniter to manage a
-blog. You might have a model class that contains functions to insert,
-update, and retrieve your blog data. Here is an example of what such a
-model class might look like::
+模型是专门用来和数据库打交道的 PHP 类。例如，假设你使用 CodeIgniter
+管理一个博客，那么你应该会有一个用于插入、更新以及获取博客数据的模型类。
+这里是一个模型类的例子::
 
 	class Blog_model extends CI_Model {
 
@@ -54,22 +51,17 @@ model class might look like::
 
 	}
 
-.. note:: The methods in the above example use the :doc:`Query Builder
-	<../database/query_builder>` database methods.
+.. note:: 上面的例子中使用了 :doc:`查询构造器 <../database/query_builder>` 数据库方法。
 
-.. note:: For the sake of simplicity in this example we're using ``$_POST``
-	directly. This is generally bad practice, and a more common approach
-	would be to use the :doc:`Input Library <../libraries/input>`
-	``$this->input->post('title')``.
+.. note:: 为了保证简单，我们在这个例子中直接使用了 ``$_POST`` 数据，这其实是个不好的实践，
+	一个更通用的做法是使用 :doc:`输入库 <../libraries/input>`` 的 ``$this->input->post('title')``。
 
-Anatomy of a Model
+剖析模型
 ==================
 
-Model classes are stored in your **application/models/** directory.
-They can be nested within sub-directories if you want this type of
-organization.
+模型类位于你的 **application/models/** 目录下，如果你愿意，也可以在里面创建子目录。
 
-The basic prototype for a model class is this::
+模型类的基本原型如下::
 
 	class Model_name extends CI_Model {
 
@@ -80,11 +72,10 @@ The basic prototype for a model class is this::
 
 	}
 
-Where **Model_name** is the name of your class. Class names **must** have
-the first letter capitalized with the rest of the name lowercase. Make
-sure your class extends the base Model class.
+其中，**Model_name** 是类的名字，类名的第一个字母 **必须** 大写，其余部分小写。确保你的类
+继承 CI_Model 基类。
 
-The file name must match the class name. For example, if this is your class::
+文件名和类名应该一致，例如，如果你的类是这样::
 
 	class User_model extends CI_Model {
 
@@ -95,41 +86,39 @@ The file name must match the class name. For example, if this is your class::
 
 	}
 
-Your file will be this::
+那么你的文件名应该是这样::
 
 	application/models/User_model.php
 
-Loading a Model
+加载模型
 ===============
 
-Your models will typically be loaded and called from within your
-:doc:`controller <controllers>` methods. To load a model you will use
-the following method::
+你的模型一般会在你的 :doc:`控制器 <controllers>` 的方法中加载并调用，
+你可以使用下面的方法来加载模型::
 
 	$this->load->model('model_name');
 
-If your model is located in a sub-directory, include the relative path
-from your models directory. For example, if you have a model located at
-*application/models/blog/Queries.php* you'll load it using::
+如果你的模型位于一个子目录下，那么加载时要带上你的模型所在目录的相对路径，
+譬如，如果你的模型位于 *application/models/blog/Queries.php* ，
+你可以这样加载它::
 
 	$this->load->model('blog/queries');
 
-Once loaded, you will access your model methods using an object with the
-same name as your class::
+加载之后，你就可以通过一个和你的类同名的对象访问模型中的方法。
+::
 
 	$this->load->model('model_name');
 
 	$this->model_name->method();
 
-If you would like your model assigned to a different object name you can
-specify it via the second parameter of the loading method::
+如果你想将你的模型对象赋值给一个不同名字的对象，你可以使用 ``$this->load->model()``
+方法的第二个参数::
 
 	$this->load->model('model_name', 'foobar');
 
 	$this->foobar->method();
 
-Here is an example of a controller, that loads a model, then serves a
-view::
+这里是一个例子，该控制器加载一个模型，并处理一个视图::
 
 	class Blog_controller extends CI_Controller {
 
@@ -144,32 +133,25 @@ view::
 	}
 	
 
-Auto-loading Models
+模型的自动加载
 ===================
 
-If you find that you need a particular model globally throughout your
-application, you can tell CodeIgniter to auto-load it during system
-initialization. This is done by opening the
-**application/config/autoload.php** file and adding the model to the
-autoload array.
+如果你发现你有一个模型需要在整个应用程序中使用，你可以让 CodeIgniter
+在系统初始化时自动加载它。打开 **application/config/autoload.php** 文件，
+并将该模型添加到 autoload 数组中。
 
-Connecting to your Database
+连接数据库
 ===========================
 
-When a model is loaded it does **NOT** connect automatically to your
-database. The following options for connecting are available to you:
+当模型加载之后，它 **并不会** 自动去连接你的数据库，下面是一些关于
+数据库连接的选项：
 
--  You can connect using the standard database methods :doc:`described
-   here <../database/connecting>`, either from within your
-   Controller class or your Model class.
--  You can tell the model loading method to auto-connect by passing
-   TRUE (boolean) via the third parameter, and connectivity settings,
-   as defined in your database config file will be used::
+-  你可以在控制器或模型中使用 :doc:`标准的数据库方法 <../database/connecting>` 连接数据库。
+-  你可以设置第三个参数为 TRUE 让模型在加载时自动连接数据库，会使用你的数据库配置文件中的配置::
 
 	$this->load->model('model_name', '', TRUE);
 
--  You can manually pass database connectivity settings via the third
-   parameter::
+-  你还可以通过第三个参数传一个数据库连接配置::
 
 	$config['hostname'] = 'localhost';
 	$config['username'] = 'myusername';
