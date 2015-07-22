@@ -62,7 +62,7 @@
  - [x]    150 ./source/database/queries.rst
  - [x]    153 ./source/tutorial/create_news_items.rst
  - [x]    162 ./source/database/caching.rst
- - [ ]    163 ./source/helpers/captcha_helper.rst
+ - [x]    163 ./source/helpers/captcha_helper.rst
  - [ ]    167 ./source/libraries/benchmark.rst
  - [ ]    168 ./source/helpers/smiley_helper.rst
  - [ ]    170 ./source/tutorial/static_pages.rst

@@ -1,9 +1,8 @@
 ##############
-CAPTCHA Helper
+验证码辅助库
 ##############
 
-The CAPTCHA Helper file contains functions that assist in creating
-CAPTCHA images.
+验证码辅助库文件包含了一些帮助你创建验证码图片的函数。
 
 .. contents::
   :local:
@@ -12,17 +11,17 @@ CAPTCHA images.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('captcha');
 
-Using the CAPTCHA helper
+使用验证码辅助库
 ========================
 
-Once loaded you can generate a CAPTCHA like this::
+辅助库加载之后你可以像下面这样生成一个验证码图片::
 
 	$vals = array(
 		'word'		=> 'Random word',
@@ -49,32 +48,25 @@ Once loaded you can generate a CAPTCHA like this::
 	$cap = create_captcha($vals);
 	echo $cap['image'];
 
--  The captcha function requires the GD image library.
--  Only the **img_path** and **img_url** are required.
--  If a **word** is not supplied, the function will generate a random
-   ASCII string. You might put together your own word library that you
-   can draw randomly from.
--  If you do not specify a path to a TRUE TYPE font, the native ugly GD
-   font will be used.
--  The "captcha" directory must be writable
--  The **expiration** (in seconds) signifies how long an image will remain
-   in the captcha folder before it will be deleted. The default is two
-   hours.
--  **word_length** defaults to 8, **pool** defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
--  **font_size** defaults to 16, the native GD font has a size limit. Specify a "true type" font for bigger sizes.
--  The **img_id** will be set as the "id" of the captcha image.
--  If any of the **colors** values is missing, it will be replaced by the default.
+-  验证码辅助函数需要使用 GD 图像库。
+-  只有 **img_path** 和 **img_url** 这两个参数是必须的。
+-  如果没有提供 **word** 参数，该函数将生成一个随机的 ASCII 字符串。
+   你也可以使用自己的词库，从里面随机挑选。
+-  如果你不设置 TRUE TYPE 字体（译者注：是主要的三种计算机矢量字体之一）的路径，将使用 GD 默认的字体。
+-  "captcha" 目录必须是可写的。
+-  **expiration** 参数表示验证码图片在删除之前将保留多久（单位为秒），默认保留 2 小时。
+-  **word_length** 默认值为 8， **pool** 默认值为 '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+-  **font_size** 默认值为 16，GD 库的字体对大小有限制，如果字体大小需要更大一点的话可以设置一种 TRUE TYPE 字体。
+-  **img_id** 将会设置为验证码图片的 "id" 。
+-  **colors** 数组中如果有某个颜色未设置，将使用默认颜色。
 
-Adding a Database
+添加到数据库
 -----------------
 
-In order for the captcha function to prevent someone from submitting,
-you will need to add the information returned from ``create_captcha()``
-to your database. Then, when the data from the form is submitted by
-the user you will need to verify that the data exists in the database
-and has not expired.
+使用验证码函数是为了防止用户胡乱提交，要做到这一点，你需要将 ``create_captcha()`` 函数返回的信息保存到数据库中。
+然后，等用户提交表单数据时，通过数据库中保存的数据进行验证，并确保它没有过期。
 
-Here is a table prototype::
+这里是数据表的一个例子::
 
 	CREATE TABLE captcha (  
 		captcha_id bigint(13) unsigned NOT NULL auto_increment,  
@@ -85,8 +77,7 @@ Here is a table prototype::
 		KEY `word` (`word`)
 	);
 
-Here is an example of usage with a database. On the page where the
-CAPTCHA will be shown you'll have something like this::
+这里是使用数据库的示例。在显示验证码的那个页面，你的代码类似于下面这样::
 
 	$this->load->helper('captcha');
 	$vals = array(     
@@ -108,8 +99,7 @@ CAPTCHA will be shown you'll have something like this::
 	echo $cap['image'];
 	echo '<input type="text" name="captcha" value="" />';
 
-Then, on the page that accepts the submission you'll have something like
-this::
+然后在处理用户提交的页面，处理如下::
 
 	// First, delete old captchas
 	$expiration = time() - 7200; // Two hour limit
@@ -127,10 +117,10 @@ this::
 		echo 'You must submit the word that appears in the image.';
 	}
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
+该辅助库有下列可用函数：
 
 .. php:function:: create_captcha([$data = ''[, $img_path = ''[, $img_url = ''[, $font_path = '']]]])
 
@@ -141,9 +131,7 @@ The following functions are available:
 	:returns:	array('word' => $word, 'time' => $now, 'image' => $img)
 	:rtype:	array
 
-	Takes an array of information to generate the CAPTCHA as input and
-	creates the image to your specifications, returning an array of
-	associative data about the image.
+	根据你提供的一系列参数生成一张验证码图片，返回包含此图片信息的数组。
 
 	::
 
@@ -153,12 +141,10 @@ The following functions are available:
 			'word'	=> CAPTCHA WORD
 		)
 
-	The **image** is the actual image tag::
+	**image** 就是一个 image 标签::
 
 		<img src="http://example.com/captcha/12345.jpg" width="140" height="50" />
 
-	The **time** is the micro timestamp used as the image name without the
-	file extension. It will be a number like this: 1139612155.3422
+	**time** 是一个毫秒级的时间戳，作为图片的文件名（不带扩展名）。就像这样：1139612155.3422
 
-	The **word** is the word that appears in the captcha image, which if not
-	supplied to the function, will be a random string.
+	**word** 是验证码图片中的文字，如果在函数的参数中没有指定 word 参数，这将是一个随机字符串。
