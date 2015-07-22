@@ -64,7 +64,7 @@
  - [x]    162 ./source/database/caching.rst
  - [x]    163 ./source/helpers/captcha_helper.rst
  - [x]    167 ./source/libraries/benchmark.rst
- - [ ]    168 ./source/helpers/smiley_helper.rst
+ - [x]    168 ./source/helpers/smiley_helper.rst
  - [ ]    170 ./source/tutorial/static_pages.rst
  - [ ]    173 ./source/libraries/security.rst
  - [x]    175 ./source/database/configuration.rst

@@ -1,12 +1,10 @@
 #############
-Smiley Helper
+表情辅助库
 #############
 
-The Smiley Helper file contains functions that let you manage smileys
-(emoticons).
+表情辅助库文件包含了一些让你管理表情的函数。
 
-.. important:: The Smiley helper is DEPRECATED and should not be used.
-	It is currently only kept for backwards compatibility.
+.. important:: 表情辅助库已经废弃，不建议使用。现在只是为了向前兼容而保留。
 
 .. contents::
   :local:
@@ -15,50 +13,40 @@ The Smiley Helper file contains functions that let you manage smileys
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('smiley');
 
-Overview
+概述
 ========
 
-The Smiley helper has a renderer that takes plain text smileys, like
-:-) and turns them into a image representation, like |smile!|
+表情辅助库用于将纯文本的表情转换为图片，譬如：:-) 转换为 |smile!|
 
-It also lets you display a set of smiley images that when clicked will
-be inserted into a form field. For example, if you have a blog that
-allows user commenting you can show the smileys next to the comment
-form. Your users can click a desired smiley and with the help of some
-JavaScript it will be placed into the form field.
+另外它还可以显示一组表情图片，当你点击其中的某个表情时将会被插入到一个表单域中。
+例如，如果你有一个博客并允许用户提交评论，你可以将这组表情图片显示在评论的旁边，
+这样用户就可以点击想要的表情，然后通过一点点的 Javascript 代码，将该表情插入到
+用户的评论中去。
 
-Clickable Smileys Tutorial
+可点击的表情包教程
 ==========================
 
-Here is an example demonstrating how you might create a set of clickable
-smileys next to a form field. This example requires that you first
-download and install the smiley images, then create a controller and the
-View as described.
+这里是一个如何在表单中使用可点击的表情包的示例，这个示例需要你首先下载并安装表情图片，
+然后按下面的步骤创建一个控制器和视图。
 
-.. important:: Before you begin, please `download the smiley images
-	<https://ellislab.com/asset/ci_download_files/smileys.zip>`_
-	and put them in a publicly accessible place on your server.
-	This helper also assumes you have the smiley replacement array
-	located at `application/config/smileys.php`
+.. important:: 开始之前，请先 `下载表情图片 <https://ellislab.com/asset/ci_download_files/smileys.zip>`_
+	然后将其放置到服务器的一个公共目录，并打开 `application/config/smileys.php` 文件设置表情替换的规则。
 
-The Controller
+控制器
 --------------
 
-In your **application/controllers/** directory, create a file called
-Smileys.php and place the code below in it.
+在 **application/controllers/** 目录下，创建一个文件 Smileys.php 然后输入下面的代码。
 
-.. important:: Change the URL in the :php:func:`get_clickable_smileys()`
-	function below so that it points to your smiley folder.
+.. important:: 修改下面的 :php:func:`get_clickable_smileys()` 函数的 URL 参数，让其指向你的表情目录。
 
-You'll notice that in addition to the smiley helper, we are also using
-the :doc:`Table Class <../libraries/table>`::
+你会发现我们除了使用到了表情库，还使用到了 :doc:`表格类 <../libraries/table>`::
 
 	<?php
 
@@ -78,8 +66,7 @@ the :doc:`Table Class <../libraries/table>`::
 
 	}
 
-In your **application/views/** directory, create a file called **smiley_view.php**
-and place this code in it::
+然后，在 **application/views/** 目录下新建一个文件 **smiley_view.php** 并输入以下代码::
 
 	<html>
 		<head>
@@ -96,23 +83,21 @@ and place this code in it::
 		</body>
 	</html>
 
-Field Aliases
+字段别名
 -------------
 
-When making changes to a view it can be inconvenient to have the field
-id in the controller. To work around this, you can give your smiley
-links a generic name that will be tied to a specific id in your view.
+当修改视图的时候，会牵扯到控制器中的 id 字段，带来不便。为了解决这一问题，
+你可以在视图中给表情一个别名，并将其映射到 id 字段。
 
 ::
 
 	$image_array = get_smiley_links("http://example.com/images/smileys/", "comment_textarea_alias");
 
-To map the alias to the field id, pass them both into the
-:func:`smiley_js()` function::
+将别名映射到 id 字段，可以使用 smiley_js 函数并传入这两个参数::
 
 	$image_array = smiley_js("comment_textarea_alias", "comments");
 
-Available Functions
+可用函数
 ===================
 
 .. php:function:: get_clickable_smileys($image_url[, $alias = ''[, $smileys = NULL]])
@@ -122,11 +107,10 @@ Available Functions
 	:returns:	An array of ready to use smileys
 	:rtype:	array
 
-	Returns an array containing your smiley images wrapped in a clickable
-	link. You must supply the URL to your smiley folder and a field id or
-	field alias.
+	返回一个已经绑定了可点击表情的数组。你必须提供表情文件夹的 URL ，
+	还有表单域的 ID 或者表单域的别名。
 
-	Example::
+	举例::
 
 		$image_array = get_clickable_smileys('http://example.com/images/smileys/', 'comment');
 
@@ -138,13 +122,11 @@ Available Functions
 	:returns:	Smiley-enabling JavaScript code
 	:rtype:	string
 
-	Generates the JavaScript that allows the images to be clicked and
-	inserted into a form field. If you supplied an alias instead of an id
-	when generating your smiley links, you need to pass the alias and
-	corresponding form id into the function. This function is designed to be
-	placed into the <head> area of your web page.
+	生成可以让图片点击后插入到表单域中的 JavaScript 代码。如果你在生成表情链接的时候
+	提供了一个别名来代替 id ，你需要在函数中传入别名和相应的 id ，此函数被设计为
+	应放在你 Web 页面的 <head> 部分。
 
-	Example::
+	举例::
 
 		<?php echo smiley_js(); ?>
 
@@ -156,11 +138,10 @@ Available Functions
 	:returns:	Parsed smileys
 	:rtype:	string
 
-	Takes a string of text as input and replaces any contained plain text
-	smileys into the image equivalent. The first parameter must contain your
-	string, the second must contain the URL to your smiley folder
+	输入一个文本字符串，并将其中的纯文本表情替换为等效的表情图片，第一个参数为你的字符串，
+	第二个参数是你的表情目录对应的 URL 。
 
-	Example::
+	举例::
 
 		$str = 'Here are some smileys: :-)  ;-)';
 		$str = parse_smileys($str, 'http://example.com/images/smileys/');
