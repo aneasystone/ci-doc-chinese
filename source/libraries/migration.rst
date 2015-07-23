@@ -1,17 +1,16 @@
 ################
-Migrations Class
+迁移类
 ################
 
-Migrations are a convenient way for you to alter your database in a 
-structured and organized manner. You could edit fragments of SQL by hand 
-but you would then be responsible for telling other developers that they 
-need to go and run them. You would also have to keep track of which changes 
-need to be run against the production machines next time you deploy.
+迁移是一种非常方便的途径来组织和管理你的数据库变更，当你编写了一小段 SQL
+对数据库做了修改之后，你就需要告诉其他的开发者他们也需要运行这段 SQL ，
+而且当你将应用程序部署到生产环境时，你还需要记得对数据库已经做了哪些修改，
+需要执行哪些 SQL 。
 
-The database table **migration** tracks which migrations have already been 
-run so all you have to do is update your application files and 
-call ``$this->migration->current()`` to work out which migrations should be run. 
-The current version is found in **application/config/migration.php**.
+在 CodeIgniter 中，**migration** 表记录了当前已经执行了哪些迁移，所以
+你需要做的就是，修改你的应用程序文件然后调用 ``$this->migration->current()``
+方法迁移到当前版本，当前版本可以在 **application/config/migration.php**
+文件中进行设置。
 
 .. contents::
   :local:
@@ -21,37 +20,31 @@ The current version is found in **application/config/migration.php**.
   <div class="custom-index container"></div>
 
 ********************
-Migration file names
+迁移文件命令规则
 ********************
 
-Each Migration is run in numeric order forward or backwards depending on the
-method taken. Two numbering styles are available:
+每个迁移都是根据文件名中的数字顺序向前或向后运行，有两种不同的数字格式：
 
-* **Sequential:** each migration is numbered in sequence, starting with **001**.
-  Each number must be three digits, and there must not be any gaps in the
-  sequence. (This was the numbering scheme prior to CodeIgniter 3.0.)
-* **Timestamp:** each migration is numbered using the timestamp when the migration
-  was created, in **YYYYMMDDHHIISS** format (e.g. **20121031100537**). This
-  helps prevent numbering conflicts when working in a team environment, and is
-  the preferred scheme in CodeIgniter 3.0 and later.
+* **序列格式：** 每个迁移文件以数字序列格式递增命名，从 **001** 开始，每个数字都需要占三位，
+  序列之间不能有间隙。（这是 CodeIgniter 3.0 版本之前的命令方式）
+* **时间戳格式：** 每个迁移文件以创建时间的时间戳来命名，格式为：**YYYYMMDDHHIISS** （譬如：
+  **20121031100537**），这种方式可以避免在团队环境下以序列命名可能造成的冲突，而且也是
+  CodeIgniter 3.0 之后版本中推荐的命名方式。
 
-The desired style may be selected using the ``$config['migration_type']``
-setting in your *application/config/migration.php* file.
+可以在 *application/config/migration.php* 文件中的 ``$config['migration_type']`` 参数设置命名规则。
 
-Regardless of which numbering style you choose to use, prefix your migration
-files with the migration number followed by an underscore and a descriptive
-name for the migration. For example:
+无论你选择了哪种规则，将这个数字格式作为迁移文件的前缀，并在后面添加一个下划线，
+再加上一个描述性的名字。如下所示：
 
 * 001_add_blog.php (sequential numbering)
 * 20121031100537_add_blog.php (timestamp numbering)
 
 ******************
-Create a Migration
+创建一次迁移
 ******************
-	
-This will be the first migration for a new site which has a blog. All 
-migrations go in the **application/migrations/** directory and have names such 
-as *20121031100537_add_blog.php*.
+
+这里是一个新博客站点的第一次迁移的例子，所有的迁移文件位于 **application/migrations/** 目录，
+并命名为这种格式：*20121031100537_add_blog.php* 。
 ::
 
 	<?php
@@ -88,14 +81,13 @@ as *20121031100537_add_blog.php*.
 		}
 	}
 
-Then in **application/config/migration.php** set ``$config['migration_version'] = 20121031100537;``.
+然后在 **application/config/migration.php** 文件中设置：``$config['migration_version'] = 20121031100537;``
 
 *************
-Usage Example
+使用范例
 *************
 
-In this example some simple code is placed in **application/controllers/Migrate.php** 
-to update the schema.::
+在这个例子中，我们在 **application/controllers/Migrate.php** 文件中添加如下的代码来更新数据库::
 
 	<?php
 	
@@ -115,27 +107,24 @@ to update the schema.::
 	}
 
 *********************
-Migration Preferences
+迁移参数
 *********************
 
-The following is a table of all the config options for migrations.
+下表为所有可用的迁移参数。
 
 ========================== ====================== ========================== =============================================
-Preference                 Default                Options                    Description
+参数                 默认值                可选项                    描述
 ========================== ====================== ========================== =============================================
-**migration_enabled**      FALSE                  TRUE / FALSE               Enable or disable migrations.
-**migration_path**         APPPATH.'migrations/'  None                       The path to your migrations folder.
-**migration_version**      0                      None                       The current version your database should use.
-**migration_table**        migrations             None                       The table name for storing the schema
-                                                                             version number.
-**migration_auto_latest**  FALSE                  TRUE / FALSE               Enable or disable automatically 
-                                                                             running migrations.
-**migration_type**         'timestamp'            'timestamp' / 'sequential' The type of numeric identifier used to name
-                                                                             migration files.
+**migration_enabled**      FALSE                  TRUE / FALSE               启用或禁用迁移
+**migration_path**         APPPATH.'migrations/'  None                       迁移目录所在位置
+**migration_version**      0                      None                       当前数据库所使用版本
+**migration_table**        migrations             None                       用于存储当前版本的数据库表名
+**migration_auto_latest**  FALSE                  TRUE / FALSE               启用或禁用自动迁移
+**migration_type**         'timestamp'            'timestamp' / 'sequential' 迁移文件的命名规则
 ========================== ====================== ========================== =============================================
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Migration
@@ -145,31 +134,28 @@ Class Reference
 		:returns:	TRUE if no migrations are found, current version string on success, FALSE on failure
 		:rtype:	mixed
 
-		Migrates up to the current version (whatever is set for
-		``$config['migration_version']`` in *application/config/migration.php*).
+		迁移至当前版本。（当前版本通过 *application/config/migration.php* 文件的 ``$config['migration_version']`` 参数设置）
 
 	.. php:method:: error_string()
 
 		:returns:	Error messages
 		:rtype:	string
 
-		This returns a string of errors that were detected while performing a migration.
+		返回迁移过程中发生的错误信息。
 
 	.. php:method:: find_migrations()
 
 		:returns:	An array of migration files
 		:rtype:	array
 
-		An array of migration filenames are returned that are found in the **migration_path** property.
+		返回 **migration_path** 目录下的所有迁移文件的数组。
 
 	.. php:method:: latest()
 
 		:returns:	Current version string on success, FALSE on failure
 		:rtype:	mixed
 
-		This works much the same way as ``current()`` but instead of looking for 
-		the ``$config['migration_version']`` the Migration class will use the very 
-		newest migration found in the filesystem.
+		这个方法和 ``current()`` 类似，但是它并不是迁移到 ``$config['migration_version']`` 参数所对应的版本，而是迁移到迁移文件中的最新版本。
 
 	.. php:method:: version($target_version)
 
@@ -177,8 +163,7 @@ Class Reference
 		:returns:	TRUE if no migrations are found, current version string on success, FALSE on failure
 		:rtype:	mixed
 
-		Version can be used to roll back changes or step forwards programmatically to 
-		specific versions. It works just like ``current()`` but ignores ``$config['migration_version']``.
+		迁移到特定版本（回退或升级都可以），这个方法和 ``current()`` 类似，但是忽略 ``$config['migration_version']`` 参数，而是迁移到用户指定版本。
 		::
 
 			$this->migration->version(5);
