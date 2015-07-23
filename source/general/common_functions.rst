@@ -1,10 +1,9 @@
 ################
-Common Functions
+公共函数
 ################
 
-CodeIgniter uses a few functions for its operation that are globally
-defined, and are available to you at any point. These do not require
-loading any libraries or helpers.
+CodeIgniter 定义了一些全局的函数，你可以在任何地方使用它们，并且不需要加载任何
+类库或辅助库。
 
 .. contents::
   :local:
@@ -19,19 +18,16 @@ loading any libraries or helpers.
 	:returns:	TRUE if the running PHP version is at least the one specified or FALSE if not
 	:rtype:	bool
 
-	Determines if the PHP version being used is greater than the
-	supplied version number.
+	判断当前运行的 PHP 版本是否高于或等于你提供的版本号。
 
-	Example::
+	例如::
 
 		if (is_php('5.3'))
 		{
 			$str = quoted_printable_encode($str);
 		}
 
-	Returns boolean TRUE if the installed version of PHP is equal to or
-	greater than the supplied version number. Returns FALSE if the installed
-	version of PHP is lower than the supplied version number.
+	如果当前运行的 PHP 版本等于或高于提供的版本号，该函数返回布尔值 TRUE ，反之则返回 FALSE 。
 
 .. php:function:: is_really_writable($file)
 
@@ -39,15 +35,13 @@ loading any libraries or helpers.
 	:returns:	TRUE if the path is writable, FALSE if not
 	:rtype:	bool
 
-	``is_writable()`` returns TRUE on Windows servers when you really can't
-	write to the file as the OS reports to PHP as FALSE only if the
-	read-only attribute is marked.
+	在 Windows 服务器上只有当文件标志了只读属性时，PHP 的 ``is_writable()`` 函数才返回 FALSE ，
+	其他情况都是返回 TRUE ，即使文件不是真的可写也返回 TRUE 。
 
-	This function determines if a file is actually writable by attempting
-	to write to it first. Generally only recommended on platforms where
-	this information may be unreliable.
+	这个函数首先尝试写入该文件，以此来判断该文件是不是真的可写。通常只在 ``is_writable()`` 函数
+	返回的结果不准确的平台下才推荐使用该函数。
 
-	Example::
+	例如::
 
 		if (is_really_writable('file.txt'))
 		{
@@ -58,7 +52,7 @@ loading any libraries or helpers.
 			echo "File is not writable";
 		}
 
-	.. note:: See also `PHP bug #54709 <https://bugs.php.net/bug.php?id=54709>`_ for more info.
+	.. note:: 更多信息，参看 `PHP bug #54709 <https://bugs.php.net/bug.php?id=54709>`_ 。
 
 .. php:function:: config_item($key)
 
@@ -66,10 +60,8 @@ loading any libraries or helpers.
 	:returns:	Configuration key value or NULL if not found
 	:rtype:	mixed
 
-	The :doc:`Config Library <../libraries/config>` is the preferred way of
-	accessing configuration information, however ``config_item()`` can be used
-	to retrieve single keys. See :doc:`Config Library <../libraries/config>`
-	documentation for more information.
+	访问配置信息最好的方式是使用 :doc:`配置类 <../libraries/config>` ，但是，你也可以通过 
+	``config_item()`` 函数来访问单个配置项，更多信息，参看 :doc:`配置类 <../libraries/config>`
 
 .. :noindex: function:: show_error($message, $status_code[, $heading = 'An Error Was Encountered'])
 
@@ -78,8 +70,7 @@ loading any libraries or helpers.
 	:param	string	$heading: Error page heading
 	:rtype:	void
 
-	This function calls ``CI_Exception::show_error()``. For more info,
-	please see the :doc:`Error Handling <errors>` documentation.
+	这个函数直接调用 ``CI_Exception::show_error()`` 方法。更多信息，请查看 :doc:`错误处理 <errors>` 文档。
 
 .. :noindex: function:: show_404([$page = ''[, $log_error = TRUE]])
 
@@ -87,8 +78,7 @@ loading any libraries or helpers.
 	:param	bool	$log_error: Whether to log the error
 	:rtype:	void
 
-	This function calls ``CI_Exception::show_404()``. For more info,
-	please see the :doc:`Error Handling <errors>` documentation.
+	这个函数直接调用 ``CI_Exception::show_404()`` 方法。更多信息，请查看 :doc:`错误处理 <errors>` 文档。
 
 .. :noindex: function:: log_message($level, $message)
 
@@ -96,8 +86,7 @@ loading any libraries or helpers.
 	:param	string	$message: Message to log
 	:rtype:	void
 
-	This function is an alias for ``CI_Log::write_log()``. For more info,
-	please see the :doc:`Error Handling <errors>` documentation.
+	这个函数直接调用 ``CI_Log::write_log()`` 方法。更多信息，请查看 :doc:`错误处理 <errors>` 文档。
 
 .. php:function:: set_status_header($code[, $text = ''])
 
@@ -105,13 +94,12 @@ loading any libraries or helpers.
 	:param	string	$text: A custom message to set with the status code
 	:rtype:	void
 
-	Permits you to manually set a server status header. Example::
+	用于手动设置服务器的 HTTP 状态码，譬如::
 
 		set_status_header(401);
 		// Sets the header as:  Unauthorized
 
-	`See here <http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>`_ for
-	a full list of headers.
+	`查看这里 <http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>`_ 有一份状态码的完整清单。
 
 .. php:function:: remove_invisible_characters($str[, $url_encoded = TRUE])
 
@@ -120,10 +108,9 @@ loading any libraries or helpers.
 	:returns:	Sanitized string
 	:rtype:	string
 
-	This function prevents inserting NULL characters between ASCII
-	characters, like Java\\0script.
+	这个函数防止在 ASCII 字符串中插入空字符，例如：Java\\0script 。
 
-	Example::
+	举例::
 
 		remove_invisible_characters('Java\\0script');
 		// Returns: 'Javascript'
@@ -134,37 +121,32 @@ loading any libraries or helpers.
 	:returns:	HTML escaped string(s)
 	:rtype:	mixed
 
-	This function acts as an alias for PHP's native ``htmlspecialchars()``
-	function, with the advantage of being able to accept an array of strings.
+	这个函数类似于 PHP 原生的 ``htmlspecialchars()`` 函数，只是它除了可以接受字符串参数外，还可以接受数组参数。
 
-	It is useful in preventing Cross Site Scripting (XSS).
+	它在防止 XSS 攻击时很有用。
 
 .. php:function:: get_mimes()
 
 	:returns:	An associative array of file types
 	:rtype:	array
 
-	This function returns a *reference* to the MIMEs array from
-	*application/config/mimes.php*.
+	这个函数返回 *application/config/mimes.php* 文件中定义的 MIME 数组的 **引用** 。
 
 .. php:function:: is_https()
 
 	:returns:	TRUE if currently using HTTP-over-SSL, FALSE if not
 	:rtype:	bool
 
-	Returns TRUE if a secure (HTTPS) connection is used and FALSE
-	in any other case (including non-HTTP requests).
+	该函数在使用 HTTPS 安全连接时返回 TRUE ，没有使用 HTTPS（包括非 HTTP 的请求）则返回 FALSE 。
 
 .. php:function:: is_cli()
 
 	:returns:	TRUE if currently running under CLI, FALSE otherwise
 	:rtype:	bool
 
-	Returns TRUE if the application is run through the command line
-	and FALSE if not.
+	当程序在命令行下运行时返回 TRUE ，反之返回 FALSE 。
 
-	.. note:: This function checks both if the ``PHP_SAPI`` value is 'cli'
-		or if the ``STDIN`` constant is defined.
+	.. note:: 该函数会检查 ``PHP_SAPI`` 的值是否是 'cli' ，或者是否定义了 ``STDIN`` 常量。
 
 .. php:function:: function_usable($function_name)
 
@@ -172,7 +154,7 @@ loading any libraries or helpers.
 	:returns:	TRUE if the function can be used, FALSE if not
 	:rtype:	bool
 
-	Returns TRUE if a function exists and is usable, FALSE otherwise.
+	检查一个函数是否可用，可用返回 TRUE ，否则返回 FALSE 。
 
 	This function runs a ``function_exists()`` check and if the
 	`Suhosin extension <http://www.hardened-php.net/suhosin/>` is loaded,
