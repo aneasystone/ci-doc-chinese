@@ -156,15 +156,12 @@ CodeIgniter 定义了一些全局的函数，你可以在任何地方使用它�
 
 	检查一个函数是否可用，可用返回 TRUE ，否则返回 FALSE 。
 
-	This function runs a ``function_exists()`` check and if the
-	`Suhosin extension <http://www.hardened-php.net/suhosin/>` is loaded,
-	checks if it doesn't disable the function being checked.
+	该函数直接调用 ``function_exists()`` 函数，并检查当前是否加载了
+	`Suhosin 扩展 <http://www.hardened-php.net/suhosin/>` ，如果加载了 
+	Suhosin ，检查函数有没有被它禁用。
 
-	It is useful if you want to check for the availability of functions
-	such as ``eval()`` and ``exec()``, which are dangerous and might be
-	disabled on servers with highly restrictive security policies.
+	这个函数在你需要检查某些函数的可用性时非常有用，例如 ``eval()`` 
+	和 ``exec()`` 函数是非常危险的，可能会由于服务器的安全策略被禁用。
 
-	.. note:: This function was introduced because Suhosin terminated
-		script execution, but this turned out to be a bug. A fix
-		has been available for some time (version 0.9.34), but is
-		unfortunately not released yet.
+	.. note:: 之所以引入这个函数，是由于 Suhosin 的某个 bug 可能会终止脚本的执行，
+		虽然这个 bug 已经被修复了（版本 0.9.34），但可惜的是还没发布。
