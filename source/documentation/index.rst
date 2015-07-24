@@ -1,15 +1,12 @@
 #################################
-Writing CodeIgniter Documentation
+编写 CodeIgniter 的文档
 #################################
 
-CodeIgniter uses Sphinx to generate its documentation in a variety of formats,
-using reStructuredText to handle the formatting.  If you are familiar with
-Markdown or Textile, you will quickly grasp reStructuredText.  The focus is
-on readability and user friendliness.
-While they can be quite technical, we always write for humans!
+CodeIgniter 使用 Sphinx 来生成多种不同格式的文档，并采用 reStructuredText 语法来编写。
+如果你熟悉 Markdown 或 Textile ，你会很快上手 reStructuredText 。我们的目标是可读性
+以及对用户的友好性，尽管是非常技术性的文档，但读它的永远是人类！
 
-A local table of contents should always be included, like the one below.
-It is created automatically by inserting the following:
+每一页都应该包含该页的一个目录，就像下面这样。它是通过下面的代码自动创建的：
 
 ::
 
@@ -27,48 +24,42 @@ It is created automatically by inserting the following:
 
   <div class="custom-index container"></div>
 
-The <div> that is inserted as raw HTML is a hook for the documentation's
-JavaScript to dynamically add links to any function and method definitions
-contained in the current page.
+其中的 <div> 标签采用了原始的 HTML 语法，它是文档中的一个占位符，用于 JavaScript
+动态的添加当前页面上的任何方法和函数。
 
 **************
-Tools Required
+所需工具
 **************
 
-To see the rendered HTML, ePub, PDF, etc., you will need to install Sphinx
-along with the PHP domain extension for Sphinx.  The underlying requirement
-is to have Python installed.  Lastly, you will install the CI Lexer for
-Pygments, so that code blocks can be properly highlighted.
+要生成 HTML、ePub、PDF 等等这些格式的文档，你需要先安装 Sphinx 和 Sphinx 的 phpdomain
+扩展，并确保你已经安装了 Python 。然后安装 CI Lexer for Pygments ，它可以正确的高亮
+页面中的代码。
 
 .. code-block:: bash
 
 	easy_install "sphinx==1.2.3"
 	easy_install sphinxcontrib-phpdomain
 
-Then follow the directions in the README file in the :samp:`cilexer` folder
-inside the documentation repository to install the CI Lexer.
-
-
+然后按照 :samp:`cilexer` 目录下的 README 文件的提示，来安装 CI Lexer 。
 
 *****************************************
-Page and Section Headings and Subheadings
+页面标题、小节标题 和 子标题
 *****************************************
 
-Headings not only provide order and sections within a page, but they also
-are used to automatically build both the page and document table of contents.
-Headings are formed by using certain characters as underlines for a bit of
-text.  Major headings, like page titles and section headings also use
-overlines.  Other headings just use underlines, with the following hierarchy::
+在一个页面中标题可以用于对内容进行排序，将内容分成章节，而且还可以用于自动生成
+页面目录以及整个文档的目录。可以使用特定的某些字符作为下划线来表示标题，主标题
+（例如页面标题和小节标题）还需要使用上划线，其他的标题只需要使用下划线即可。
+层次结构如下::
 
-	# with overline for page titles
-	* with overline for major sections
-	= for subsections
-	- for subsubsections
-	^ for subsubsubsections
-	" for subsubsubsubsections (!)
+	# 页面标题（带上划线）
+	* 小节标题（带上划线）
+	= 子标题
+	- 子子标题
+	^ 子子子标题
+	" 子子子子标题 (!)
 
-The :download:`TextMate ELDocs Bundle <./ELDocs.tmbundle.zip>` can help you
-create these with the following tab triggers::
+使用 :download:`TextMate ELDocs Bundle <./ELDocs.tmbundle.zip>` 可以用下面这些 tab 
+快捷键快速创建这些标题::
 
 	title->
 
@@ -102,16 +93,12 @@ create these with the following tab triggers::
 		SubSubSubSubSection (!)
 		"""""""""""""""""""""""
 
-
-
-
 ********************
-Method Documentation
+为方法编写文档
 ********************
 
-When documenting class methods for third party developers, Sphinx provides
-directives to assist and keep things simple.  
-For example, consider the following ReST:
+当你为其他开发者编写类或方法的文档时，Sphinx 提供了一些指令可以帮你简单快速的完成。
+例如，看下面的 ReST 语法：
 
 .. code-block:: rst
 
@@ -157,7 +144,7 @@ For example, consider the following ReST:
 			:rtype: bool
 
 
-It creates the following display:
+它生成的文档如下所示：
 
 .. php:class:: Some_class
 
