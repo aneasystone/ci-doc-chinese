@@ -71,7 +71,7 @@
  - [x]    182 ./source/general/models.rst
  - [x]    184 ./source/libraries/migration.rst
  - [x]    187 ./source/general/common_functions.rst
- - [ ]    197 ./source/libraries/encrypt.rst
+ - [x]    197 ./source/libraries/encrypt.rst
  - [ ]    201 ./source/documentation/index.rst
  - [ ]    201 ./source/general/routing.rst
  - [ ]    201 ./source/helpers/file_helper.rst
