@@ -1,202 +1,167 @@
 ########
-Security
+安全
 ########
 
-This page describes some "best practices" regarding web security, and
-details CodeIgniter's internal security features.
+这篇文章将介绍一些基本的关于 Web 安全的 "最佳实践" ，并详细说明了 CodeIgniter
+内部的安全特性。
 
-URI Security
+URI 安全
 ============
 
-CodeIgniter is fairly restrictive regarding which characters it allows
-in your URI strings in order to help minimize the possibility that
-malicious data can be passed to your application. URIs may only contain
-the following:
+CodeIgniter 严格限制 URI 中允许出现的字符，以此来减少恶意数据传到你的应用程序的可能性。
+URI 中只允许包含一些字符：
 
--  Alpha-numeric text (latin characters only)
--  Tilde: ~
--  Percent sign: %
--  Period: .
--  Colon: :
--  Underscore: \_
--  Dash: -
--  Space
+-  字母和数字
+-  波浪符：~
+-  百分号：%
+-  句号：.
+-  分号：:
+-  下划线：\_
+-  连字号：-
+-  空格
 
 Register_globals
 ================
 
-During system initialization all global variables that are found to exist
-in the ``$_GET``, ``$_POST``, ``$_REQUEST`` and ``$_COOKIE`` are unset.
+在系统初始化期间，如果发现任何 ``$_GET``、``$_POST``、``$_REQUEST`` 和 ``$_COOKIE`` 
+数组中的键值变成了全局变量，则删除该变量。
 
-The unsetting routine is effectively the same as *register_globals = off*.
+这个过程和设置 *register_globals = off* 效果是一样的。
+（译注：阅读这里了解 `register_globals 设置 <http://php.net/manual/zh/security.globals.php>`_ ）
 
 display_errors
 ==============
 
-In production environments, it is typically desirable to "disable" PHP's
-error reporting by setting the internal *display_errors* flag to a value
-of 0. This disables native PHP errors from being rendered as output,
-which may potentially contain sensitive information.
+在生产环境下，一般都是通过将 *display_errors* 标志设置为 0 来禁用 PHP 的错误报告。
+这可以阻止原生的 PHP 错误被显示到页面上，错误中可能会包含潜在的敏感信息。
 
-Setting CodeIgniter's **ENVIRONMENT** constant in index.php to a value of
-**\'production\'** will turn off these errors. In development mode, it is
-recommended that a value of 'development' is used. More information
-about differentiating between environments can be found on the
-:doc:`Handling Environments <environments>` page.
+在 CodeIgniter 中，可以将 index.php 文件中的 **ENVIRONMENT** 常量设置为 **\'production\'** ，
+这样也可以关闭这些错误信息。在开发模式下，建议将它设置为 'development' 。
+关于不同环境之间的区别可以阅读 :doc:`处理多环境 <environments>` 页面了解更多。
 
 magic_quotes_runtime
 ====================
 
-The *magic_quotes_runtime* directive is turned off during system
-initialization so that you don't have to remove slashes when retrieving
-data from your database.
+在系统初始化期间， *magic_quotes_runtime* 指令会被禁用，
+这样当你在从数据库中获取数据时就不用再去除反斜线了。
 
 **************
-Best Practices
+最佳实践
 **************
 
-Before accepting any data into your application, whether it be POST data
-from a form submission, COOKIE data, URI data, XML-RPC data, or even
-data from the SERVER array, you are encouraged to practice this three
-step approach:
+在你的应用程序处理任何数据之前，无论这些数据是来自于提交的表单 POST ，还是来自
+COOKIE、URI、XML-RPC ，或者甚至是来自于 SERVER 数组，你都应该使用下面这三步
+来处理：
 
-#. Validate the data to ensure it conforms to the correct type, length,
-   size, etc.
-#. Filter the data as if it were tainted.
-#. Escape the data before submitting it into your database or outputting
-   it to a browser.
+#. 验证数据类型是否正确，以及长度、大小等等
+#. 过滤不良数据
+#. 在提交到数据库或者显示到浏览器之前对数据进行转义
 
-CodeIgniter provides the following functions and tips to assist you
-in this process:
+CodeIgniter 提供了以下的方法和技巧来帮你处理该过程：
 
-XSS Filtering
+XSS 过滤
 =============
 
-CodeIgniter comes with a Cross Site Scripting filter. This filter
-looks for commonly used techniques to embed malicious JavaScript into
-your data, or other types of code that attempt to hijack cookies or
-do other malicious things. The XSS Filter is described
-:doc:`here <../libraries/security>`.
+CodeIgniter 自带有一个 XSS 过滤器，这个过滤器可以查找一些 XSS 的常用技术，
+譬如向你的数据中嵌入恶意的 JavaScript 脚本，劫持 cookie 信息或其他一些技术。
+XSS 过滤器在 :doc:`这里 <../libraries/security>` 有更详细的描述。
 
-.. note:: XSS filtering should *only be performed on output*. Filtering
-	input data may modify the data in undesirable ways, including
-	stripping special characters from passwords, which reduces
-	security instead of improving it.
+.. note:: XSS 过滤 *只应该在输出数据时使用* 。 对输入的数据进行过滤可能会
+	在无意中对数据造成修改，譬如过滤密码中的特殊字符，这样会降低安全性，
+	而不是提高安全性。
 
-CSRF protection
+CSRF 保护
 ===============
 
-CSRF stands for Cross-Site Request Forgery, which is the process of an
-attacker tricking their victim into unknowingly submitting a request.
+CSRF（Cross-Site Request Forgery，跨站请求伪造）是攻击者骗取受害者
+在不知情的情况下提交请求的攻击方式。
 
-CodeIgniter provides CSRF protection out of the box, which will get
-automatically triggered for every non-GET HTTP request, but also needs
-you to create your submit forms in a certain way. This is explained in
-the :doc:`Security Library <../libraries/security>` documentation.
+CodeIgniter 提供了对 CSRF 的保护，会在每个非 GET HTTP 请求时自动触发，
+当然前提是你要使用某种方式来创建表单，这在 :doc:`安全类 <../libraries/security>` 
+文档中有进一步的解释。
 
-Password handling
+密码处理
 =================
 
-It is *critical* that you handle passwords in your application properly.
+在你的应用程序中正确处理密码是非常关键的。
 
-Unfortunately, many developers don't know how to do that, and the web is
-full of outdated or otherwise wrongful advices, which doesn't help.
+但是不幸的是，许多开发者并不知道怎么去做，而且网络上充斥着大量过时的
+甚至错误的建议，提供不了任何帮助。
 
-We would like to give you a list of combined do's and don'ts to help you
-with that. Please read below.
+我们提供了一个清单来帮助你，告诉你什么该做，什么不该做。
 
--  DO NOT store passwords in plain-text format.
+-  绝不要以明文存储密码。
 
-   Always **hash** your passwords.
+   永远使用 **哈希算法** 来处理密码。
 
--  DO NOT use Base64 or similar encoding for storing passwords.
+-  绝不要使用 Base64 或其他编码方式来存储密码。
 
-   This is as good as storing them in plain-text. Really. Do **hashing**,
-   not *encoding*.
+   这和以明文存储密码是一样的，使用 **哈希** ，而不要使用 **编码** 。
 
-   Encoding, and encryption too, are two-way processes. Passwords are
-   secrets that must only be known to their owner, and thus must work
-   only in one direction. Hashing does that - there's *no* un-hashing or
-   de-hashing, but there is decoding and decryption.
+   编码以及加密，都是双向的过程，而密码是保密的，应该只被它的所有者知道，
+   这个过程必须是单向的。哈希正是用于做这个的，从来没有解哈希这种说法，
+   但是编码就存在解码，加密就存在解密。
 
--  DO NOT use weak or broken hashing algorithms like MD5 or SHA1.
+-  绝不要使用弱哈希或已被破解的哈希算法，像 MD5 或 SHA1 。
 
-   These algorithms are old, proven to be flawed, and not designed for
-   password hashing in the first place.
+   这些算法太老了，而且被证明存在缺陷，它们一开始就并不是为了保存密码而设计的。
 
-   Also, DON'T invent your own algorithms.
+   另外，绝不要自己发明算法。
 
-   Only use strong password hashing algorithms like BCrypt, which is used
-   in PHP's own `Password Hashing <http://php.net/password>`_ functions.
+   只使用强密码哈希算法，譬如 BCrypt ，在 PHP 自己的 `密码哈希 <http://php.net/password>`_ 
+   函数中也是使用它。
 
-   Please use them, even if you're not running PHP 5.5+, CodeIgniter
-   provides them for you as long as you're running at least PHP version
-   5.3.7 (and if you don't meet that requirement - please, upgrade).
+   即使你的 PHP 版本不是 5.5+ ，也请使用它们，CodeIgniter 为你提供了这些算法，只要你的 PHP
+   版本是 5.3.7 以上都可以使用。（如果不满足这点要求，那么请升级你的 PHP）
 
-   If you're one of the really unlucky people who can't even upgrade to a
-   more recent PHP version, use `hash_pbkdf() <http://php.net/hash_pbkdf2>`,
-   which we also provide in our compatibility layer.
+   如果你连升级 PHP 也无法做到，那么使用 `hash_pbkdf() <http://php.net/hash_pbkdf2>` 吧，
+   为实现兼容性我们提供了这个函数。
 
--  DO NOT ever display or send a password in plain-text format!
+-  绝不要以明文形式显示或发送密码。
 
-   Even to the password's owner, if you need a "Forgotten password"
-   feature, just randomly generate a new, one-time (this is also important)
-   password and send that instead.
+   即使是对密码的所有者也应该这样。如果你需要 "忘记密码" 的功能，可以随机生成一个新的
+   一次性的（这点很重要）密码，然后把这个密码发送给用户。
 
--  DO NOT put unnecessary limits on your users' passwords.
+-  绝不要对用户的密码做一些没必要的限制。
 
-   If you're using a hashing algorithm other than BCrypt (which has a limit
-   of 72 characters), you should set a relatively high limit on password
-   lengths in order to mitigate DoS attacks - say, 1024 characters.
+   如果你使用除 BCrypt （它有最多 72 字符的限制）之外的其他哈希算法，你应该设置一个相对
+   长一点的密码长度（例如 1024 字符），这样可以缓解 DoS 攻击 。（这样可以缓解 DoS 攻击？）
 
-   Other than that however, there's no point in forcing a rule that a
-   password can only be up to a number of characters, or that it can't
-   contain a certain set of special characters.
+   但是除此之外，对密码的其他限制诸如密码中只允许使用某些字符，或者密码中不允许包含某些字符，
+   就没有任何意义了。
 
-   Not only does this **reduce** security instead of improving it, but
-   there's literally no reason to do it. No technical limitations and
-   no (practical) storage constraints apply once you've hashed them, none!
+   这样做不仅不会提高安全性，反而降低了安全性，而且真的没有任何理由需要这样做。
+   只要你对密码进行哈希处理了，那么无论是技术上，还是在存储上都没有任何限制。
 
-Validate input data
+验证输入数据
 ===================
 
-CodeIgniter has a :doc:`Form Validation Library
-<../libraries/form_validation>` that assists you in
-validating, filtering, and prepping your data.
+CodeIgniter 有一个 :doc:`表单验证类 <../libraries/form_validation>` 用于帮助你验证、
+过滤以及预处理你的数据。
 
-Even if that doesn't work for your use case however, be sure to always
-validate and sanitize all input data. For example, if you expect a numeric
-string for an input variable, you can check for that with ``is_numeric()``
-or ``ctype_digit()``. Always try to narrow down your checks to a certain
-pattern.
+就算这个类不适用于你的使用场景，那么你也应该确保对输入数据进行验证过滤。
+例如，你希望接受一个数字型的参数，你可以使用  ``is_numeric()`` 或 ``ctype_digit()``
+函数来检查一下。永远将数据限制在你运行的范围内。
 
-Have it in mind that this includes not only ``$_POST`` and ``$_GET``
-variables, but also cookies, the user-agent string and basically
-*all data that is not created directly by your own code*.
+记住，不仅要验证 ``$_POST`` 和 ``$_GET`` 变量，而且也不要放过 cookie 、user-agent
+以及 **其他所有的不是直接由你的代码生成的数据** 。
 
-
-Escape all data before database insertion
+插入数据库之前对数据进行转义
 =========================================
 
-Never insert information into your database without escaping it.
-Please see the section that discusses :doc:`database queries
-<../database/queries>` for more information.
+永远不要不做转义就将数据插入到数据库，更多信息，可以阅读 :doc:`数据库查询
+<../database/queries>` 这一节。
 
-Hide your files
+隐藏你的文件
 ===============
 
-Another good security practice is to only leave your *index.php*
-and "assets" (e.g. .js, css and image files) under your server's
-*webroot* directory (most commonly named "htdocs/"). These are
-the only files that you would need to be accessible from the web.
+另一个很好的安全实践是，在你的 *webroot* 目录（通常目录名为 "htdocs/"）下只保留
+*index.php* 文件和 "assets" 目录（用于存放 js、css、图片等静态资源）。
+只需要这些文件能从 Web 上访问就可以了。
 
-Allowing your visitors to see anything else would potentially
-allow them to access sensitive data, execute scripts, etc.
+允许你的访问者访问其他位置可能潜在的导致他们访问一些敏感数据或者执行脚本等等。
 
-If you're not allowed to do that, you can try using a .htaccess
-file to restrict access to those resources.
+如果你不允许这样做，你可以使用 .htaccess 文件来限制对这些资源的访问。
 
-CodeIgniter will have an index.html file in all of its
-directories in an attempt to hide some of this data, but have
-it in mind that this is not enough to prevent a serious
-attacker.
+CodeIgniter 在每个目录下放置了一个 index.html 文件，视图隐藏这些敏感数据，
+但是要记住的是，这对于防止一个真正的攻击者来说并不够。
