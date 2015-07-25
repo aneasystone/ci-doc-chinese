@@ -74,7 +74,7 @@
  - [x]    197 ./source/libraries/encrypt.rst
  - [x]    201 ./source/documentation/index.rst
  - [x]    201 ./source/general/routing.rst
- - [ ]    201 ./source/helpers/file_helper.rst
+ - [x]    201 ./source/helpers/file_helper.rst
  - [ ]    202 ./source/general/security.rst
  - [ ]    209 ./source/libraries/language.rst
  - [ ]    212 ./source/general/views.rst

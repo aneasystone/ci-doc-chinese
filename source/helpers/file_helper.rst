@@ -1,8 +1,8 @@
 ###########
-File Helper
+文件辅助库
 ###########
 
-The File Helper file contains functions that assist in working with files.
+文件辅助库文件包含了一些帮助你处理文件的函数。
 
 .. contents::
   :local:
@@ -11,18 +11,17 @@ The File Helper file contains functions that assist in working with files.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('file');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: read_file($file)
 
@@ -30,24 +29,20 @@ The following functions are available:
 	:returns:	File contents or FALSE on failure
 	:rtype:	string
 
-	Returns the data contained in the file specified in the path.
+	返回指定文件的内容。
 
-	Example::
+	例如::
 
 		$string = read_file('./path/to/file.php');
 
-	The path can be a relative or full server path. Returns FALSE (boolean) on failure.
+	可以是相对路径或绝对路径，如果失败返回 FALSE 。
 
-	.. note:: The path is relative to your main site index.php file, NOT your
-		controller or view files. CodeIgniter uses a front controller so paths
-		are always relative to the main site index.
+	.. note:: 路径是相对于你网站的 index.php 文件的，而不是相对于控制器或视图文件。
+		这是因为 CodeIgniter 使用的前端控制器，所以所有的路径都是相对于 index.php 所在路径。
 
-	.. note:: This function is DEPRECATED. Use the native ``file_get_contents()``
-		instead.
+	.. note:: 该函数已废弃，使用 PHP 的原生函数 ``file_get_contents()`` 代替。
 
-	.. important:: If your server is running an **open_basedir** restriction this
-		function might not work if you are trying to access a file above the
-		calling script.
+	.. important:: 如果你的服务器配置了 **open_basedir** 限制，该函数可能无法访问限制之外的文件。
 
 .. php:function:: write_file($path, $data[, $mode = 'wb'])
 
@@ -57,10 +52,9 @@ The following functions are available:
 	:returns:	TRUE if the write was successful, FALSE in case of an error
 	:rtype:	bool
 
-	Writes data to the file specified in the path. If the file does not exist then the
-	function will create it.
+	向指定文件中写入数据，如果文件不存在，则创建该文件。
 
-	Example::
+	例如::
 
 		$data = 'Some file data';
 		if ( ! write_file('./path/to/file.php', $data))
@@ -72,22 +66,20 @@ The following functions are available:
 			echo 'File written!';
 		}
 
-	You can optionally set the write mode via the third parameter::
+	你还可以通过第三个参数设置写模式::
 
 		write_file('./path/to/file.php', $data, 'r+');
 
-	The default mode is 'wb'. Please see the `PHP user guide <http://php.net/manual/en/function.fopen.php>`_
-	for mode options.
+	默认的模式的 'wb' ，请阅读 `PHP 用户指南 <http://php.net/manual/en/function.fopen.php>`_ 
+	了解写模式的选项。
 
-	.. note: In order for this function to write data to a file, its permissions must
-		be set such that it is writable. If the file does not already exist,
-		then the directory containing it must be writable.
+	.. note: 为了保证该函数成功写入文件，必须要有写入该文件的权限。如果文件不存在，
+		那么该文件所处目录必须是可写的。
 
-	.. note:: The path is relative to your main site index.php file, NOT your
-		controller or view files. CodeIgniter uses a front controller so paths
-		are always relative to the main site index.
+	.. note:: 路径是相对于你网站的 index.php 文件的，而不是相对于控制器或视图文件。
+		这是因为 CodeIgniter 使用的前端控制器，所以所有的路径都是相对于 index.php 所在路径。
 
-	.. note:: This function acquires an exclusive lock on the file while writing to it.
+	.. note:: 该函数在写入文件时会申请一个排他性锁。
 
 .. php:function:: delete_files($path[, $del_dir = FALSE[, $htdocs = FALSE]])
 
@@ -97,20 +89,19 @@ The following functions are available:
 	:returns:	TRUE on success, FALSE in case of an error
 	:rtype:	bool
 
-	Deletes ALL files contained in the supplied path.
+	删除指定路径下的所有文件。
 
-	Example::
+	例如::
 
 		delete_files('./path/to/directory/');
 
-	If the second parameter is set to TRUE, any directories contained within the supplied
-	root path will be deleted as well.
+	如果第二个参数设置为 TRUE ，那么指定路径下的文件夹也一并删除。
 
-	Example::
+	例如::
 
 		delete_files('./path/to/directory/', TRUE);
 
-	.. note:: The files must be writable or owned by the system in order to be deleted.
+	.. note:: 要被删除的文件必须是当前系统用户所有或者是当前用户对之具有写权限。
 
 .. php:function:: get_filenames($source_dir[, $include_path = FALSE])
 
@@ -119,11 +110,10 @@ The following functions are available:
 	:returns:	An array of file names
 	:rtype:	array
 
-	Takes a server path as input and returns an array containing the names of all files
-	contained within it. The file path can optionally be added to the file names by setting
-	the second parameter to TRUE.
+	获取指定目录下所有文件名组成的数组。如果需要完整路径的文件名，
+	可以将第二个参数设置为 TRUE 。
 
-	Example::
+	例如::
 
 		$controllers = get_filenames(APPPATH.'controllers/');
 
@@ -134,12 +124,10 @@ The following functions are available:
 	:returns:	An array containing info on the supplied directory's contents
 	:rtype:	array
 
-	Reads the specified directory and builds an array containing the filenames, filesize,
-	dates, and permissions. Sub-folders contained within the specified path are only read
-	if forced by sending the second parameter to FALSE, as this can be an intensive
-	operation.
+	获取指定目录下所有文件信息组成的数组，包括文件名、文件大小、日期 和 权限。
+	默认不包含子目录下的文件信息，如有需要，可以设置第二个参数为 FALSE ，这可能会是一个耗时的操作。
 
-	Example::
+	例如::
 
 		$models_info = get_dir_file_info(APPPATH.'models/');
 
@@ -150,12 +138,11 @@ The following functions are available:
 	:returns:	An array containing info on the specified file or FALSE on failure
 	:rtype:	array
 
-	Given a file and path, returns (optionally) the *name*, *path*, *size* and *date modified*
-	information attributes for a file. Second parameter allows you to explicitly declare what
-	information you want returned.
+	获取指定文件的信息，包括文件名、路径、文件大小，修改日期等。第二个参数可以用于
+	声明只返回回你想要的信息。
 
-	Valid ``$returned_values`` options are: `name`, `size`, `date`, `readable`, `writeable`,
-	`executable` and `fileperms`.
+	第二个参数 ``$returned_values`` 有效的值有：`name`、`size`、`date`、`readable`、`writeable`、
+	`executable` 和 `fileperms` 。
 
 .. php:function:: get_mime_by_extension($filename)
 
@@ -163,17 +150,16 @@ The following functions are available:
 	:returns:	MIME type string or FALSE on failure
 	:rtype:	string
 
-	Translates a filename extension into a MIME type based on *config/mimes.php*.
-	Returns FALSE if it can't determine the type, or read the MIME config file.
+	根据 *config/mimes.php* 文件中的配置将文件扩展名转换为 MIME 类型。
+	如果无法判断 MIME 类型或 MIME 配置文件读取失败，则返回 FALSE 。
 
 	::
 
 		$file = 'somefile.png';
 		echo $file.' is has a mime type of '.get_mime_by_extension($file);
 
-	.. note:: This is not an accurate way of determining file MIME types, and
-		is here strictly for convenience. It should not be used for security
-		purposes.
+	.. note:: 这个函数只是一种简便的判断 MIME 类型的方法，并不准确，所以
+		请不要用于安全相关的地方。
 
 .. php:function:: symbolic_permissions($perms)
 
@@ -181,8 +167,7 @@ The following functions are available:
 	:returns:	Symbolic permissions string
 	:rtype:	string
 
-	Takes numeric permissions (such as is returned by ``fileperms()``) and returns
-	standard symbolic notation of file permissions.
+	将文件权限的数字格式（譬如 ``fileperms()`` 函数的返回值）转换为标准的符号格式。
 
 	::
 
@@ -194,8 +179,7 @@ The following functions are available:
 	:returns:	Octal permissions string
 	:rtype:	string
 
-	Takes numeric permissions (such as is returned by ``fileperms()``) and returns
-	a three character octal notation of file permissions.
+	将文件权限的数字格式（譬如 ``fileperms()`` 函数的返回值）转换为三个字符的八进制表示格式。
 
 	::
 
