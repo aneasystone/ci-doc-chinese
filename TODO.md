@@ -76,7 +76,7 @@
  - [x]    201 ./source/general/routing.rst
  - [x]    201 ./source/helpers/file_helper.rst
  - [x]    202 ./source/general/security.rst
- - [ ]    209 ./source/libraries/language.rst
+ - [x]    209 ./source/libraries/language.rst
  - [ ]    212 ./source/general/views.rst
  - [ ]    218 ./source/tutorial/news_section.rst
  - [ ]    219 ./source/helpers/string_helper.rst

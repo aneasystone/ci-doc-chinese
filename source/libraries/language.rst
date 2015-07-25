@@ -1,32 +1,27 @@
 ##############
-Language Class
+语言类
 ##############
 
-The Language Class provides functions to retrieve language files and
-lines of text for purposes of internationalization.
+语言类提供了一些方法用于获取语言文件和不同语言的文本来实现国际化。
 
-In your CodeIgniter **system** folder, you will find a **language** sub-directory
-containing a set of language files for the **english** idiom.
-The files in this directory (**system/language/english/**) define the regular messages,
-error messages, and other generally output terms or expressions, for the different parts
-of the CodeIgniter framework.
+在你的 CodeIgniter 的 **system** 目录，有一个 **language** 子目录，
+它包含了一系列 **英文** 的语言文件。
+在 **system/language/english/** 这个目录下的这些文件定义了 CodeIgniter 
+框架的各个部分使用到的一些常规消息，错误消息，以及其他一些通用的单词或短语。
 
-You can create or incorporate your own language files, as needed, in order to provide
-application-specific error and other messages, or to provide translations of the core
-messages into other languages. These translations or additional messages would go inside
-your **application/language/** directory, with separate sub-directories for each idiom
-(for instance, 'french' or 'german').
+如果需要的话，你可以创建属于你自己的语言文件，用于提供应用程序的错误消息和其他消息，
+或者将核心部分的消息翻译为其他的语言。翻译的消息或你另加的消息应该放在 
+**application/language/** 目录下，每种不同的语言都有相应的一个子目录（例如，
+'french' 或者 'german'）。
 
-The CodeIgniter framework comes with a set of language files for the "english" idiom.
-Additional approved translations for different idioms may be found in the
-`CodeIgniter 3 Translations repositories <https://github.com/bcit-ci/codeigniter3-translations>`_.
-Each repository deals with a single idiom.
+CodeIgniter 框架自带了一套 "英语" 语言文件，另外可以在 
+`CodeIgniter 3 翻译仓库 <https://github.com/bcit-ci/codeigniter3-translations>`_ 
+找到其他不同的语言，每个语言都有一个独立的目录。
 
-When CodeIgniter loads language files, it will load the one in **system/language/**
-first and will then look for an override in your **application/language/** directory.
+当 CodeIgniter 加载语言文件时，它会先加载 **system/language/** 目录下的，然后再加载
+你的 **application/language/** 目录下的来覆盖它。
 
-.. note:: Each language should be stored in its own folder. For example,
-	the English files are located at: system/language/english
+.. note:: 每个语言都有它自己的目录，例如，英语语言文件位于：system/language/english
 
 .. contents::
   :local:
@@ -36,23 +31,20 @@ first and will then look for an override in your **application/language/** direc
   <div class="custom-index container"></div>
 
 ***************************
-Handling Multiple Languages
+处理多语言
 ***************************
 
-If you want to support multiple languages in your application, you would provide folders inside
-your **application/language/** directory for each of them, and you would specify the default
-language in your **application/config/config.php**.
+如果你想让你的应用程序支持多语言，你就需要在 **application/language/** 目录下提供不同语言的文件，
+然后在 **application/config/config.php** 配置文件中指定默认语言。
 
-The **application/language/english/** directory would contain any additional language files
-needed by your application, for instance for error messages.
+**application/language/english/** 目录可以包含你的应用程序需要的额外语言文件，例如错误消息。
 
-Each of the other idiom-specific directories would contain the core language files that you
-obtained from the translations repositories, or that you translated yourself, as well as
-any additional ones needed by your application.
+每个语言对应的目录中都应该包含从 翻译仓库 中获取到的核心文件，或者你自己翻译它们，你也可以添加
+你的程序需要的其他文件。
 
-You would store the language you are currently using, for instance in a session variable.
+你应该将你正在使用的语言保存到一个会话变量中。
 
-Sample Language Files
+语言文件的例子
 =====================
 
 ::
@@ -76,7 +68,7 @@ Sample Language Files
 				form_validation_lang.php
 				...
 
-Example of switching languages
+切换语言
 ==============================
 
 ::
@@ -86,40 +78,34 @@ Example of switching languages
 	$oops = $this->lang->line('message_key');
 
 ********************
-Internationalization
+国际化
 ********************
 
-The Language class in CodeIgniter is meant to provide an easy and lightweight
-way to support multiplelanguages in your application. It is not meant to be a
-full implementation of what is commonly called `internationalization and localization
-<http://en.wikipedia.org/wiki/Internationalization_and_localization>`_.
+CodeIgniter 的语言类给你的应用程序提供了一种简单轻便的方式来实现多语言，
+它并不是通常我们所说的 `国际化与本地化 <http://en.wikipedia.org/wiki/Internationalization_and_localization>`_
+的完整实现。
 
-We use the term "idiom" to refer to a language using its common name,
-rather than using any of the international standards, such as "en", "en-US",
-or "en-CA-x-ca" for English and some of its variants.
+我们可以给每一种语言一个别名，一个更通用的名字，而不是使用诸如 "en"、
+"en-US"、"en-CA-x-ca" 这种国际标准的缩写名字。
 
-.. note:: There is nothing to prevent you from using those abbreviations in your application!
+.. note:: 当然，你完全可以在你的程序中使用国际标准的缩写名字。
 
 ************************
-Using the Language Class
+使用语言类
 ************************
 
-Creating Language Files
+创建语言文件
 =======================
 
-Language files must be named with **_lang.php** as the filename extension.
-For example, let's say you want to create a file containing error messages.
-You might name it: error_lang.php
+语言文件的命名必须以 **_lang.php** 结尾，例如，你想创建一个包含错误消息的文件，
+你可以把它命名为：error_lang.php 。
 
-Within the file you will assign each line of text to an array called
-``$lang`` with this prototype::
+在此文件中，你可以在每行把一个字符串赋值给名为 $lang 的数组，例如::
 
 	$lang['language_key'] = 'The actual message to be shown';
 
-.. note:: It's a good practice to use a common prefix for all messages
-	in a given file to avoid collisions with similarly named items in other
-	files. For example, if you are creating error messages you might prefix
-	them with error\_
+.. note:: 在每个文件中使用一个通用的前缀来避免和其他文件中的相似名称冲突是个好方法。
+	例如，如果你在创建错误消息你可以使用 error\_ 前缀。
 
 ::
 
@@ -127,62 +113,53 @@ Within the file you will assign each line of text to an array called
 	$lang['error_url_missing'] = 'You must submit a URL';
 	$lang['error_username_missing'] = 'You must submit a username';
 
-Loading A Language File
+加载语言文件
 =======================
 
-In order to fetch a line from a particular file you must load the file
-first. Loading a language file is done with the following code::
+在使用语言文件之前，你必须先加载它。可以使用下面的代码::
 
 	$this->lang->load('filename', 'language');
 
-Where filename is the name of the file you wish to load (without the
-file extension), and language is the language set containing it (ie,
-english). If the second parameter is missing, the default language set
-in your **application/config/config.php** file will be used.
+其中 filename 是你要加载的语言文件名（不带扩展名），language 是要加载哪种语言（比如，英语）。
+如果没有第二个参数，将会使用 **application/config/config.php** 中设置的默认语言。
 
-You can also load multiple language files at the same time by passing an array of language files as first parameter.
+你也可以通过传一个语言文件的数组给第一个参数来同时加载多个语言文件。
 ::
 
 	$this->lang->load(array('filename1', 'filename2'));
 
-.. note:: The *language* parameter can only consist of letters.
+.. note:: *language* 参数只能包含字母。
 
-Fetching a Line of Text
+读取语言文本
 =======================
 
-Once your desired language file is loaded you can access any line of
-text using this function::
+当你的语言文件已经加载，你就可以通过下面的方法来访问任何一行语言文本::
 
 	$this->lang->line('language_key');
 
-Where *language_key* is the array key corresponding to the line you wish
-to show.
+其中，*language_key* 参数是你想显示的文本行所对应的数组的键名。
 
-You can optionally pass FALSE as the second argument of that method to
-disable error logging, in case you're not sure if the line exists::
+万一你不确定你想读取的那行文本是否存在，你还可以将第二个参数设置为 FALSE 禁用错误日志::
 
 	$this->lang->line('misc_key', FALSE);
 
-.. note:: This method simply returns the line. It does not echo it.
+.. note:: 该方法只是简单的返回文本行，而不是显示出它。
 
-Using language lines as form labels
+使用语言行作为表单的标签
 -----------------------------------
 
-This feature has been deprecated from the language library and moved to
-the :php:func:`lang()` function of the :doc:`Language Helper
-<../helpers/language_helper>`.
+这一特性已经从语言类中废弃，并移到了 :doc:`语言辅助库 <../helpers/language_helper>`
+的 :php:func:`lang()` 函数。
 
-Auto-loading Languages
+自动加载语言文件
 ======================
 
-If you find that you need a particular language globally throughout your
-application, you can tell CodeIgniter to :doc:`auto-load
-<../general/autoloader>` it during system initialization. This is done
-by opening the **application/config/autoload.php** file and adding the
-language(s) to the autoload array.
+如果你发现你需要在整个应用程序中使用某个语言文件，你可以让 CodeIgniter
+在系统初始化的时候 :doc:`自动加载 <../general/autoloader>` 该语言文件。
+可以打开 **application/config/autoload.php** 文件，把语言放在 autoload 数组中。
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Lang
@@ -197,7 +174,7 @@ Class Reference
 		:returns:	Array of language lines if $return is set to TRUE, otherwise void
 		:rtype:	mixed
 
-		Loads a language file.
+		加载一个语言文件。
 
 	.. php:method:: line($line[, $log_errors = TRUE])
 
@@ -206,5 +183,4 @@ Class Reference
 		:returns:	Language line string or FALSE on failure
 		:rtype:	string
 
-		Fetches a single translation line from the already loaded language files,
-		based on the line's name.
+		从一个已加载的语言文件中，通过行名获取一行该语言的文本。
