@@ -1,9 +1,8 @@
 #############
-String Helper
+字符串辅助库
 #############
 
-The String Helper file contains functions that assist in working with
-strings.
+字符串辅助库文件包含了一些帮助你处理字符串的函数。
 
 .. contents::
   :local:
@@ -12,18 +11,17 @@ strings.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('string');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: random_string([$type = 'alnum'[, $len = 8]])
 
@@ -32,26 +30,23 @@ The following functions are available:
 	:returns:	A random string
 	:rtype:	string
 
-	Generates a random string based on the type and length you specify.
-	Useful for creating passwords or generating random hashes.
+	根据你所指定的类型和长度产生一个随机字符串。可用于生成密码或随机字符串。
 
-	The first parameter specifies the type of string, the second parameter
-	specifies the length. The following choices are available:
+	第一个参数指定字符串类型，第二个参数指定其长度。有下列几种字符串类型可供选择：
 
-	-  **alpha**: A string with lower and uppercase letters only.
-	-  **alnum**: Alpha-numeric string with lower and uppercase characters.
-	-  **basic**: A random number based on ``mt_rand()``.
-	-  **numeric**: Numeric string.
-	-  **nozero**: Numeric string with no zeros.
-	-  **md5**: An encrypted random number based on ``md5()`` (fixed length of 32).
-	-  **sha1**: An encrypted random number based on ``sha1()`` (fixed length of 40).
+	-  **alpha**: 只含有大小写字母的字符串
+	-  **alnum**: 含有大小写字母以及数字的字符串
+	-  **basic**: 根据 ``mt_rand()`` 函数生成的一个随机数字
+	-  **numeric**: 数字字符串
+	-  **nozero**: 数字字符串（不含零）
+	-  **md5**: 根据 ``md5()`` 生成的一个加密的随机数字（长度固定为 32）
+	-  **sha1**: 根据 ``sha1()`` 生成的一个加密的随机数字（长度固定为 40）
 
-	Usage example::
+	使用示例::
 
 		echo random_string('alnum', 16);
 
-	.. note:: Usage of the *unique* and *encrypt* types is DEPRECATED. They
-		are just aliases for *md5* and *sha1* respectively.
+	.. note:: *unique* 和 *encrypt* 类型已经废弃，它们只是 *md5* 和 *sha1* 的别名。
 
 .. php:function:: increment_string($str[, $separator = '_'[, $first = 1]])
 
@@ -61,11 +56,11 @@ The following functions are available:
 	:returns:	An incremented string
 	:rtype:	string
 
-	Increments a string by appending a number to it or increasing the
-	number. Useful for creating "copies" or a file or duplicating database
-	content which has unique titles or slugs.
+	自增字符串是指向字符串尾部添加一个数字，或者对这个数字进行自增。
+	这在生成文件的拷贝时非常有用，或者向数据库中某列（例如 title 或 slug）添加重复的内容，
+	但是这一列设置了唯一索引时。
 
-	Usage example::
+	使用示例::
 
 		echo increment_string('file', '_'); // "file_1"
 		echo increment_string('file', '-', 2); // "file-2"
@@ -78,16 +73,14 @@ The following functions are available:
 	:returns:	Alternated string(s)
 	:rtype:	mixed
 
-	Allows two or more items to be alternated between, when cycling through
-	a loop. Example::
+	当执行一个循环时，让两个或两个以上的条目轮流使用。示例::
 
 		for ($i = 0; $i < 10; $i++)
 		{     
 			echo alternator('string one', 'string two');
 		}
 
-	You can add as many parameters as you want, and with each iteration of
-	your loop the next item will be returned.
+	你可以添加任意多个参数，每一次循环后下一个条目将成为返回值。
 
 	::
 
@@ -96,8 +89,7 @@ The following functions are available:
 			echo alternator('one', 'two', 'three', 'four', 'five');
 		}
 
-	.. note:: To use multiple separate calls to this function simply call the
-		function with no arguments to re-initialize.
+	.. note:: 如果要多次调用该函数，可以简单的通过不带参数重新初始化下。
 
 .. php:function:: repeater($data[, $num = 1])
 
@@ -106,15 +98,14 @@ The following functions are available:
 	:returns:	Repeated string
 	:rtype:	string
 
-	Generates repeating copies of the data you submit. Example::
+	重复生成你的数据。例如::
 
 		$string = "\n";
 		echo repeater($string, 30);
 
-	The above would generate 30 newlines.
+	上面的代码会生成 30 个空行。
 
-	.. note:: This function is DEPRECATED. Use the native ``str_repeat()``
-		instead.
+	.. note:: 该函数已经废弃，使用原生的 ``str_repeat()`` 函数替代。
 
 
 .. php:function:: reduce_double_slashes($str)
@@ -123,10 +114,9 @@ The following functions are available:
 	:returns:	A string with normalized slashes
 	:rtype:	string
 
-	Converts double slashes in a string to a single slash, except those
-	found in URL protocol prefixes (e.g. http&#58;//).
+	将字符串中的双斜线（'//'）转换为单斜线（'/'），但不转换 URL 协议中的双斜线（例如：http://）
 
-	Example::
+	示例::
 
 		$string = "http://example.com//index.php";
 		echo reduce_double_slashes($string); // results in "http://example.com/index.php"
@@ -138,9 +128,9 @@ The following functions are available:
 	:returns:	String(s) with stripped slashes
 	:rtype:	mixed
 
-	Removes any slashes from an array of strings.
+	移除一个字符串数组中的所有斜线。
 
-	Example::
+	示例::
 
 		$str = array(
 			'question'  => 'Is your name O\'reilly?',
@@ -149,16 +139,14 @@ The following functions are available:
 
 		$str = strip_slashes($str);
 
-	The above will return the following array::
+	上面的代码将返回下面的数组::
 
 		array(
 			'question'  => "Is your name O'reilly?",
 			'answer' => "No, my name is O'connor."
 		);
 
-	.. note:: For historical reasons, this function will also accept
-		and handle string inputs. This however makes it just an
-		alias for ``stripslashes()``.
+	.. note:: 由于历史原因，该函数也接受一个字符串参数，这时该函数就相当于 ``stripslashes()`` 的别名。
 
 .. php:function:: trim_slashes($str)
 
@@ -166,12 +154,12 @@ The following functions are available:
 	:returns:	Slash-trimmed string
 	:rtype:	string
 
-	Removes any leading/trailing slashes from a string. Example::
+	移除字符串开头和结尾的所有斜线。例如::
 
 		$string = "/this/that/theother/";
 		echo trim_slashes($string); // results in this/that/theother
 
-	.. note:: This function is DEPRECATED. Use the native ``trim()`` instead:
+	.. note:: 该函数已废弃，使用原生的 ``trim()`` 函数代替：
 		|
 		| trim($str, '/');
 
@@ -183,14 +171,12 @@ The following functions are available:
 	:returns:	Reduced string
 	:rtype:	string
 
-	Reduces multiple instances of a particular character occuring directly
-	after each other. Example::
+	移除字符串中重复出现的某个指定字符。例如::
 
 		$string = "Fred, Bill,, Joe, Jimmy";
 		$string = reduce_multiples($string,","); //results in "Fred, Bill, Joe, Jimmy"
 
-	If the third parameter is set to TRUE it will remove occurrences of the
-	character at the beginning and the end of the string. Example::
+	如果设置第三个参数为 TRUE ，该函数将移除出现在字符串首尾的指定字符。例如::
 
 		$string = ",Fred, Bill,, Joe, Jimmy,";
 		$string = reduce_multiples($string, ", ", TRUE); //results in "Fred, Bill, Joe, Jimmy"
@@ -201,8 +187,7 @@ The following functions are available:
 	:returns:	String with quotes converted to HTML entities
 	:rtype:	string
 
-	Converts single and double quotes in a string to the corresponding HTML
-	entities. Example::
+	将字符串中的单引号和双引号转换为相应的 HTML 实体。例如::
 
 		$string = "Joe's \"dinner\"";
 		$string = quotes_to_entities($string); //results in "Joe&#39;s &quot;dinner&quot;"
@@ -214,7 +199,7 @@ The following functions are available:
 	:returns:	String with quotes stripped
 	:rtype:	string
 
-	Removes single and double quotes from a string. Example::
+	移除字符串中出现的单引号和双引号。例如::
 
 		$string = "Joe's \"dinner\"";
 		$string = strip_quotes($string); //results in "Joes dinner"
