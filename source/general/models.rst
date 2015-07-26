@@ -54,7 +54,7 @@
 .. note:: 上面的例子中使用了 :doc:`查询构造器 <../database/query_builder>` 数据库方法。
 
 .. note:: 为了保证简单，我们在这个例子中直接使用了 ``$_POST`` 数据，这其实是个不好的实践，
-	一个更通用的做法是使用 :doc:`输入库 <../libraries/input>`` 的 ``$this->input->post('title')``。
+	一个更通用的做法是使用 :doc:`输入库 <../libraries/input>` 的 ``$this->input->post('title')``。
 
 剖析模型
 ==================
