@@ -78,7 +78,7 @@
  - [x]    202 ./source/general/security.rst
  - [x]    209 ./source/libraries/language.rst
  - [x]    212 ./source/general/views.rst
- - [ ]    218 ./source/tutorial/news_section.rst
+ - [x]    218 ./source/tutorial/news_section.rst
  - [ ]    219 ./source/helpers/string_helper.rst
  - [ ]    225 ./source/helpers/text_helper.rst
  - [ ]    232 ./source/libraries/output.rst

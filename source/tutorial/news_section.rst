@@ -1,23 +1,19 @@
 ############
-News section
+读取新闻条目
 ############
 
-In the last section, we went over some basic concepts of the framework
-by writing a class that includes static pages. We cleaned up the URI by
-adding custom routing rules. Now it's time to introduce dynamic content
-and start using a database.
+在上一节中，我们通过写出一个包含静态页面的类了解了一些框架的基本概念，
+我们也根据自定义路由规则来重定向 URI 。现在是时候向大家介绍动态内容
+和如何使用数据库了。
 
-Setting up your model
+创建你的数据模型
 ---------------------
 
-Instead of writing database operations right in the controller, queries
-should be placed in a model, so they can easily be reused later. Models
-are the place where you retrieve, insert, and update information in your
-database or other data stores. They represent your data.
+数据库的查询操作应该放在模型里，而不是写在控制器里，这样可以很方便的重用它。
+模型正是用于从数据库或者其他存储中获取、新增、更新数据的地方。它就代表你的数据。
 
-Open up the *application/models/* directory and create a new file called
-*News_model.php* and add the following code. Make sure you've configured
-your database properly as described :doc:`here <../database/configuration>`.
+打开 *application/models/* 目录，新建一个文件 *News_model.php* ，然后写入下面的代码。
+确保你的 :doc:`数据库配置 <../database/configuration>` 正确。
 
 ::
 
@@ -30,14 +26,11 @@ your database properly as described :doc:`here <../database/configuration>`.
 		}
 	}
 
-This code looks similar to the controller code that was used earlier. It
-creates a new model by extending ``CI_Model`` and loads the database
-library. This will make the database class available through the
-``$this->db`` object.
+这个代码和之前的控制器的代码有点类似，它通过继承 ``CI_Model`` 创建了一个新模型，
+并加载了数据库类。数据库类可以通过 ``$this->db`` 对象访问。
 
-Before querying the database, a database schema has to be created.
-Connect to your database and run the SQL command below (MySQL).
-Also add some seed records.
+在查询数据库之前，我们要先创建一个数据库表。连接你的数据库，运行下面的 SQL 语句
+（MySQL），并添加一些测试数据。
 
 ::
 
@@ -50,13 +43,10 @@ Also add some seed records.
 		KEY slug (slug)
 	);
 
-Now that the database and a model have been set up, you'll need a method
-to get all of our posts from our database. To do this, the database
-abstraction layer that is included with CodeIgniter — 
-:doc:`Query Builder <../database/query_builder>` — is used. This makes it
-possible to write your 'queries' once and make them work on :doc:`all
-supported database systems <../general/requirements>`. Add the
-following code to your model.
+现在，数据库和模型都准备好了，你需要一个方法来从数据库中获取所有的新闻文章。
+为实现这点，我们使用了 CodeIgniter 的数据库抽象层 :doc:`查询构造器 <../database/query_builder>` ，
+通过它你可以编写你的查询代码，并在 :doc:`所有支持的数据库平台 <../general/requirements>` 上运行。
+向你的模型中添加如下代码。
 
 ::
 
@@ -72,19 +62,16 @@ following code to your model.
 		return $query->row_array();
 	}
 
-With this code you can perform two different queries. You can get all
-news records, or get a news item by its `slug <#>`_. You might have
-noticed that the ``$slug`` variable wasn't sanitized before running the
-query; :doc:`Query Builder <../database/query_builder>` does this for you.
+通过这个代码，你可以执行两种不同的查询，一种是获取所有的新闻条目，另一种
+是根据它的 `slug <#>`_ 来获取新闻条目。你应该注意到，``$slug`` 变量在执行查询之前
+并没有做检查， :doc:`查询构造器 <../database/query_builder>` 会自动帮你检查的。
 
-Display the news
+显示新闻
 ----------------
 
-Now that the queries are written, the model should be tied to the views
-that are going to display the news items to the user. This could be done
-in our ``Pages`` controller created earlier, but for the sake of clarity,
-a new ``News`` controller is defined. Create the new controller at
-*application/controllers/News.php*.
+现在，查询已经写好了，接下来我们需要将模型绑定到视图上，向用户显示新闻条目了。
+这可以在之前写的 ``Pages`` 控制器里来做，但为了更清楚的阐述，我们定义了一个新的 
+``News`` 控制器，创建在 *application/controllers/News.php* 文件中。
 
 ::
 
@@ -109,21 +96,17 @@ a new ``News`` controller is defined. Create the new controller at
 		}
 	}
 
-Looking at the code, you may see some similarity with the files we
-created earlier. First, the ``__construct()`` method: it calls the
-constructor of its parent class (``CI_Controller``) and loads the model,
-so it can be used in all other methods in this controller.
-It also loads a collection of :doc:`URL Helper <../helpers/url_helper>`
-functions, because we'll use one of them in a view later.
+阅读上面的代码你会发现，这和之前写的代码有些相似之处。首先是 ``__construct()`` 
+方法，它调用父类（``CI_Controller``）中的构造函数，并加载模型。这样模型就可以
+在这个控制器的其他方法中使用了。另外它还加载了 :doc:`URL 辅助库 <../helpers/url_helper>` ，
+因为我们在后面的视图中会用到它。
 
-Next, there are two methods to view all news items and one for a specific
-news item. You can see that the ``$slug`` variable is passed to the model's
-method in the second method. The model is using this slug to identify the
-news item to be returned.
+其次，有两个方法用来显示新闻条目，一个显示所有的，另一个显示特定的。
+你可以看到第二个方法中调用模型方法时传入了 ``$slug`` 参数，模型根据这个 slug 
+返回特定的新闻条目。
 
-Now the data is retrieved by the controller through our model, but
-nothing is displayed yet. The next thing to do is passing this data to
-the views.
+现在，通过模型，控制器已经获取到数据了，但还没有显示。下一步要做的就是，
+将数据传递给视图。
 
 ::
 
@@ -137,11 +120,9 @@ the views.
 		$this->load->view('templates/footer');
 	}
 
-The code above gets all news records from the model and assigns it to a
-variable. The value for the title is also assigned to the ``$data['title']``
-element and all data is passed to the views. You now need to create a
-view to render the news items. Create *application/views/news/index.php*
-and add the next piece of code.
+上面的代码从模型中获取所有的新闻条目，并赋值给一个变量，另外页面的标题赋值给了
+``$data['title']`` 元素，然后所有的数据被传递给视图。现在你需要创建一个视图文件来
+显示新闻条目了，新建 *application/views/news/index.php* 文件并添加如下代码。
 
 ::
 
@@ -157,16 +138,13 @@ and add the next piece of code.
 
 	<?php endforeach; ?>
 
-Here, each news item is looped and displayed to the user. You can see we
-wrote our template in PHP mixed with HTML. If you prefer to use a template
-language, you can use CodeIgniter's :doc:`Template
-Parser <../libraries/parser>` class or a third party parser.
+这里，通过一个循环将所有的新闻条目显示给用户，你可以看到我们在 HTML 模板中混用了 PHP ，
+如果你希望使用一种模板语言，你可以使用 CodeIgniter 的 :doc:`模板解析类 <../libraries/parser>` ，
+或其他的第三方解析器。
 
-The news overview page is now done, but a page to display individual
-news items is still absent. The model created earlier is made in such
-way that it can easily be used for this functionality. You only need to
-add some code to the controller and create a new view. Go back to the
-``News`` controller and update ``view()`` with the following:
+新闻的列表页就做好了，但是还缺了显示特定新闻条目的页面，之前创建的模型可以很容易的
+实现该功能，你只需要向控制器中添加一些代码，然后再新建一个视图就可以了。回到 ``News``
+控制器，使用下面的代码替换掉 ``view()`` 方法：
 
 ::
 
@@ -186,10 +164,9 @@ add some code to the controller and create a new view. Go back to the
 		$this->load->view('templates/footer');
 	}
 
-Instead of calling the ``get_news()`` method without a parameter, the
-``$slug`` variable is passed, so it will return the specific news item.
-The only things left to do is create the corresponding view at
-*application/views/news/view.php*. Put the following code in this file.
+我们并没有直接调用 ``get_news()`` 方法，而是传入了一个 ``$slug`` 参数，
+所以它会返回相应的新闻条目。最后剩下的事是创建视图文件
+*application/views/news/view.php* 并添加如下代码 。
 
 ::
 
@@ -197,15 +174,13 @@ The only things left to do is create the corresponding view at
 	echo '<h2>'.$news_item['title'].'</h2>';
 	echo $news_item['text'];
 
-Routing
+路由
 -------
 
-Because of the wildcard routing rule created earlier, you need an extra
-route to view the controller that you just made. Modify your routing file
-(*application/config/routes.php*) so it looks as follows.
-This makes sure the requests reaches the ``News`` controller instead of
-going directly to the ``Pages`` controller. The first line routes URI's
-with a slug to the ``view()`` method in the ``News`` controller.
+由于之前创建的通配符路由规则，你需要新增一条路由来显示你刚刚创建的控制器，
+修改你的路由配置文件（*application/config/routes.php*）添加类似下面的代码。
+该规则可以让请求访问 ``News`` 控制器而不是 ``Pages`` 控制器，第一行可以让
+带 slug 的 URI 重定向到 ``News`` 控制器的 ``view()`` 方法。
 
 ::
 
@@ -214,5 +189,4 @@ with a slug to the ``view()`` method in the ``News`` controller.
 	$route['(:any)'] = 'pages/view/$1';
 	$route['default_controller'] = 'pages/view';
 
-Point your browser to your document root, followed by index.php/news and
-watch your news page.
+把浏览器的地址改回根目录，在后面加上 index.php/news 来看看你的新闻页面吧。
