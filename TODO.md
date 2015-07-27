@@ -87,7 +87,7 @@
  - [x]    244 ./source/libraries/unit_testing.rst
  - [x]    247 ./source/libraries/user_agent.rst
  - [x]    251 ./source/libraries/config.rst
- - [ ]    258 ./source/general/creating_libraries.rst
+ - [x]    258 ./source/general/creating_libraries.rst
  - [ ]    263 ./source/general/compatibility_functions.rst
  - [ ]    278 ./source/libraries/caching.rst
  - [ ]    297 ./source/libraries/table.rst
