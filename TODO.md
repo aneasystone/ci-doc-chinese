@@ -85,7 +85,7 @@
  - [x]    233 ./source/libraries/uri.rst
  - [x]    243 ./source/libraries/zip.rst
  - [x]    244 ./source/libraries/unit_testing.rst
- - [ ]    247 ./source/libraries/user_agent.rst
+ - [x]    247 ./source/libraries/user_agent.rst
  - [ ]    251 ./source/libraries/config.rst
  - [ ]    258 ./source/general/creating_libraries.rst
  - [ ]    263 ./source/general/compatibility_functions.rst
