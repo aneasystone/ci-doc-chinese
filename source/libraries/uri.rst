@@ -1,13 +1,11 @@
 #########
-URI Class
+URI 类
 #########
 
-The URI Class provides methods that help you retrieve information from
-your URI strings. If you use URI routing, you can also retrieve
-information about the re-routed segments.
+URI 类用于帮助你从 URI 字符串中获取信息，如果你使用 URI 路由，
+你也可以从路由后的 URI 中获取信息。
 
-.. note:: This class is initialized automatically by the system so there
-	is no need to do it manually.
+.. note:: 该类由系统自己加载，无需手工加载。
 
 .. contents::
   :local:
@@ -17,7 +15,7 @@ information about the re-routed segments.
   <div class="custom-index container"></div>
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_URI
@@ -29,26 +27,24 @@ Class Reference
 		:returns:	Segment value or $no_result value if not found
 		:rtype:	mixed
 
-		Permits you to retrieve a specific segment. Where n is the segment
-		number you wish to retrieve. Segments are numbered from left to right.
-		For example, if your full URL is this::
+		用于从 URI 中获取指定段。参数 n 为你希望获取的段序号，URI 的段从左到右进行编号。
+		例如，如果你的完整 URL 是这样的::
 
 			http://example.com/index.php/news/local/metro/crime_is_up
 
-		The segment numbers would be this:
+		那么你的每个分段如下::
 
 		#. news
 		#. local
 		#. metro
 		#. crime_is_up
 
-		The optional second parameter defaults to NULL and allows you to set the return value
-		of this method when the requested URI segment is missing.
-		For example, this would tell the method to return the number zero in the event of failure::
+		第二个参数为可选的，默认为 NULL ，它用于设置当所请求的段不存在时的返回值。
+		例如，如下代码在失败时将返回数字 0 ::
 
 			$product_id = $this->uri->segment(3, 0);
 
-		It helps avoid having to write code like this::
+		它可以避免你写出类似于下面这样的代码::
 
 			if ($this->uri->segment(3) === FALSE)
 			{
@@ -66,9 +62,8 @@ Class Reference
 		:returns:	Routed segment value or $no_result value if not found
 		:rtype:	mixed
 
-		This method is identical to ``segment()``, except that it lets you retrieve
-		a specific segment from your re-routed URI in the event you are
-		using CodeIgniter's :doc:`URI Routing <../general/routing>` feature.
+		当你使用 CodeIgniter 的 :doc:`URI 路由 <../general/routing>` 功能时，该方法和 ``segment()`` 类似，
+		只是它用于从路由后的 URI 中获取指定段。
 
 	.. php:method:: slash_segment($n[, $where = 'trailing'])
 
@@ -77,15 +72,14 @@ Class Reference
 		:returns:	Segment value, prepended/suffixed with a forward slash, or a slash if not found
 		:rtype:	string
 
-		This method is almost identical to ``segment()``, except it
-		adds a trailing and/or leading slash based on the second parameter.
-		If the parameter is not used, a trailing slash added. Examples::
+		该方法和 ``segment()`` 类似，只是它会根据第二个参数在返回结果的前面或/和后面添加斜线。
+		如果第二个参数未设置，斜线会添加到后面。例如::
 
 			$this->uri->slash_segment(3);
 			$this->uri->slash_segment(3, 'leading');
 			$this->uri->slash_segment(3, 'both');
 
-		Returns:
+		返回结果：
 
 		#. segment/
 		#. /segment
@@ -98,10 +92,8 @@ Class Reference
 		:returns:	Routed segment value, prepended/suffixed with a forward slash, or a slash if not found
 		:rtype:	string
 
-		This method is identical to ``slash_segment()``, except that it lets you
-		add slashes a specific segment from your re-routed URI in the event you
-		are using CodeIgniter's :doc:`URI Routing <../general/routing>`
-		feature.
+		当你使用 CodeIgniter 的 :doc:`URI 路由 <../general/routing>` 功能时，该方法和 ``slash_segment()`` 类似，
+		只是它用于从路由后的 URI 返回结果的前面或/和后面添加斜线。
 
 	.. php:method:: uri_to_assoc([$n = 3[, $default = array()]])
 
@@ -110,13 +102,11 @@ Class Reference
 		:returns:	Associative URI segments array
 		:rtype:	array
 
-		This method lets you turn URI segments into an associative array of
-		key/value pairs. Consider this URI::
+		该方法用于将 URI 的段转换为一个包含键值对的关联数组。如下 URI::
 
 			index.php/user/search/name/joe/location/UK/gender/male
 
-		Using this method you can turn the URI into an associative array with
-		this prototype::
+		使用这个方法你可以将 URI 转为如下的数组原型::
 
 			[array]
 			(
@@ -125,25 +115,22 @@ Class Reference
 				'gender'	=> 'male'
 			)
 
-		The first parameter lets you set an offset, which defaults to 3 since your
-		URI will normally contain a controller/method pair in the first and second segments.
-		Example::
+		你可以通过第一个参数设置一个位移，默认值为 3 ，这是因为你的 URI 的前两段通常都是控制器和方法。
+		例如::
 
 			$array = $this->uri->uri_to_assoc(3);
 			echo $array['name'];
 
-		The second parameter lets you set default key names, so that the array
-		returned will always contain expected indexes, even if missing from the URI.
-		Example::
+		第二个参数用于设置默认的键名，这样即使 URI 中缺少某个键名，也能保证返回的数组中包含该索引。
+		例如::
 
 			$default = array('name', 'gender', 'location', 'type', 'sort');
 			$array = $this->uri->uri_to_assoc(3, $default);
 
-		If the URI does not contain a value in your default, an array index will
-		be set to that name, with a value of NULL.
+		如果某个你设置的默认键名在 URI 中不存在，数组中的该索引值将设置为 NULL 。
 
-		Lastly, if a corresponding value is not found for a given key (if there
-		is an odd number of URI segments) the value will be set to NULL.
+		另外，如果 URI 中的某个键没有相应的值与之对应（例如 URI 的段数为奇数），
+		数组中的该索引值也将设置为 NULL 。
 
 	.. php:method:: ruri_to_assoc([$n = 3[, $default = array()]])
 
@@ -152,9 +139,8 @@ Class Reference
 		:returns:	Associative routed URI segments array
 		:rtype:	array
 
-		This method is identical to ``uri_to_assoc()``, except that it creates
-		an associative array using the re-routed URI in the event you are using
-		CodeIgniter's :doc:`URI Routing <../general/routing>` feature.
+		当你使用 CodeIgniter 的 :doc:`URI 路由 <../general/routing>` 功能时，该方法和 ``uri_to_assoc()`` 类似，
+		只是它用于将路由后的 URI 的段转换为一个包含键值对的关联数组。
 
 	.. php:method:: assoc_to_uri($array)
 
@@ -162,8 +148,7 @@ Class Reference
 		:returns:	URI string
 		:rtype:	string
 
-		Takes an associative array as input and generates a URI string from it.
-		The array keys will be included in the string. Example::
+		根据输入的关联数组生成一个 URI 字符串，数组的键将包含在 URI 的字符串中。例如::
 
 			$array = array('product' => 'shoes', 'size' => 'large', 'color' => 'red');
 			$str = $this->uri->assoc_to_uri($array);
@@ -175,11 +160,11 @@ Class Reference
 		:returns:	URI string
 		:rtype:	string
 
-		Returns a string with the complete URI. For example, if this is your full URL::
+		返回一个相对的 URI 字符串，例如，如果你的完整 URL 为::
 
 			http://example.com/index.php/news/local/345
 
-		The method would return this::
+		该方法返回::
 
 			news/local/345
 
@@ -188,32 +173,30 @@ Class Reference
 		:returns:	Routed URI string
 		:rtype:	string
 
-		This method is identical to ``uri_string()``, except that it returns
-		the re-routed URI in the event you are using CodeIgniter's :doc:`URI
-		Routing <../general/routing>` feature.
+		当你使用 CodeIgniter 的 :doc:`URI 路由 <../general/routing>` 功能时，该方法和 ``uri_string()`` 类似，
+		只是它用于返回路由后的 URI 。
 
 	.. php:method:: total_segments()
 
 		:returns:	Count of URI segments
 		:rtype:	int
 
-		Returns the total number of segments.
+		返回 URI 的总段数。
 
 	.. php:method:: total_rsegments()
 
 		:returns:	Count of routed URI segments
 		:rtype:	int
 
-		This method is identical to ``total_segments()``, except that it returns
-		the total number of segments in your re-routed URI in the event you are
-		using CodeIgniter's :doc:`URI Routing <../general/routing>` feature.
+		当你使用 CodeIgniter 的 :doc:`URI 路由 <../general/routing>` 功能时，该方法和 ``total_segments()`` 类似，
+		只是它用于返回路由后的 URI 的总段数。
 
 	.. php:method:: segment_array()
 
 		:returns:	URI segments array
 		:rtype:	array
 
-		Returns an array containing the URI segments. For example::
+		返回 URI 所有的段组成的数组。例如::
 
 			$segs = $this->uri->segment_array();
 
@@ -228,6 +211,5 @@ Class Reference
 		:returns:	Routed URI segments array
 		:rtype:	array
 
-		This method is identical to ``segment_array()``, except that it returns
-		the array of segments in your re-routed URI in the event you are using
-		CodeIgniter's :doc:`URI Routing <../general/routing>` feature.
+		当你使用 CodeIgniter 的 :doc:`URI 路由 <../general/routing>` 功能时，该方法和 ``segment_array()`` 类似，
+		只是它用于返回路由后的 URI 的所有的段组成的数组。
