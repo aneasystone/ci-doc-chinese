@@ -1,15 +1,13 @@
 ##################
-Unit Testing Class
+单元测试类
 ##################
 
-Unit testing is an approach to software development in which tests are
-written for each function in your application. If you are not familiar
-with the concept you might do a little googling on the subject.
+单元测试是一种为你的应用程序中的每个函数编写测试的软件开发方法。如果你还不熟悉这个概念，
+你应该先去 Google 一下。
 
-CodeIgniter's Unit Test class is quite simple, consisting of an
-evaluation function and two result functions. It's not intended to be a
-full-blown test suite but rather a simple mechanism to evaluate your
-code to determine if it is producing the correct data type and result.
+CodeIgniter 的单元测试类非常简单，由一个测试方法和两个显示结果的方法组成。
+它没打算成为一个完整的测试套件，只是提供一个简单的机制来测试你的代码是否
+生成了正确的数据类型和结果。
 
 .. contents::
   :local:
@@ -19,30 +17,30 @@ code to determine if it is producing the correct data type and result.
   <div class="custom-index container"></div>
 
 ******************************
-Using the Unit Testing Library
+使用单元测试类库
 ******************************
 
-Initializing the Class
+初始化类
 ======================
 
-Like most other classes in CodeIgniter, the Unit Test class is
-initialized in your controller using the $this->load->library function::
+正如 CodeIgniter 中的其他类一样，在你的控制器中使用 ``$this->load->library()``
+方法来初始化单元测试类::
 
 	$this->load->library('unit_test');
 
-Once loaded, the Unit Test object will be available using ``$this->unit``
+初始化之后，单元测试类的对象就可以这样访问::
 
-Running Tests
+	$this->unit
+
+运行测试
 =============
 
-Running a test involves supplying a test and an expected result in the
-following way:
+要运行一个测试用例，需要提供一个测试和一个期望结果，像下面这样::
 
 	$this->unit->run('test', 'expected result', 'test name', 'notes');
 
-Where test is the result of the code you wish to test, expected result
-is the data type you expect, test name is an optional name you can give
-your test, and notes are optional notes. Example::
+其中，test 是你希望测试的代码的结果，expected result 是期望返回的结果，test name 是可选的，
+你可以为你的测试取一个名字，notes 是可选的，可以填些备注信息。例如::
 
 	$test = 1 + 1;
 
@@ -52,18 +50,16 @@ your test, and notes are optional notes. Example::
 
 	$this->unit->run($test, $expected_result, $test_name);
 
-The expected result you supply can either be a literal match, or a data
-type match. Here's an example of a literal::
+期望的结果可以是字面量匹配（a literal match），也可以是数据类型匹配（a data type match）。
+下面是字面量匹配的例子::
 
 	$this->unit->run('Foo', 'Foo');
 
-Here is an example of a data type match::
+下面是数据类型匹配的例子::
 
 	$this->unit->run('Foo', 'is_string');
 
-Notice the use of "is_string" in the second parameter? This tells the
-function to evaluate whether your test is producing a string as the
-result. Here is a list of allowed comparison types:
+注意第二个参数 "is_string" ，这让方法测试返回的结果是否是字符串类型。以下是可用的数据类型的列表：
 
 -  is_object
 -  is_string
@@ -78,60 +74,54 @@ result. Here is a list of allowed comparison types:
 -  is_null
 -  is_resource
 
-Generating Reports
+生成报告
 ==================
 
-You can either display results after each test, or your can run several
-tests and generate a report at the end. To show a report directly simply
-echo or return the run function::
+你可以在每个测试之后显示出测试的结果，也可以先运行几个测试，然后在最后生成一份测试结果的报告。
+要简单的显示出测试结果，可以直接在 run 方法的前面使用 echo::
 
 	echo $this->unit->run($test, $expected_result);
 
-To run a full report of all tests, use this::
+要显示一份所有测试的完整报告，使用如下代码::
 
 	echo $this->unit->report();
 
-The report will be formatted in an HTML table for viewing. If you prefer
-the raw data you can retrieve an array using::
+这份报告会以 HTML 的表格形式显示出来，如果你喜欢获取原始的数据，可以通过下面的代码得到一个数组::
 
 	echo $this->unit->result();
 
-Strict Mode
+严格模式
 ===========
 
-By default the unit test class evaluates literal matches loosely.
-Consider this example::
+默认情况下，单元测试类在字面量匹配时是松散的类型匹配。看下面这个例子::
 
 	$this->unit->run(1, TRUE);
 
-The test is evaluating an integer, but the expected result is a boolean.
-PHP, however, due to it's loose data-typing will evaluate the above code
-as TRUE using a normal equality test::
+正在测试的结果是一个数字，期望的结果是一个布尔型。但是，由于 PHP 的松散数据类型，
+如果使用常规的比较操作符的话，上面的测试结果将会是 TRUE 。
 
 	if (1 == TRUE) echo 'This evaluates as true';
 
-If you prefer, you can put the unit test class in to strict mode, which
-will compare the data type as well as the value::
+如果愿意的话，你可以将单元测试设置为严格模式，它不仅会比较两个数据的值，
+而且还会比较两个数据的数据类型::
 
 	if (1 === TRUE) echo 'This evaluates as FALSE';
 
-To enable strict mode use this::
+使用如下代码启用严格模式::
 
 	$this->unit->use_strict(TRUE);
 
-Enabling/Disabling Unit Testing
+启用/禁用单元测试
 ===============================
 
-If you would like to leave some testing in place in your scripts, but
-not have it run unless you need it, you can disable unit testing using::
+如果你希望在你的代码中保留一些测试，只在需要的时候才被执行，可以使用下面的代码禁用单元测试::
 
 	$this->unit->active(FALSE);
 
-Unit Test Display
+单元测试结果显示
 =================
 
-When your unit test results display, the following items show by
-default:
+单元测试的结果默认显示如下几项：
 
 -  Test Name (test_name)
 -  Test Datatype (test_datatype)
@@ -141,23 +131,21 @@ default:
 -  Line Number (line)
 -  Any notes you entered for the test (notes)
 
-You can customize which of these items get displayed by using
-$this->unit->set_test_items(). For example, if you only wanted the test name
-and the result displayed:
+你可以使用 $this->unit->set_test_items() 方法自定义要显示哪些结果，例如，
+你只想显示出测试名和测试的结果：
 
-Customizing displayed tests
+自定义显示测试结果
 ---------------------------
 
 ::
 
 	$this->unit->set_test_items(array('test_name', 'result'));
 
-Creating a Template
+创建模板
 -------------------
 
-If you would like your test results formatted differently then the
-default you can set your own template. Here is an example of a simple
-template. Note the required pseudo-variables::
+如果你想让你的测试结果以不同于默认的格式显示出来，你可以设置你自己的模板，
+这里是一个简单的模板例子，注意那些必须的伪变量::
 
 	$str = '
 	<table border="0" cellpadding="4" cellspacing="1">
@@ -171,11 +159,10 @@ template. Note the required pseudo-variables::
 
 	$this->unit->set_template($str);
 
-.. note:: Your template must be declared **before** running the unit
-	test process.
+.. note:: 你的模板必须在运行测试 **之前** 被定义。
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Unit_test
@@ -185,8 +172,7 @@ Class Reference
 		:param array $items: List of visible test items
 		:returns: void
 
-		Sets a list of items that should be visible in tests.
-		Valid options are:
+		设置要在测试的结果中显示哪些项，有效的选项有：
 
 		  - test_name
 		  - test_datatype
@@ -205,7 +191,7 @@ Class Reference
 		:returns:	Test report
 		:rtype:	string
 
-		Runs unit tests.
+		运行单元测试。
 
 	.. php:method:: report([$result = array()])
 
@@ -213,21 +199,21 @@ Class Reference
 		:returns:	Test report
 		:rtype:	string
 
-		Generates a report about already complete tests.
+		根据已运行的测试生成一份测试结果的报告。
 
 	.. php:method:: use_strict([$state = TRUE])
 
 		:param	bool	$state: Strict state flag
 		:rtype:	void
 
-		Enables/disables strict type comparison in tests.
+		在测试中启用或禁用严格比较模式。
 
 	.. php:method:: active([$state = TRUE])
 
 		:param	bool	$state: Whether to enable testing
 		:rtype:	void
 
-		Enables/disables unit testing.
+		启用或禁用单元测试。
 
 	.. php:method:: result([$results = array()])
 
@@ -235,11 +221,11 @@ Class Reference
 		:returns:	Array of raw result data
 		:rtype:	array
 
-		Returns raw tests results data.
+		返回原始的测试结果数据。
 
 	.. php:method:: set_template($template)
 
 		:param	string	$template: Test result template
 		:rtype:	void
 
-		Sets the template for displaying tests results.
+		设置显示测试结果数据的模板。
