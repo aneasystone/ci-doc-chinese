@@ -83,7 +83,7 @@
  - [x]    225 ./source/helpers/text_helper.rst
  - [x]    232 ./source/libraries/output.rst
  - [x]    233 ./source/libraries/uri.rst
- - [ ]    243 ./source/libraries/zip.rst
+ - [x]    243 ./source/libraries/zip.rst
  - [ ]    244 ./source/libraries/unit_testing.rst
  - [ ]    247 ./source/libraries/user_agent.rst
  - [ ]    251 ./source/libraries/config.rst

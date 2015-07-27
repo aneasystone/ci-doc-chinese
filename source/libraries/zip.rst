@@ -1,9 +1,9 @@
 ##################
-Zip Encoding Class
+Zip 编码类
 ##################
 
-CodeIgniter's Zip Encoding Class permits you to create Zip archives.
-Archives can be downloaded to your desktop or saved to a directory.
+CodeIgniter 的 Zip 编码类允许你创建 Zip 压缩文档，文档可以被下载到你的桌面
+或者 保存到某个文件夹里。
 
 .. contents::
   :local:
@@ -13,26 +13,25 @@ Archives can be downloaded to your desktop or saved to a directory.
   <div class="custom-index container"></div>
 
 ****************************
-Using the Zip Encoding Class
+使用 Zip 编码类
 ****************************
 
-Initializing the Class
+初始化类
 ======================
 
-Like most other classes in CodeIgniter, the Zip class is initialized in
-your controller using the $this->load->library function::
+正如 CodeIgniter 中的其他类一样，在你的控制器中使用 ``$this->load->library()``
+方法来初始化 Zip 编码类::
 
 	$this->load->library('zip');
 
-Once loaded, the Zip library object will be available using:
+初始化之后，Zip 编码类的对象就可以这样访问::
 
 	$this->zip
 
-Usage Example
+使用示例
 =============
 
-This example demonstrates how to compress a file, save it to a folder on
-your server, and download it to your desktop.
+下面这个例子演示了如何压缩一个文件，将其保存到服务器上的一个目录下，并下载到你的桌面上。
 
 ::
 
@@ -48,16 +47,16 @@ your server, and download it to your desktop.
 	$this->zip->download('my_backup.zip');
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Zip
 
 	.. attribute:: $compression_level = 2
 
-		The compression level to use.
+		使用的压缩等级。
 
-		It can range from 0 to 9, with 9 being the highest and 0 effectively disabling compression::
+		压缩等级的范围为 0 到 9 ，9 为最高等级，0 为禁用压缩::
 
 			$this->zip->compression_level = 0;
 
@@ -67,10 +66,9 @@ Class Reference
 		:param	array	$data: File contents (ignored if $filepath is an array)
 		:rtype:	void
 
-		Adds data to the Zip archive. Can work both in single and multiple files mode.
+		向 Zip 文档中添加数据，可以添加单个文件，也可以添加多个文件。
 
-		When adding a single file, the first parameter must contain the name you would
-		like given to the file and the second must contain the file contents::
+		当添加单个文件时，第一个参数为文件名，第二个参数包含文件的内容::
 
 			$name = 'mydata1.txt';
 			$data = 'A Data String!';
@@ -80,8 +78,7 @@ Class Reference
 			$data = 'Another Data String!';
 			$this->zip->add_data($name, $data);
 
-		When adding multiple files, the first parameter must contain *file => contents* pairs
-		and the second parameter is ignored::
+		当添加多个文件时，第一个参数为包含 *file => contents* 这样的键值对的数组，第二个参数被忽略::
 
 			$data = array(
 				'mydata1.txt' => 'A Data String!',
@@ -90,24 +87,22 @@ Class Reference
 
 			$this->zip->add_data($data);
 
-		If you would like your compressed data organized into sub-directories, simply include
-		the path as part of the filename(s)::
+		如果你想要将你压缩的数据组织到一个子目录下，只需简单的将文件路径包含到文件名中即可::
 
 			$name = 'personal/my_bio.txt';
 			$data = 'I was born in an elevator...';
 
 			$this->zip->add_data($name, $data);
 
-		The above example will place my_bio.txt inside a folder called personal.
+		上面的例子将会把 my_bio.txt 文件放到 personal 目录下。
 
 	.. php:method:: add_dir($directory)
 
 		:param	mixed	$directory: Directory name string or an array of multiple directories
 		:rtype:	void
 
-		Permits you to add a directory. Usually this method is unnecessary since you can place
-		your data into directories when using ``$this->zip->add_data()``, but if you would like
-		to create an empty directory you can do so::
+		允许你往压缩文档中添加一个目录，通常这个方法是没必要的，因为你完全可以使用 ``$this->zip->add_data()``
+		方法将你的数据添加到特定的目录下。但是如果你想创建一个空目录，你可以使用它::
 
 			$this->zip->add_dir('myfolder'); // Creates a directory called "myfolder"
 
@@ -118,8 +113,8 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Permits you to compress a file that already exists somewhere on your server.
-		Supply a file path and the zip class will read it and add it to the archive::
+		允许你压缩一个已经存在于你的服务器上的文件。该方法的参数为一个文件路径，Zip 
+		类会读取该文件的内容并添加到压缩文档中::
 
 			$path = '/path/to/photo.jpg';
 
@@ -128,8 +123,7 @@ Class Reference
 			// Download the file to your desktop. Name it "my_backup.zip"
 			$this->zip->download('my_backup.zip');
 
-		If you would like the Zip archive to maintain the directory structure of
-		the file in it, pass TRUE (boolean) in the second parameter. Example::
+		如果你希望 Zip 文档中的文件保持它原有的目录结构，将第二个参数设置为布尔值 TRUE 。例如::
 
 			$path = '/path/to/photo.jpg';
 
@@ -138,9 +132,9 @@ Class Reference
 			// Download the file to your desktop. Name it "my_backup.zip"
 			$this->zip->download('my_backup.zip');
 
-		In the above example, photo.jpg will be placed into the *path/to/* directory.
+		在上面的例子中，photo.jpg 文件将会被放在 *path/to/* 目录下。
 
-		You can also specify a new name (path included) for the added file on the fly::
+		你也可以为新添加的文件指定一个新的名称（包含文件路径）::
 
 			$path = '/path/to/photo.jpg';
 			$new_path = '/new/path/some_photo.jpg';
@@ -158,9 +152,9 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Permits you to compress a directory (and its contents) that already exists somewhere on your server.
-		Supply a path to the directory and the zip class will recursively read and recreate it as a Zip archive.
-		All files contained within the supplied path will be encoded, as will any sub-directories contained within it. Example::
+		允许你压缩一个已经存在于你的服务器上的目录（包括里面的内容）。该方法的参数为目录的路径，Zip
+		类会递归的读取它里面的内容并重建成一个 Zip 文档。指定目录下的所有文件以及子目录下的文件都会被压缩。
+		例如::
 
 			$path = '/path/to/your/directory/';
 
@@ -169,16 +163,15 @@ Class Reference
 			// Download the file to your desktop. Name it "my_backup.zip"
 			$this->zip->download('my_backup.zip');
 
-		By default the Zip archive will place all directories listed in the first parameter
-		inside the zip. If you want the tree preceding the target directory to be ignored,
-		you can pass FALSE (boolean) in the second parameter. Example::
+		默认情况下，Zip 文档中会保留第一个参数中指定的目录结构，如果你希望忽略掉这一大串的树形目录结构，
+		你可以将第二个参数设置为布尔值 FALSE 。例如::
 
 			$path = '/path/to/your/directory/';
 
 			$this->zip->read_dir($path, FALSE);
 
-		This will create a ZIP with a directory named "directory" inside, then all sub-directories
-		stored correctly inside that, but will not include the */path/to/your* part of the path.
+		上面的代码将会创建一个 Zip 文档，文档里面直接是 "directory" 目录，然后是它下面的所有的子目录，
+		不会包含 */path/to/your* 路径在里面。
 
 	.. php:method:: archive($filepath)
 
@@ -186,9 +179,8 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Writes the Zip-encoded file to a directory on your server. Submit a valid server path
-		ending in the file name. Make sure the directory is writable (755 is usually OK).
-		Example::
+		向你的服务器指定目录下写入一个 Zip 编码文档，该方法的参数为一个有效的目录路径，后加一个文件名，
+		确保这个目录是可写的（权限为 755 通常就可以了）。例如::
 
 			$this->zip->archive('/path/to/folder/myarchive.zip'); // Creates a file named myarchive.zip
 
@@ -197,22 +189,20 @@ Class Reference
 		:param	string	$filename: Archive file name
 		:rtype:	void
 
-		Causes the Zip file to be downloaded from your server.
-		You must pass the name you would like the zip file called. Example::
+		从你的服务器上下载 Zip 文档，你需要指定 Zip 文档的名称。例如::
 
 			$this->zip->download('latest_stuff.zip'); // File will be named "latest_stuff.zip"
 
-		.. note:: Do not display any data in the controller in which you call
-			this method since it sends various server headers that cause the
-			download to happen and the file to be treated as binary.
+		.. note:: 在调用这个方法的控制器里不要显示任何数据，因为这个方法会发送多个服务器 HTTP 头，
+			让文件以二进制的格式被下载。
 
 	.. php:method:: get_zip()
 
 		:returns:	Zip file content
 		:rtype:	string
 
-		Returns the Zip-compressed file data. Generally you will not need this method unless you
-		want to do something unique with the data. Example::
+		返回使用 Zip 编码压缩后的文件数据，通常情况你无需使用该方法，除非你要对压缩后的数据做些特别的操作。
+		例如::
 
 			$name = 'my_bio.txt';
 			$data = 'I was born in an elevator...';
@@ -225,9 +215,8 @@ Class Reference
 
 		:rtype:	void
 
-		The Zip class caches your zip data so that it doesn't need to recompile the Zip archive
-		for each method you use above. If, however, you need to create multiple Zip archives,
-		each with different data, you can clear the cache between calls. Example::
+		Zip 类会缓存压缩后的数据，这样就不用在调用每个方法的时候重新压缩一遍了。但是，如果你需要创建多个 Zip
+		文档，每个 Zip 文档有着不同的数据，那么你可以在多次调用之间把缓存清除掉。例如::
 
 			$name = 'my_bio.txt';
 			$data = 'I was born in an elevator...';
