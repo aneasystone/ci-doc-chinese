@@ -1,11 +1,9 @@
 #################
-Calendaring Class
+日历类
 #################
 
-The Calendar class enables you to dynamically create calendars. Your
-calendars can be formatted through the use of a calendar template,
-allowing 100% control over every aspect of its design. In addition, you
-can pass data to your calendar cells.
+使用日历类可以让你动态的创建日历，并且可以使用日历模板来格式化显示你的日历，
+允许你 100% 的控制它设计的每个方面。另外，你还可以向日历的单元格传递数据。
 
 .. contents::
   :local:
@@ -15,47 +13,42 @@ can pass data to your calendar cells.
   <div class="custom-index container"></div>
 
 ***************************
-Using the Calendaring Class
+使用日历类
 ***************************
 
-Initializing the Class
+初始化类
 ======================
 
-Like most other classes in CodeIgniter, the Calendar class is
-initialized in your controller using the $this->load->library function::
+跟 CodeIgniter 中的其他类一样，可以在你的控制器中使用 ``$this->load->library()`` 
+方法加载日历类::
 
 	$this->load->library('calendar');
 
-Once loaded, the Calendar object will be available using::
+一旦加载，日历类就可以像下面这样使用::
 
 	$this->calendar
 
-Displaying a Calendar
+显示一个日历
 =====================
 
-Here is a very simple example showing how you can display a calendar::
+这里是一个简单的例子，告诉你如何去显示一个日历::
 
 	$this->load->library('calendar');
 	echo $this->calendar->generate();
 
-The above code will generate a calendar for the current month/year based
-on your server time. To show a calendar for a specific month and year
-you will pass this information to the calendar generating function::
+上面的代码将根据你服务器时间创建一个当前月/年的日历。要显示一个指定月和年的日历，
+你要传递这些信息到日历生成函数:
 
 	$this->load->library('calendar');
 	echo $this->calendar->generate(2006, 6);
 
-The above code will generate a calendar showing the month of June in
-2006. The first parameter specifies the year, the second parameter
-specifies the month.
+上面的代码将创建一个显示 2006 年 6 月的日历，第一个参数指定了年，第二个参数指定了月。
 
-Passing Data to your Calendar Cells
+传数据到单元格
 ===================================
 
-To add data to your calendar cells involves creating an associative
-array in which the keys correspond to the days you wish to populate and
-the array value contains the data. The array is passed to the third
-parameter of the calendar generating function. Consider this example::
+如果需要添加数据到日历的单元格中，就要创建一个关联数组，这个数组中索引是想添加数据的日期，
+数组对应的值是想添加的数据。该数组通过日历生成函数的第三个参数被传入，参考下面这个例子::
 
 	$this->load->library('calendar');
 
@@ -68,20 +61,16 @@ parameter of the calendar generating function. Consider this example::
 
 	echo $this->calendar->generate(2006, 6, $data);
 
-Using the above example, day numbers 3, 7, 13, and 26 will become links
-pointing to the URLs you've provided.
+使用上面的例子，天数为 3、7、13 和 26 将变成链接指向你提供的 URL 。
 
-.. note:: By default it is assumed that your array will contain links.
-	In the section that explains the calendar template below you'll see how
-	you can customize how data passed to your cells is handled so you can
-	pass different types of information.
+.. note:: 默认情况下，系统假定你的数组中包含了链接。在下面介绍日历模板的部分，
+	你会看到你可以自定义处理传入日历单元格的数据，所以你可以传不同类型的信息。
 
-Setting Display Preferences
+设置显示参数
 ===========================
 
-There are seven preferences you can set to control various aspects of
-the calendar. Preferences are set by passing an array of preferences in
-the second parameter of the loading function. Here is an example::
+有 8 种不同的参数可以让你设置日历的各个方面，你可以通过加载函数的第二个参数来设置参数。
+例如::
 
 	$prefs = array(
 		'start_day'    => 'saturday',
@@ -93,35 +82,27 @@ the second parameter of the loading function. Here is an example::
 
 	echo $this->calendar->generate();
 
-The above code would start the calendar on saturday, use the "long"
-month heading, and the "short" day names. More information regarding
-preferences below.
+上面的代码将显示一个日历从礼拜六开始，使用用完整的月份标题和缩写的天数格式。
+更多参数信息请看下面。
 
 ======================  =================  ============================================  ===================================================================
-Preference              Default            Options                                       Description
+参数              默认值            选项                                       描述
 ======================  =================  ============================================  ===================================================================
-**template**           	None               None                                          A string or array containing your calendar template.
-											   See the template section below.
-**local_time**        	time()             None                                          A Unix timestamp corresponding to the current time.
-**start_day**           sunday             Any week day (sunday, monday, tuesday, etc.)  Sets the day of the week the calendar should start on.
-**month_type**          long               long, short                                   Determines what version of the month name to use in the header.
-											   long = January, short = Jan.
-**day_type**            abr                long, short, abr                              Determines what version of the weekday names to use in
-											   the column headers. long = Sunday, short = Sun, abr = Su.
-**show_next_prev**      FALSE              TRUE/FALSE (boolean)                          Determines whether to display links allowing you to toggle
-											   to next/previous months. See information on this feature below.
-**next_prev_url**       controller/method  A URL                                         Sets the basepath used in the next/previous calendar links.
-**show_other_days**     FALSE              TRUE/FALSE (boolean)                          Determines whether to display days of other months that share the
-											   first or last week of the calendar month.
+**template**           	None               None                                          字符串或数组，包含了你的日历模板，见下面的模板部分。
+**local_time**        	time()             None                                          当前时间的 Unix 时间戳。
+**start_day**           sunday             Any week day (sunday, monday, tuesday, etc.)  指定每周的第一天是周几。
+**month_type**          long               long, short                                   月份的显示样式（long = January, short = Jan）
+**day_type**            abr                long, short, abr                              星期的显示样式（long = Sunday, short = Sun, abr = Su）
+**show_next_prev**      FALSE              TRUE/FALSE (boolean)                          是否显示 "上个月" 和 "下个月" 链接，见下文。
+**next_prev_url**       controller/method  A URL                                         设置 "上个月" 和 "下个月" 的链接地址。
+**show_other_days**     FALSE              TRUE/FALSE (boolean)                          是否显示第一周和最后一周相邻月份的日期。
 ======================  =================  ============================================  ===================================================================
 
 
-Showing Next/Previous Month Links
+显示下一月/上一月链接
 =================================
 
-To allow your calendar to dynamically increment/decrement via the
-next/previous links requires that you set up your calendar code similar
-to this example::
+要让你的日历通过下一月/上一月链接动态的减少/增加，可以仿照下面的例子建立你的日历::
 
 	$prefs = array(
 		'show_next_prev'  => TRUE,
@@ -132,23 +113,17 @@ to this example::
 
 	echo $this->calendar->generate($this->uri->segment(3), $this->uri->segment(4));
 
-You'll notice a few things about the above example:
+在上面的例子中，你会注意到这几点：
 
--  You must set the "show_next_prev" to TRUE.
--  You must supply the URL to the controller containing your calendar in
-   the "next_prev_url" preference. If you don't, it will be set to the current
-   *controller/method*.
--  You must supply the "year" and "month" to the calendar generating
-   function via the URI segments where they appear (Note: The calendar
-   class automatically adds the year/month to the base URL you
-   provide.).
+-  "show_next_prev" 参数必须设置为 TRUE
+-  "next_prev_url" 参数必须设置一个 URL ，如果不设置，会默认使用当前的 **控制器/方法**
+-  通过 URI 的段将 "年" 和 "月" 参数传递给日历生成函数（日历类会自动添加 "年" 和 "月" 到你提供的 URL）
 
-Creating a Calendar Template
+创建一个日历模板
 ============================
 
-By creating a calendar template you have 100% control over the design of
-your calendar. Using the string method, each component of your calendar
-will be placed within a pair of pseudo-variables as shown here::
+通过创建一个日历模板你能够 100% 的控制你的日历的设计。当使用字符串方式设置模板时，
+日历的每一部分都要被放在一对伪变量中，像下面这样：
 
 	$prefs['template'] = '
 
@@ -193,11 +168,10 @@ will be placed within a pair of pseudo-variables as shown here::
 
 	echo $this->calendar->generate();
 
-Using the array method, you will pass `key => value` pairs. You can pass as
-many or as few values as you'd like. Omitted keys will use the default values
-inherited in the calendar class.
+当使用数组方式设置模板时，你需要传递 `key => value` 键值对，你可以只设置你想设置的参数，
+其他没有设置的参数会使用日历类的默认值代替。
 
-Example::
+例子::
 
 	$prefs['template'] = array(
 		'table_open'           => '<table class="calendar">',
@@ -210,7 +184,7 @@ Example::
 	echo $this->calendar->generate();
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Calendar
@@ -221,7 +195,7 @@ Class Reference
 		:returns:	CI_Calendar instance (method chaining)
 		:rtype:	CI_Calendar
 
-		Initializes the Calendaring preferences. Accepts an associative array as input, containing display preferences.
+		初始化日历类参数，输入参数为一个关联数组，包含了日历的显示参数。
 
 	.. php:method:: generate([$year = ''[, $month = ''[, $data = array()]]])
 
@@ -231,7 +205,7 @@ Class Reference
 		:returns:	HTML-formatted calendar
 		:rtype:	string
 
-		Generate the calendar.
+		生成日历。
 
 
 	.. php:method:: get_month_name($month)
@@ -240,7 +214,7 @@ Class Reference
 		:returns:	Month name
 		:rtype:	string
 
-		Generates a textual month name based on the numeric month provided.
+		提供数字格式的月份，返回月份的名称。
 
 	.. php:method:: get_day_names($day_type = '')
 
@@ -248,10 +222,8 @@ Class Reference
 		:returns:	Array of day names
 		:rtype:	array
 
-		Returns an array of day names (Sunday, Monday, etc.) based on the type
-		provided. Options: long, short, abr. If no ``$day_type`` is provided (or
-		if an invalid type is provided) this method will return the "abbreviated"
-		style.
+		根据类型返回一个包含星期名称（Sunday、Monday 等等）的数组，类型有：long、short 和 abr 。
+		如果没有指定 ``$day_type`` 参数（或该参数无效），方法默认使用 abr（缩写） 格式。
 
 	.. php:method:: adjust_date($month, $year)
 
@@ -260,13 +232,11 @@ Class Reference
 		:returns:	An associative array containing month and year
 		:rtype:	array
 
-		This method makes sure that you have a valid month/year. For example, if
-		you submit 13 as the month, the year will increment and the month will
-		become January::
+		该方法调整日期确保日期有效。例如，如果你将月份设置为 13 ，年份将自动加 1 ，并且月份变为一月::
 
 			print_r($this->calendar->adjust_date(13, 2014));
 
-		outputs::
+		输出::
 
 			Array
 			(    
@@ -281,21 +251,19 @@ Class Reference
 		:returns:	Count of days in the specified month
 		:rtype:	int
 
-		Total days in a given month::
+		获取指定月的天数::
 
 			echo $this->calendar->get_total_days(2, 2012);
 			// 29
 
-		.. note:: This method is an alias for :doc:`Date Helper
-			<../helpers/date_helper>` function :php:func:`days_in_month()`.
+		.. note:: 该方法是 :doc:`日期辅助库 <../helpers/date_helper>` 的 :php:func:`days_in_month()` 函数的别名。
 
 	.. php:method:: default_template()
 
 		:returns:	An array of template values
 		:rtype:	array
 
-		Sets the default template. This method is used when you have not created
-		your own template.
+		默认的模板，当你没有使用你自己的模板时将会使用该方法。
 
 
 	.. php:method:: parse_template()
@@ -303,5 +271,4 @@ Class Reference
 		:returns:	CI_Calendar instance (method chaining)
 		:rtype:	CI_Calendar
 
-		Harvests the data within the template ``{pseudo-variables}`` used to
-		display the calendar.
+		解析模板中的伪变量 ``{pseudo-variables}`` 显示日历。

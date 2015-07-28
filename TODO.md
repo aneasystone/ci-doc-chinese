@@ -92,7 +92,7 @@
  - [x]    278 ./source/libraries/caching.rst
  - [x]    297 ./source/libraries/table.rst
  - [x]    305 ./source/libraries/ftp.rst
- - [ ]    306 ./source/libraries/calendar.rst
+ - [x]    306 ./source/libraries/calendar.rst
  - [ ]    308 ./source/libraries/parser.rst
  - [ ]    313 ./source/libraries/pagination.rst
  - [ ]    316 ./source/database/utilities.rst
