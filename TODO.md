@@ -88,7 +88,7 @@
  - [x]    247 ./source/libraries/user_agent.rst
  - [x]    251 ./source/libraries/config.rst
  - [x]    258 ./source/general/creating_libraries.rst
- - [ ]    263 ./source/general/compatibility_functions.rst
+ - [x]    263 ./source/general/compatibility_functions.rst
  - [ ]    278 ./source/libraries/caching.rst
  - [ ]    297 ./source/libraries/table.rst
  - [ ]    305 ./source/libraries/ftp.rst
