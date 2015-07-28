@@ -1,14 +1,11 @@
 #########
-FTP Class
+FTP 类
 #########
 
-CodeIgniter's FTP Class permits files to be transfered to a remote
-server. Remote files can also be moved, renamed, and deleted. The FTP
-class also includes a "mirroring" function that permits an entire local
-directory to be recreated remotely via FTP.
+CodeIgniter 的 FTP 类允许你传输文件至远程服务器，也可以对远程文件进行移动、重命名或删除操作。
+FTP 类还提供了一个 "镜像" 功能，允许你将你本地的一个目录通过 FTP 整个的同步到远程服务器上。
 
-.. note:: SFTP and SSL FTP protocols are not supported, only standard
-	FTP.
+.. note:: 只支持标准的 FTP 协议，不支持 SFTP 和 SSL FTP 。
 
 .. contents::
   :local:
@@ -18,25 +15,26 @@ directory to be recreated remotely via FTP.
   <div class="custom-index container"></div>
 
 **************************
-Working with the FTP Class
+使用 FTP 类
 **************************
 
-Initializing the Class
+初始化类
 ======================
 
-Like most other classes in CodeIgniter, the FTP class is initialized in
-your controller using the $this->load->library function::
+正如 CodeIgniter 中的其他类一样，在你的控制器中使用 ``$this->load->library()``
+方法来初始化 FTP 类::
 
 	$this->load->library('ftp');
 
-Once loaded, the FTP object will be available using: $this->ftp
+初始化之后，FTP 类的对象就可以这样访问::
 
-Usage Examples
+	$this->ftp
+
+使用示例
 ==============
 
-In this example a connection is opened to the FTP server, and a local
-file is read and uploaded in ASCII mode. The file permissions are set to
-755.
+在这个例子中，首先建立一个到 FTP 服务器的连接，接着读取一个本地文件然后以 ASCII 
+模式上传到服务器上。文件的权限被设置为 755 。
 ::
 
 	$this->load->library('ftp');
@@ -52,7 +50,7 @@ file is read and uploaded in ASCII mode. The file permissions are set to
 
 	$this->ftp->close();
 
-In this example a list of files is retrieved from the server.
+下面的例子从 FTP 服务器上获取文件列表。
 ::
 
 	$this->load->library('ftp');
@@ -70,7 +68,7 @@ In this example a list of files is retrieved from the server.
 
 	$this->ftp->close();
 
-In this example a local directory is mirrored on the server.
+下面的例子在 FTP 服务器上创建了一个本地目录的镜像。
 ::
 
 	$this->load->library('ftp');
@@ -87,7 +85,7 @@ In this example a local directory is mirrored on the server.
 	$this->ftp->close();
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_FTP
@@ -98,11 +96,9 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Connects and logs into to the FTP server. Connection preferences are set
-		by passing an array to the function, or you can store them in a config
-		file.
+		连接并登录到 FTP 服务器，通过向函数传递一个数组来设置连接参数，或者你可以把这些参数保存在一个配置文件中。
 
-		Here is an example showing how you set preferences manually::
+		下面例子演示了如何手动设置参数::
 
 			$this->load->library('ftp');
 
@@ -115,24 +111,23 @@ Class Reference
 
 			$this->ftp->connect($config);
 
-		**Setting FTP Preferences in a Config File**
+		**在配置文件中设置 FTP 参数**
 
-		If you prefer you can store your FTP preferences in a config file.
-		Simply create a new file called the ftp.php, add the $config array in
-		that file. Then save the file at *application/config/ftp.php* and it
-		will be used automatically.
+		如果你喜欢，你可以把 FTP 参数保存在一个配置文件中，只需创建一个名为 ftp.php 的文件，
+		然后把 $config 数组添加到该文件中，然后将文件保存到 *application/config/ftp.php* ，
+		它就会自动被读取。
 
-		**Available connection options**
+		**可用的连接选项**
 
 		============== =============== =============================================================================
-		Option name    Default value   Description
+		选项名称    默认值   描述
 		============== =============== =============================================================================
-		**hostname**   n/a             FTP hostname (usually something like: ftp.example.com)
-		**username**   n/a             FTP username
-		**password**   n/a             FTP password
-		**port**       21              FTP server port number
-		**debug**      FALSE           TRUE/FALSE (boolean): Whether to enable debugging to display error messages
-		**passive**    TRUE            TRUE/FALSE (boolean): Whether to use passive mode
+		**hostname**   n/a             FTP 主机名（通常类似于这样：ftp.example.com）
+		**username**   n/a             FTP 用户名
+		**password**   n/a             FTP 密码
+		**port**       21              FTP 服务端口
+		**debug**      FALSE           TRUE/FALSE (boolean): 是否开启调试模式，显示错误信息
+		**passive**    TRUE            TRUE/FALSE (boolean): 是否使用被动模式
 		============== =============== =============================================================================
 
 	.. php:method:: upload($locpath, $rempath[, $mode = 'auto'[, $permissions = NULL]])
@@ -144,15 +139,13 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Uploads a file to your server. You must supply the local path and the
-		remote path, and you can optionally set the mode and permissions.
-		Example::
+		将一个文件上传到你的服务器上。必须指定本地路径和远程路径这两个参数，而传输模式和权限设置这两个参数则是可选的。例如:
 
 			$this->ftp->upload('/local/path/to/myfile.html', '/public_html/myfile.html', 'ascii', 0775);
 
-		If 'auto' mode is used it will base the mode on the file extension of the source file.
+		如果使用了 auto 模式，将根据源文件的扩展名来自动选择传输模式。
 
-		If set, permissions have to be passed as an octal value.
+		设置权限必须使用一个 八进制 的权限值。
 
 	.. php:method:: download($rempath, $locpath[, $mode = 'auto'])
 
@@ -162,15 +155,13 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Downloads a file from your server. You must supply the remote path and
-		the local path, and you can optionally set the mode. Example::
+		从你的服务器下载一个文件。必须指定远程路径和本地路径，传输模式是可选的。例如：
 
 			$this->ftp->download('/public_html/myfile.html', '/local/path/to/myfile.html', 'ascii');
 
-		If 'auto' mode is used it will base the mode on the file extension of the source file.
+		如果使用了 auto 模式，将根据源文件的扩展名来自动选择传输模式。
 
-		Returns FALSE if the download does not execute successfully
-		(including if PHP does not have permission to write the local file).
+		如果下载失败（包括 PHP 没有写入本地文件的权限）函数将返回 FALSE 。
 
 	.. php:method:: rename($old_file, $new_file[, $move = FALSE])
 
@@ -180,7 +171,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Permits you to rename a file. Supply the source file name/path and the new file name/path.
+		允许你重命名一个文件。需要指定原文件的文件路径和名称，以及新的文件路径和名称。
 		::
 
 			// Renames green.html to blue.html
@@ -193,12 +184,12 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Lets you move a file. Supply the source and destination paths::
+		允许你移动一个文件。需要指定原路径和目的路径::
 
 			// Moves blog.html from "joe" to "fred"
 			$this->ftp->move('/public_html/joe/blog.html', '/public_html/fred/blog.html');
 
-		.. note:: If the destination file name is different the file will be renamed.
+		.. note:: 如果目的文件名和原文件名不同，文件将会被重命名。
 
 	.. php:method:: delete_file($filepath)
 
@@ -206,7 +197,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Lets you delete a file. Supply the source path with the file name.
+		用于删除一个文件。需要提供原文件的路径。
 		::
 
 			 $this->ftp->delete_file('/public_html/joe/blog.html');
@@ -217,13 +208,11 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Lets you delete a directory and everything it contains. Supply the
-		source path to the directory with a trailing slash.
+		用于删除一个目录以及该目录下的所有文件。需要提供目录的路径（以斜线结尾）。
 
-		.. important:: Be VERY careful with this method!
-			It will recursively delete **everything** within the supplied path,
-			including sub-folders and all files. Make absolutely sure your path
-			is correct. Try using ``list_files()`` first to verify that your path is correct.
+		.. important:: 使用该方法要非常小心！
+			它会递归的删除目录下的所有内容，包括子目录和所有文件。请确保你提供的路径是正确的。
+			你可以先使用 ``list_files()`` 方法来验证下路径是否正确。
 
 		::
 
@@ -235,8 +224,7 @@ Class Reference
 		:returns:	An array list of files or FALSE on failure
 		:rtype:	array
 
-		Permits you to retrieve a list of files on your server returned as an
-		array. You must supply the path to the desired directory.
+		用于获取服务器上某个目录的文件列表，你需要指定目录路径。
 		::
 
 			$list = $this->ftp->list_files('/public_html/');
@@ -249,10 +237,8 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Recursively reads a local folder and everything it contains (including
-		sub-folders) and creates a mirror via FTP based on it. Whatever the
-		directory structure of the original file path will be recreated on the
-		server. You must supply a source path and a destination path::
+		递归的读取文本的一个目录和它下面的所有内容（包括子目录），然后通过 FTP 在远程服务器上创建一个镜像。
+		无论原文件的路径和目录结构是什么样的，都会在远程服务器上一模一样的重建。你需要指定一个原路径和目的路径::
 
 			 $this->ftp->mirror('/path/to/myfolder/', '/public_html/myfolder/');
 
@@ -263,10 +249,9 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Lets you create a directory on your server. Supply the path ending in
-		the folder name you wish to create, with a trailing slash.
+		用于在服务器上创建一个目录。需要指定目录的路径并以斜线结尾。
 
-		Permissions can be set by passing an octal value in the second parameter.
+		还可以通过第二个参数传递一个 八进制的值 设置权限。
 		::
 
 			// Creates a folder named "bar"
@@ -279,8 +264,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Permits you to set file permissions. Supply the path to the file or
-		directory you wish to alter permissions on::
+		用于设置文件权限。需要指定你想修改权限的文件或目录的路径::
 
 			// Chmod "bar" to 755
 			$this->ftp->chmod('/public_html/foo/bar/', 0755);
@@ -292,15 +276,13 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Changes the current working directory to the specified path.
+		用于修改当前工作目录到指定路径。
 
-		The ``$suppress_debug`` parameter is useful in case you want to use this method
-		as an ``is_dir()`` alternative for FTP.
+		如果你希望使用这个方法作为 ``is_dir()`` 的一个替代，``$suppress_debug`` 参数将很有用。
 
 	.. php:method:: close()
 
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Closes the connection to your server. It's recommended that you use this
-		when you are finished uploading.
+		断开和服务器的连接。当你上传完毕时，建议使用这个函数。
