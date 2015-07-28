@@ -90,7 +90,7 @@
  - [x]    258 ./source/general/creating_libraries.rst
  - [x]    263 ./source/general/compatibility_functions.rst
  - [x]    278 ./source/libraries/caching.rst
- - [ ]    297 ./source/libraries/table.rst
+ - [x]    297 ./source/libraries/table.rst
  - [ ]    305 ./source/libraries/ftp.rst
  - [ ]    306 ./source/libraries/calendar.rst
  - [ ]    308 ./source/libraries/parser.rst
