@@ -1,27 +1,23 @@
 ###########
-Controllers
+控制器
 ###########
 
-Controllers are the heart of your application, as they determine how
-HTTP requests should be handled.
+控制器是你整个应用的核心，因为它们决定了 HTTP 请求将被如何处理。
 
 .. contents:: Page Contents
 
-What is a Controller?
+什么是控制器？
 =====================
 
-**A Controller is simply a class file that is named in a way that can be
-associated with a URI.**
+**简单来说，控制器就是一个类文件，它的命名和 URI 有着一定的联系。**
 
-Consider this URI::
+考虑下面的 URL ::
 
 	example.com/index.php/blog/
 
-In the above example, CodeIgniter would attempt to find a controller
-named Blog.php and load it.
+上例中，CodeIgniter 将会尝试查询一个名为 Blog.php 的控制器并加载它。
 
-**When a controller's name matches the first segment of a URI, it will
-be loaded.**
+**当控制器的名称和 URI 的第一段匹配上时，它将会被加载。**
 
 Let's try it: Hello World!
 ==========================
