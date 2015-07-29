@@ -1,16 +1,13 @@
 ################
-Javascript Class
+Javascript 类
 ################
 
-CodeIgniter provides a library to help you with certain common functions
-that you may want to use with Javascript. Please note that CodeIgniter
-does not require the jQuery library to run, and that any scripting
-library will work equally well. The jQuery library is simply presented
-as a convenience if you choose to use it.
+CodeIgniter 提供一个类库和一些共用的方法来处理 Javascript 。要注意的是，
+CodeIgniter 并不是只能用于 jQuery ，其他脚本库也可以。JQuery 仅仅是
+作为一个方便的工具，如果你选择使用它的话。
 
-.. important:: This library is DEPRECATED and should not be used. It has always
-	been with an 'experimental' status and is now no longer supported.
-	Currently only kept for backwards compatibility.
+.. important:: 这个类库已经废弃，不要使用它。它将永远处于 "实验" 版本，
+	而且现在也已经不提供支持了。保留它只是为了向前兼容。
 
 .. contents::
   :local:
@@ -20,25 +17,23 @@ as a convenience if you choose to use it.
   <div class="custom-index container"></div>
 
 **************************
-Using the Javascript Class
+使用 Javascript 类
 **************************
 
-Initializing the Class
+初始化类
 ======================
 
-To initialize the Javascript class manually in your controller
-constructor, use the ``$this->load->library()`` method. Currently,
-the only available library is jQuery, which will automatically be
-loaded like this::
+要初始化 Javascript 类，你可以在控制器的构造函数中使用 ``$this->load->library()``
+函数。目前，唯一可用的库是 jQuery ，可以使用下面的方法加载::
 
 	$this->load->library('javascript');
 
-The Javascript class also accepts parameters:
+Javascript 类也可以接受参数：
 
 - js_library_driver (string) *default: 'jquery'*
 - autoload (bool) *default: TRUE*
 
-You may override the defaults by sending an associative array::
+你可以通过一个关联数组覆盖默认的参数::
 
 	$this->load->library(
 		'javascript',
@@ -48,107 +43,90 @@ You may override the defaults by sending an associative array::
 		)
 	);
 
-Again, presently only 'jquery' is available. You may wish to set
-autoload to FALSE, though, if you do not want the jQuery library to
-automatically include a script tag for the main jQuery script file. This
-is useful if you are loading it from a location outside of CodeIgniter,
-or already have the script tag in your markup.
+再次说明，目前只有 jQuery 是可用的，如果你不想让 jQuery 脚本文件自动的包含在
+script 标签中，你可以设置 autoload 参数为 FALSE 。这在当你在 CodeIgniter 之外
+加载它时，或者 script 标签已经有了的时候很有用。
 
-Once loaded, the jQuery library object will be available using:
+一旦加载完成，jQuery 类对象就可以通过下面的方式使用::
 
 	$this->javascript
 
-Setup and Configuration
+初始化配置
 =======================
 
-Set these variables in your view
+在视图文件中设置变量
 --------------------------------
 
-As a Javascript library, your files must be available to your
-application.
+作为一个 Javascript 库，源文件必须能被应用程序访问到。
 
-As Javascript is a client side language, the library must be able to
-write content into your final output. This generally means a view.
-You'll need to include the following variables in the ``<head>``
-sections of your output.
+由于 Javascript 是一种客户端语言，库必须能写入内容到最终的输出中去，
+这通常就是视图。你需要在输出的 ``<head>`` 中包含下面的变量。
 
 ::
 
 	<?php echo $library_src;?>
 	<?php echo $script_head;?>
 
+``$library_src`` 是要载入的库文件的路径，以及之后所有插件脚本的路径；
+``$script_head`` 是需要显示的具体的一些事件、函数和其他的命令。
 
-``$library_src``, is where the actual library file will be loaded, as
-well as any subsequent plugin script calls; $script_head is where
-specific events, functions and other commands will be rendered.
-
-Set the path to the librarys with config items
+设置库路径
 ----------------------------------------------
 
-There are some configuration items in Javascript library. These can
-either be set in *application/config.php*, within its own
-*config/javascript.php* file, or within any controller usings the
-``set_item()`` function.
+在 Javascript 类库中有一些配置项，它们可以在 *application/config.php* 文件中
+设置，也可以在它们自己的配置文件 *config/javascript.php* 中设置，还可以通过
+在控制器中使用 ``set_item()`` 方法来设置。
 
-An image to be used as an "ajax loader", or progress indicator. Without
-one, the simple text message of "loading" will appear when Ajax calls
-need to be made.
+例如，有一个 "加载中" 的图片，或者进度条指示，如果没有它的话，当调用 Ajax 请求时，
+将会显示 "加载中" 这样的文本。
 
 ::
 
 	$config['javascript_location'] = 'http://localhost/codeigniter/themes/js/jquery/';
 	$config['javascript_ajax_img'] = 'images/ajax-loader.gif';
 
-If you keep your files in the same directories they were downloaded
-from, then you need not set this configuration items.
+如果你把文件留在与图片下载路径相同的目录里，那么你不需要设置这个配置项。
 
-The jQuery Class
+jQuery 类
 ================
 
-To initialize the jQuery class manually in your controller constructor,
-use the ``$this->load->library()`` method::
+要在你的控制器构造函数中手工初始化 jQuery 类，使用 ``$this->load->library()`` 方法::
 
 	$this->load->library('javascript/jquery');
 
-You may send an optional parameter to determine whether or not a script
-tag for the main jQuery file will be automatically included when loading
-the library. It will be created by default. To prevent this, load the
-library as follows::
+你可以提供一个可选的参数来决定加载该库时是否将其自动包含到 script 标签中。
+默认情况下会包含，如果不需要，可以像下面这样来加载::
 
 	$this->load->library('javascript/jquery', FALSE);
 
-Once loaded, the jQuery library object will be available using:
+加载完成后，jQuery 类对象可以使用下面的代码来访问::
 
 	$this->jquery
 
-jQuery Events
+jQuery 事件
 =============
 
-Events are set using the following syntax.
+使用下面的语法来设置事件。
 ::
 
 	$this->jquery->event('element_path', code_to_run());
 
-In the above example:
+在上面的例子中：
 
--  "event" is any of blur, change, click, dblclick, error, focus, hover,
-   keydown, keyup, load, mousedown, mouseup, mouseover, mouseup, resize,
-   scroll, or unload.
--  "element_path" is any valid `jQuery selector
-   <http://api.jquery.com/category/selectors/>`_. Due to jQuery's unique
-   selector syntax, this is usually an element id, or CSS selector. For
-   example "#notice_area" would effect ``<div id="notice_area">``, and
-   "#content a.notice" would effect all anchors with a class of "notice"
-   in the div with id "content".
--  "``code_to_run()``" is script your write yourself, or an action such as
-   an effect from the jQuery library below.
+-  "event" 可以是 blur、change、click、dblclick、error、focus、hover、
+   keydown、keyup、load、mousedown、mouseup、mouseover、mouseup、resize、
+   scroll 或者 unload 中的任何一个事件。
+-  "element_path" 可以是任何的 `jQuery 选择器 <http://api.jquery.com/category/selectors/>`_ 。
+   使用 jQuery 独特的选择器语法，通常是一个元素 ID 或 CSS 选择器。例如，"#notice_area" 
+   会影响到 ``<div id="notice_area">`` ，"#content a.notice" 会影响到 ID 为 "content"
+   的元素下的所有 class 为 "notice" 的链接。
+-  "``code_to_run()``" 为你自己写的脚本，或者是一个 jQuery 动作，譬如下面所介绍的特效。
 
-Effects
+特效
 =======
 
-The query library supports a powerful
-`Effects <http://api.jquery.com/category/effects/>`_ repertoire. Before an effect
-can be used, it must be loaded::
+jQuery 库支持很多强大的 `特效 <http://api.jquery.com/category/effects/>`_ ，在使用特效之前，
+必须使用下面的方法加载::
 
 	$this->jquery->effect([optional path] plugin name); // for example $this->jquery->effect('bounce');
 
@@ -156,8 +134,7 @@ can be used, it must be loaded::
 hide() / show()
 ---------------
 
-Each of this functions will affect the visibility of an item on your
-page. hide() will set an item invisible, show() will reveal it.
+这两个函数会影响你的页面上元素的可见性，hide() 函数用于将元素隐藏，show() 则相反。
 
 ::
 
@@ -165,24 +142,21 @@ page. hide() will set an item invisible, show() will reveal it.
 	$this->jquery->show(target, optional speed, optional extra information);
 
 
--  "target" will be any valid jQuery selector or selectors.
--  "speed" is optional, and is set to either slow, normal, fast, or
-   alternatively a number of milliseconds.
--  "extra information" is optional, and could include a callback, or
-   other additional information.
+-  "target" 是任何有效的 jQuery 选择器。
+-  "speed" 可选，可以设置为 slow、normal、fast 或你自己设置的毫秒数。
+-  "extra information" 可选，可以包含一个回调，或者其他的附加信息。
 
 toggle()
 --------
 
-toggle() will change the visibility of an item to the opposite of its
-current state, hiding visible elements, and revealing hidden ones.
+toggle() 用于将元素的可见性改成和当前的相反，将可见的元素隐藏，将隐藏的元素可见。
 
 ::
 
 	$this->jquery->toggle(target);
 
 
--  "target" will be any valid jQuery selector or selectors.
+-  "target" 是任何有效的 jQuery 选择器。
 
 animate()
 ---------
@@ -192,19 +166,15 @@ animate()
 	 $this->jquery->animate(target, parameters, optional speed, optional extra information);
 
 
--  "target" will be any valid jQuery selector or selectors.
--  "parameters" in jQuery would generally include a series of CSS
-   properties that you wish to change.
--  "speed" is optional, and is set to either slow, normal, fast, or
-   alternatively a number of milliseconds.
--  "extra information" is optional, and could include a callback, or
-   other additional information.
+-  "target" 是任何有效的 jQuery 选择器。
+-  "parameters" 通常是你想改变元素的一些 CSS 属性。
+-  "speed" 可选，可以设置为 slow、normal、fast 或你自己设置的毫秒数。
+-  "extra information" 可选，可以包含一个回调，或者其他的附加信息。
 
-For a full summary, see
-`http://api.jquery.com/animate/ <http://api.jquery.com/animate/>`_
+更完整的说明，参见 `http://api.jquery.com/animate/ <http://api.jquery.com/animate/>`_
 
-Here is an example of an animate() called on a div with an id of "note",
-and triggered by a click using the jQuery library's click() event.
+下面是个在 ID 为 "note" 的一个 div 上使用 animate() 的例子，它使用了 jQuery 库的 click 事件，
+通过 click 事件触发。
 
 ::
 
@@ -215,39 +185,23 @@ and triggered by a click using the jQuery library's click() event.
 	);
 	$this->jquery->click('#trigger', $this->jquery->animate('#note', $params, 'normal'));
 
-fadeIn() / fadeOut()
---------------------
-
-::
-
-	$this->jquery->fadeIn(target,  optional speed, optional extra information);
-	$this->jquery->fadeOut(target,  optional speed, optional extra information);
-
-
--  "target" will be any valid jQuery selector or selectors.
--  "speed" is optional, and is set to either slow, normal, fast, or
-   alternatively a number of milliseconds.
--  "extra information" is optional, and could include a callback, or
-   other additional information.
-
 toggleClass()
 -------------
 
-This function will add or remove a CSS class to its target.
+该函数用于往目标元素添加或移除一个 CSS 类。
 
 ::
 
 	$this->jquery->toggleClass(target, class)
 
 
--  "target" will be any valid jQuery selector or selectors.
--  "class" is any CSS classname. Note that this class must be defined
-   and available in a CSS that is already loaded.
+-  "target" 是任何有效的 jQuery 选择器。
+-  "class" 是任何 CSS 类名，注意这个类必须是在某个已加载的 CSS 文件中定义的。
 
 fadeIn() / fadeOut()
 --------------------
 
-These effects cause an element(s) to disappear or reappear over time.
+这两个特效会使某个元素渐变的隐藏和显示。
 
 ::
 
@@ -255,16 +209,14 @@ These effects cause an element(s) to disappear or reappear over time.
 	$this->jquery->fadeOut(target,  optional speed, optional extra information);
 
 
--  "target" will be any valid jQuery selector or selectors.
--  "speed" is optional, and is set to either slow, normal, fast, or
-   alternatively a number of milliseconds.
--  "extra information" is optional, and could include a callback, or
-   other additional information.
+-  "target" 是任何有效的 jQuery 选择器。
+-  "speed" 可选，可以设置为 slow、normal、fast 或你自己设置的毫秒数。
+-  "extra information" 可选，可以包含一个回调，或者其他的附加信息。
 
 slideUp() / slideDown() / slideToggle()
 ---------------------------------------
 
-These effects cause an element(s) to slide.
+这些特效可以让元素滑动。
 
 ::
 
@@ -273,21 +225,19 @@ These effects cause an element(s) to slide.
 	$this->jquery->slideToggle(target,  optional speed, optional extra information);
 
 
--  "target" will be any valid jQuery selector or selectors.
--  "speed" is optional, and is set to either slow, normal, fast, or
-   alternatively a number of milliseconds.
--  "extra information" is optional, and could include a callback, or
-   other additional information.
+-  "target" 是任何有效的 jQuery 选择器。
+-  "speed" 可选，可以设置为 slow、normal、fast 或你自己设置的毫秒数。
+-  "extra information" 可选，可以设置为 slow、normal、fast 或你自己设置的毫秒数。
 
-Plugins
+插件
 =======
 
-Some select jQuery plugins are made available using this library.
+使用这个库时还有几个 jQuery 插件可用。
 
 corner()
 --------
 
-Used to add distinct corners to page elements. For full details see
+用于在页面的某个元素四周添加不同样式的边角。更多详细信息，参考
 `http://malsup.com/jquery/corner/ <http://malsup.com/jquery/corner/>`_
 
 ::
@@ -295,11 +245,11 @@ Used to add distinct corners to page elements. For full details see
 	$this->jquery->corner(target, corner_style);
 
 
--  "target" will be any valid jQuery selector or selectors.
--  "corner_style" is optional, and can be set to any valid style such
-   as round, sharp, bevel, bite, dog, etc. Individual corners can be set
-   by following the style with a space and using "tl" (top left), "tr"
-   (top right), "bl" (bottom left), or "br" (bottom right).
+-  "target" 是任何有效的 jQuery 选择器。
+-  "corner_style" 可选，可以设置为任何有效的样式，譬如：
+   round、sharp、bevel、bite、dog 等。如果只想设置某个边角的样式，
+   可以在样式后添加一个空格，然后使用 "tl" （左上），"tr" （右上），
+   "bl" （左下），和 "br" （右下）。
 
 ::
 
@@ -309,14 +259,14 @@ Used to add distinct corners to page elements. For full details see
 tablesorter()
 -------------
 
-description to come
+待添加
 
 modal()
 -------
 
-description to come
+待添加
 
 calendar()
 ----------
 
-description to come
+待添加

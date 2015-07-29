@@ -96,7 +96,7 @@
  - [x]    308 ./source/libraries/parser.rst
  - [x]    313 ./source/libraries/pagination.rst
  - [x]    316 ./source/database/utilities.rst
- - [ ]    321 ./source/libraries/javascript.rst
+ - [x]    321 ./source/libraries/javascript.rst
  - [ ]    335 ./source/general/controllers.rst
  - [ ]    338 ./source/libraries/trackback.rst
  - [ ]    355 ./source/libraries/file_uploading.rst
