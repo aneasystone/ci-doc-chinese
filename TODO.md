@@ -94,7 +94,7 @@
  - [x]    305 ./source/libraries/ftp.rst
  - [x]    306 ./source/libraries/calendar.rst
  - [x]    308 ./source/libraries/parser.rst
- - [ ]    313 ./source/libraries/pagination.rst
+ - [x]    313 ./source/libraries/pagination.rst
  - [ ]    316 ./source/database/utilities.rst
  - [ ]    321 ./source/libraries/javascript.rst
  - [ ]    335 ./source/general/controllers.rst

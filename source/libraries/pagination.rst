@@ -1,9 +1,9 @@
 ################
-Pagination Class
+分页类
 ################
 
-CodeIgniter's Pagination class is very easy to use, and it is 100%
-customizable, either dynamically or via stored preferences.
+CodeIgniter 的分页类非常容易使用，而且它 100% 可定制，可以通过动态的参数，
+也可以通过保存在配置文件中的参数。
 
 .. contents::
   :local:
@@ -12,17 +12,15 @@ customizable, either dynamically or via stored preferences.
 
   <div class="custom-index container"></div>
 
-If you are not familiar with the term "pagination", it refers to links
-that allows you to navigate from page to page, like this::
+如果你还不熟悉 "分页" 这个词，它指的是用于你在页面之间进行导航的链接。像下面这样::
 
 	« First  < 1 2 3 4 5 >  Last »
 
 *******
-Example
+例子
 *******
 
-Here is a simple example showing how to create pagination in one of your
-:doc:`controller <../general/controllers>` methods::
+下面是一个简单的例子，如何在你的 :doc:`控制器 <../general/controllers>` 方法中创建分页::
 
 	$this->load->library('pagination');
 
@@ -34,266 +32,228 @@ Here is a simple example showing how to create pagination in one of your
 
 	echo $this->pagination->create_links();
 
-Notes
+说明
 =====
 
-The ``$config`` array contains your configuration variables. It is passed to
-the ``$this->pagination->initialize()`` method as shown above. Although
-there are some twenty items you can configure, at minimum you need the
-three shown. Here is a description of what those items represent:
+如上所示，``$config`` 数组包含了你的配置参数，被传递到 ``$this->pagination->initialize()`` 方法。
+另外还有二十几个配置参数你可以选择，但是最少你只需要这三个配置参数。下面是这几个参数的含义：
 
--  **base_url** This is the full URL to the controller class/function
-   containing your pagination. In the example above, it is pointing to a
-   controller called "Test" and a function called "page". Keep in mind
-   that you can :doc:`re-route your URI <../general/routing>` if you
-   need a different structure.
--  **total_rows** This number represents the total rows in the result
-   set you are creating pagination for. Typically this number will be
-   the total rows that your database query returned.
--  **per_page** The number of items you intend to show per page. In the
-   above example, you would be showing 20 items per page.
+-  **base_url** 这是一个指向你的分页所在的控制器类/方法的完整的 URL ，在上面的这个例子里，
+   它指向了一个叫 "Test" 的控制器和它的一个叫 "Page" 的方法。记住，如果你需要一个不同格式的 URL ，
+   你可以 :doc:`重新路由 <../general/routing>` 。
+-  **total_rows** 这个数字表示你需要做分页的数据的总行数。通常这个数值是你查询数据库得到的数据总量。
+-  **per_page** 这个数字表示每个页面中希望展示的数量，在上面的那个例子中，每页显示 20 个项目。
 
-The ``create_links()`` method returns an empty string when there is no
-pagination to show.
+当你没有分页需要显示时，``create_links()`` 方法会返回一个空的字符串。
 
-Setting preferences in a config file
+在配置文件中设置参数
 ====================================
 
-If you prefer not to set preferences using the above method, you can
-instead put them into a config file. Simply create a new file called
-pagination.php, add the ``$config`` array in that file. Then save the file
-in *application/config/pagination.php* and it will be used automatically.
-You will NOT need to use ``$this->pagination->initialize()`` if you save
-your preferences in a config file.
+如果你不喜欢用以上的方法进行参数设置，你可以将参数保存到配置文件中。
+简单地创建一个名为 pagination.php 的文件，把 $config 数组加到这个文件中，
+然后将文件保存到 *application/config/pagination.php* 。这样它就可以自动被调用。
+用这个方法，你不再需要使用 ``$this->pagination->initialize`` 方法。
 
 **************************
-Customizing the Pagination
+自定义分页
 **************************
 
-The following is a list of all the preferences you can pass to the
-initialization function to tailor the display.
+下面是所有的参数列表，可以传递给 initialization 方法来定制你喜欢的显示效果。
 
 **$config['uri_segment'] = 3;**
 
-The pagination function automatically determines which segment of your
-URI contains the page number. If you need something different you can
-specify it.
+分页方法自动检测你 URI 的哪一段包含页数，如果你的情况不一样，你可以明确指定它。
 
 **$config['num_links'] = 2;**
 
-The number of "digit" links you would like before and after the selected
-page number. For example, the number 2 will place two digits on either
-side, as in the example links at the very top of this page.
+放在你当前页码的前面和后面的“数字”链接的数量。比方说值为 2 就会在每一边放置两个数字链接，
+就像此页顶端的示例链接那样。
 
 **$config['use_page_numbers'] = TRUE;**
 
-By default, the URI segment will use the starting index for the items
-you are paginating. If you prefer to show the the actual page number,
-set this to TRUE.
+默认分页的 URL 中显示的是你当前正在从哪条记录开始分页，如果你希望显示实际的页数，将该参数设置为 TRUE 。
 
 **$config['page_query_string'] = TRUE;**
 
-By default, the pagination library assume you are using :doc:`URI
-Segments <../general/urls>`, and constructs your links something
-like::
+默认情况下，分页类假设你使用 :doc:`URI 段 <../general/urls>` ，并像这样构造你的链接：
 
 	http://example.com/index.php/test/page/20
 
-If you have ``$config['enable_query_strings']`` set to TRUE your links
-will automatically be re-written using Query Strings. This option can
-also be explictly set. Using ``$config['page_query_string']`` set to TRUE,
-the pagination link will become::
+如果你把 ``$config['enable_query_strings']`` 设置为 TRUE，你的链接将自动地被重写成查询字符串格式。
+这个选项也可以被明确地设置，把 ``$config['page_query_string']`` 设置为 TRUE，分页链接将变成：
 
 	http://example.com/index.php?c=test&m=page&per_page=20
 
-Note that "per_page" is the default query string passed, however can be
-configured using ``$config['query_string_segment'] = 'your_string'``
+请注意，"per_page" 是默认传递的查询字符串，但也可以使用 ``$config['query_string_segment'] = '你的字符串'``
+来配置。
 
 **$config['reuse_query_string'] = FALSE;**
 
-By default your Query String arguments (nothing to do with other
-query string options) will be ignored. Setting this config to
-TRUE will add existing query string arguments back into the
-URL after the URI segment and before the suffix.::
+默认情况下你的查询字符串参数会被忽略，将这个参数设置为 TRUE ，将会将查询字符串参数添加到 URI 分段的后面
+以及 URL 后缀的前面。::
 
 	http://example.com/index.php/test/page/20?query=search%term
 
-This helps you mix together normal :doc:`URI Segments <../general/urls>`
-as well as query string arguments, which until 3.0 was not possible.
+这可以让你混合使用 :doc:`URI 分段 <../general/urls>` 和 查询字符串参数，这在 3.0 之前的版本中是不行的。
 
 **$config['prefix'] = '';**
 
-A custom prefix added to the path. The prefix value will be right before
-the offset segment.
+给路径添加一个自定义前缀，前缀位于偏移段的前面。
 
 **$config['suffix'] = '';**
 
-A custom suffix added to the path. The sufix value will be right after
-the offset segment.
+给路径添加一个自定义后缀，后缀位于偏移段的后面。
 
 **$config['use_global_url_suffix'] = FALSE;**
 
-When set to TRUE, it will **override** the ``$config['suffix']`` value and
-instead set it to the one that you have in ``$config['url_suffix']`` in
-your **application/config/config.php** file.
+当该参数设置为 TRUE 时，会使用 **application/config/config.php** 配置文件中定义的 ``$config['url_suffix']`` 参数
+**重写** ``$config['suffix']`` 的值。
 
 ***********************
-Adding Enclosing Markup
+添加封装标签
 ***********************
 
-If you would like to surround the entire pagination with some markup you
-can do it with these two preferences:
+如果你希望在整个分页的周围用一些标签包起来，你可以通过下面这两个参数：
 
 **$config['full_tag_open'] = '<p>';**
 
-The opening tag placed on the left side of the entire result.
+起始标签放在所有结果的左侧。
 
 **$config['full_tag_close'] = '</p>';**
 
-The closing tag placed on the right side of the entire result.
+结束标签放在所有结果的右侧。
 
 **************************
-Customizing the First Link
+自定义第一个链接
 **************************
 
 **$config['first_link'] = 'First';**
 
-The text you would like shown in the "first" link on the left. If you do
-not want this link rendered, you can set its value to FALSE.
+左边第一个链接显示的文本，如果你不想显示该链接，将其设置为 FALSE 。
 
-.. note:: This value can also be translated via a language file.
+.. note:: 该参数的值也可以通过语言文件来翻译。
 
 **$config['first_tag_open'] = '<div>';**
 
-The opening tag for the "first" link.
+第一个链接的起始标签。
 
 **$config['first_tag_close'] = '</div>';**
 
-The closing tag for the "first" link.
+第一个链接的结束标签。
 
 **$config['first_url'] = '';**
 
-An alternative URL to use for the "first page" link.
+可以为第一个链接设置一个自定义的 URL 。
 
 *************************
-Customizing the Last Link
+自定义最后一个链接
 *************************
 
 **$config['last_link'] = 'Last';**
 
-The text you would like shown in the "last" link on the right. If you do
-not want this link rendered, you can set its value to FALSE.
+右边最后一个链接显示的文本，如果你不想显示该链接，将其设置为 FALSE 。
 
-.. note:: This value can also be translated via a language file.
+.. note:: 该参数的值也可以通过语言文件来翻译。
 
 **$config['last_tag_open'] = '<div>';**
 
-The opening tag for the "last" link.
+最后一个链接的起始标签。
 
 **$config['last_tag_close'] = '</div>';**
 
-The closing tag for the "last" link.
+最后一个链接的结束标签。
 
 ***************************
-Customizing the "Next" Link
+自定义下一页链接
 ***************************
 
 **$config['next_link'] = '&gt;';**
 
-The text you would like shown in the "next" page link. If you do not
-want this link rendered, you can set its value to FALSE.
+下一页链接显示的文本，如果你不想显示该链接，将其设置为 FALSE 。
 
-.. note:: This value can also be translated via a language file.
+.. note:: 该参数的值也可以通过语言文件来翻译。
 
 **$config['next_tag_open'] = '<div>';**
 
-The opening tag for the "next" link.
+下一页链接的起始标签。
 
 **$config['next_tag_close'] = '</div>';**
 
-The closing tag for the "next" link.
+下一页链接的结束标签。
 
 *******************************
-Customizing the "Previous" Link
+自定义上一页链接
 *******************************
 
 **$config['prev_link'] = '&lt;';**
 
-The text you would like shown in the "previous" page link. If you do not
-want this link rendered, you can set its value to FALSE.
+上一页链接显示的文本，如果你不想显示该链接，将其设置为 FALSE 。
 
-.. note:: This value can also be translated via a language file.
+.. note:: 该参数的值也可以通过语言文件来翻译。
 
 **$config['prev_tag_open'] = '<div>';**
 
-The opening tag for the "previous" link.
+上一页链接的起始标签。
 
 **$config['prev_tag_close'] = '</div>';**
 
-The closing tag for the "previous" link.
+上一页链接的结束标签。
 
 ***********************************
-Customizing the "Current Page" Link
+自定义当前页面链接
 ***********************************
 
 **$config['cur_tag_open'] = '<b>';**
 
-The opening tag for the "current" link.
+当前页链接的起始标签。
 
 **$config['cur_tag_close'] = '</b>';**
 
-The closing tag for the "current" link.
+当前页链接的结束标签。
 
 ****************************
-Customizing the "Digit" Link
+自定义数字链接
 ****************************
 
 **$config['num_tag_open'] = '<div>';**
 
-The opening tag for the "digit" link.
+数字链接的起始标签。
 
 **$config['num_tag_close'] = '</div>';**
 
-The closing tag for the "digit" link.
+数字链接的结束标签。
 
 ****************
-Hiding the Pages
+隐藏数字链接
 ****************
 
-If you wanted to not list the specific pages (for example, you only want
-"next" and "previous" links), you can suppress their rendering by
-adding::
+如果你不想显示数字链接（例如你只想显示上一页和下一页链接），你可以通过下面的代码来阻止它显示::
 
 	 $config['display_pages'] = FALSE;
 
 ****************************
-Adding attributes to anchors
+给链接添加属性
 ****************************
 
-If you want to add an extra attribute to be added to every link rendered
-by the pagination class, you can set them as key/value pairs in the
-"attributes" config::
+如果你想为分页类生成的每个链接添加额外的属性，你可以通过键值对设置 "attributes" 参数::
 
 	// Produces: class="myclass"
 	$config['attributes'] = array('class' => 'myclass');
 
-.. note:: Usage of the old method of setting classes via "anchor_class"
-	is deprecated.
+.. note:: 以前的通过 "anchor_class" 参数来设置 class 属性的方法已经废弃。
 
 *****************************
-Disabling the "rel" attribute
+禁用 "rel" 属性
 *****************************
 
-By default the rel attribute is dynamically generated and appended to
-the appropriate anchors. If for some reason you want to turn it off,
-you can pass boolean FALSE as a regular attribute
+默认 rel 属性会被自动的被添加到合适的链接上，如果由于某些原因，你想禁用它，你可以用下面的方法：
 
 ::
 
 	$config['attributes']['rel'] = FALSE;
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Pagination
@@ -304,11 +264,11 @@ Class Reference
 		:returns:	CI_Pagination instance (method chaining)
 		:rtype:	CI_Pagination
 
-		Initializes the Pagination class with your preferred options.
+		使用提供的参数初始化分页类。
 
 	.. php:method:: create_links()
 
 		:returns:	HTML-formatted pagination
 		:rtype:	string
 
-		Returns a "pagination" bar, containing the generated links or an empty string if there's just a single page.
+		返回分页的代码，包含生成的链接。如果只有一个页面，将返回空字符串。
