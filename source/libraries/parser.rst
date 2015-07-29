@@ -1,13 +1,10 @@
 #####################
-Template Parser Class
+模板解析类
 #####################
 
-The Template Parser Class can perform simple text substitution for 
-pseudo-variables contained within your view files. 
-It can parse simple variables or variable tag pairs. 
+模板解析类可以对你视图文件中的伪变量进行简单的替换，它可以解析简单的变量和变量标签对。
 
-If you've never used a template engine,
-pseudo-variable names are enclosed in braces, like this::
+如果你从没使用过模板引擎，下面是个例子，伪变量名称使用大括号括起来::
 
 	<html>
 		<head>
@@ -24,19 +21,12 @@ pseudo-variable names are enclosed in braces, like this::
 		</body>
 	</html>
 
-These variables are not actual PHP variables, but rather plain text
-representations that allow you to eliminate PHP from your templates
-(view files).
+这些变量并不是真正的 PHP 变量，只是普通的文本，这样能让你的模板（视图文件）中没有任何 PHP 代码。
 
-.. note:: CodeIgniter does **not** require you to use this class since
-	using pure PHP in your view pages lets them run a little faster.
-	However, some developers prefer to use a template engine if
-        they work with designers who they feel would find some
-        confusion working with PHP.
+.. note:: CodeIgniter **并没有** 让你必须使用这个类，因为直接在视图中使用纯 PHP 可能速度会更快点。
+	尽管如此，一些开发者还是喜欢使用模板引擎，他们可能是和一些其他的不熟悉 PHP 的设计师共同工作。
 
-.. important:: The Template Parser Class is **not** a full-blown
-	template parsing solution. We've kept it very lean on purpose in order
-	to maintain maximum performance.
+.. important:: 模板解析类 **不是** 一个全面的模板解析方案，我们让它保持简洁，为了达到更高的性能。
 
 .. contents::
   :local:
@@ -46,25 +36,25 @@ representations that allow you to eliminate PHP from your templates
   <div class="custom-index container"></div>
 
 *******************************
-Using the Template Parser Class
+使用模板解析类
 *******************************
 
-Initializing the Class
+初始化类
 ======================
 
-Like most other classes in CodeIgniter, the Parser class is initialized
-in your controller using the ``$this->load->library()`` method::
+跟 CodeIgniter 中的其他类一样，可以在你的控制器中使用 ``$this->load->library()`` 
+方法加载模板解析类::
 
 	$this->load->library('parser');
 
-Once loaded, the Parser library object will be available using:
-$this->parser
+一旦加载，模板解析类就可以像下面这样使用::
 
-Parsing templates
+	$this->parser
+
+解析模板
 =================
 
-You can use the ``parse()`` method to parse (or render) simple templates,
-like this::
+你可以使用 ``parse()`` 方法来解析（或显示）简单的模板，如下所示::
 
 	$data = array(
 		'blog_title' => 'My Blog Title',
@@ -73,27 +63,20 @@ like this::
 
 	$this->parser->parse('blog_template', $data);
 
-The first parameter contains the name of the :doc:`view
-file <../general/views>` (in this example the file would be called
-blog_template.php), and the second parameter contains an associative
-array of data to be replaced in the template. In the above example, the
-template would contain two variables: {blog_title} and {blog_heading}
+第一个参数为 :doc:`视图文件 <../general/views>` 的名称（在这个例子里，文件名为 blog_template.php），
+第二个参数为一个关联数组，它包含了要对模板进行替换的数据。上例中，模板将包含两个变量：
+{blog_title} 和 {blog_heading} 。
 
-There is no need to "echo" or do something with the data returned by
-$this->parser->parse(). It is automatically passed to the output class
-to be sent to the browser. However, if you do want the data returned
-instead of sent to the output class you can pass TRUE (boolean) as the
-third parameter::
+没有必要对 $this->parser->parse() 方法返回的结果进行 echo 或其他的处理，它会自动的保存到输出类，
+以待发送给浏览器。但是，如果你希望它将数据返回而不是存到输出类里去，你可以将第三个参数设置为 TRUE ::
 
 	$string = $this->parser->parse('blog_template', $data, TRUE);
 
-Variable Pairs
+变量对
 ==============
 
-The above example code allows simple variables to be replaced. What if
-you would like an entire block of variables to be repeated, with each
-iteration containing new values? Consider the template example we showed
-at the top of the page::
+上面的例子可以允许替换简单的变量，但是如果你想重复某一块代码，并且每次重复的值都不同又该怎么办呢？
+看下我们一开始的时候展示那个模板例子::
 
 	<html>
 		<head>
@@ -110,14 +93,11 @@ at the top of the page::
 		</body>
 	</html>
 
-In the above code you'll notice a pair of variables: {blog_entries}
-data... {/blog_entries}. In a case like this, the entire chunk of data
-between these pairs would be repeated multiple times, corresponding to
-the number of rows in the "blog_entries" element of the parameters array.
+在上面的代码中，你会发现一对变量：{blog_entries} data... {/blog_entries} 。这个例子的意思是，
+这个变量对之间的整个数据块将重复多次，重复的次数取决于 "blog_entries" 参数中元素的个数。
 
-Parsing variable pairs is done using the identical code shown above to
-parse single variables, except, you will add a multi-dimensional array
-corresponding to your variable pair data. Consider this example::
+解析变量对和上面的解析单个变量的代码完全一样，除了一点，你需要根据变量对的数据使用一个多维的数组，
+像下面这样::
 
 	$this->load->library('parser');
 
@@ -135,9 +115,8 @@ corresponding to your variable pair data. Consider this example::
 
 	$this->parser->parse('blog_template', $data);
 
-If your "pair" data is coming from a database result, which is already a
-multi-dimensional array, you can simply use the database ``result_array()``
-method::
+如果你的变量对数据来自于数据库查询结果，那么它已经是一个多维数组了，你可以简单的使用数据库的
+``result_array()`` 方法::
 
 	$query = $this->db->query("SELECT * FROM blog");
 
@@ -151,11 +130,10 @@ method::
 
 	$this->parser->parse('blog_template', $data);
 
-Usage Notes
+使用说明
 ===========
 
-If you include substitution parameters that are not referenced in your
-template, they are ignored::
+如果你传入的某些参数在模板中没用到，它们将被忽略::
 
 	$template = 'Hello, {firstname} {lastname}';
 	$data = array(
@@ -167,8 +145,7 @@ template, they are ignored::
 
 	// Result: Hello, John Doe
 
-If you do not include a substitution parameter that is referenced in your
-template, the original pseudo-variable is shown in the result::
+如果你的模板中用到了某个变量，但是你传入的参数中没有，将直接显示出原始的伪变量::
 
 	$template = 'Hello, {firstname} {initials} {lastname}';
 	$data = array(
@@ -180,9 +157,8 @@ template, the original pseudo-variable is shown in the result::
 
 	// Result: Hello, John {initials} Doe
 
-If you provide a string substitution parameter when an array is expected,
-i.e. for a variable pair, the substitution is done for the opening variable
-pair tag, but the closing variable pair tag is not rendered properly::
+如果你的模板中需要使用某个数组变量，但是你传入的参数是个字符串类型，那么变量对的起始标签将会被替换，
+但是结束标签不会被正确显示::
 
 	$template = 'Hello, {firstname} {lastname} ({degrees}{degree} {/degrees})';
 	$data = array(
@@ -198,8 +174,7 @@ pair tag, but the closing variable pair tag is not rendered properly::
 
 	// Result: Hello, John Doe (Mr{degree} {/degrees})
 
-If you name one of your individual substitution parameters the same as one
-used inside a variable pair, the results may not be as expected::
+如果你的某个单一变量的名称和变量对中的某个变量名称一样，显示结果可能会不对::
 
 	$template = 'Hello, {firstname} {lastname} ({degrees}{degree} {/degrees})';
 	$data = array(
@@ -215,15 +190,13 @@ used inside a variable pair, the results may not be as expected::
 
 	// Result: Hello, John Doe (Mr Mr )
 
-View Fragments
+视图片段
 ==============
 
-You do not have to use variable pairs to get the effect of iteration in
-your views. It is possible to use a view fragment for what would be inside
-a variable pair, and to control the iteration in your controller instead
-of in the view.
+你没必要在你的视图文件中使用变量对来实现重复，你也可以在变量对之间使用一个视图片段，
+在控制器，而不是视图文件中，来控制重复。
 
-An example with the iteration controlled in the view::
+下面是一个在视图中实现重复的例子::
 
 	$template = '<ul>{menuitems}
 		<li><a href="{link}">{title}</a></li>
@@ -237,15 +210,14 @@ An example with the iteration controlled in the view::
 	);
 	$this->parser->parse_string($template, $data);
 
-Result::
+结果::
 
 	<ul>
 		<li><a href="/first">First Link</a></li>
 		<li><a href="/second">Second Link</a></li>
 	</ul>
 
-An example with the iteration controlled in the controller, 
-using a view fragment::
+下面是一个在控制器中利用视图片段来实现重复的例子::
 
 	$temp = '';
 	$template1 = '<li><a href="{link}">{title}</a></li>';
@@ -265,7 +237,7 @@ using a view fragment::
 	);
 	$this->parser->parse_string($template, $data);
 
-Result::
+结果::
 
 	<ul>
 		<li><a href="/first">First Link</a></li>
@@ -273,7 +245,7 @@ Result::
 	</ul>
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Parser
@@ -286,7 +258,7 @@ Class Reference
 		:returns:	Parsed template string
 		:rtype:	string
 
-		Parses a template from the provided path and variables.
+		根据提供的路径和变量解析一个模板。
 
 	.. php:method:: parse_string($template, $data[, $return = FALSE])
 
@@ -296,8 +268,7 @@ Class Reference
 		:returns:	Parsed template string
 		:rtype:	string
 
-		This method works exactly like ``parse()``, only it accepts
-		the template as a string instead of loading a view file.
+		该方法和 ``parse()`` 方法一样，只是它接受一个字符串作为模板，而不是去加载视图文件。
 
 	.. php:method:: set_delimiters([$l = '{'[, $r = '}']])
 
@@ -305,5 +276,4 @@ Class Reference
 		:param	string	$r: Right delimiter
 		:rtype: void
 
-		Sets the delimiters (opening and closing) for a
-		pseudo-variable "tag" in a template.
+		设置模板中伪变量的分割符（起始标签和结束标签）。
