@@ -98,7 +98,7 @@
  - [x]    316 ./source/database/utilities.rst
  - [x]    321 ./source/libraries/javascript.rst
  - [x]    335 ./source/general/controllers.rst
- - [ ]    338 ./source/libraries/trackback.rst
+ - [x]    338 ./source/libraries/trackback.rst
  - [ ]    355 ./source/libraries/file_uploading.rst
  - [x]    372 ./source/helpers/url_helper.rst
  - [x]    397 ./source/libraries/cart.rst

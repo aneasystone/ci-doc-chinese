@@ -1,12 +1,11 @@
 ###############
-Trackback Class
+引用通告类
 ###############
 
-The Trackback Class provides functions that enable you to send and
-receive Trackback data.
+引用通告类提供了一些方法用于发送和接受引用通告数据。
 
-If you are not familiar with Trackbacks you'll find more information
-`here <http://en.wikipedia.org/wiki/Trackback>`_.
+如果你还不知道什么是引用通告，可以在 
+`这里 <http://en.wikipedia.org/wiki/Trackback>`_ 找到更多信息。
 
 .. contents::
   :local:
@@ -16,26 +15,25 @@ If you are not familiar with Trackbacks you'll find more information
   <div class="custom-index container"></div>
 
 *************************
-Using the Trackback Class
+使用引用通告类
 *************************
 
-Initializing the Class
+初始化类
 ======================
 
-Like most other classes in CodeIgniter, the Trackback class is
-initialized in your controller using the ``$this->load->library()`` method::
+正如 CodeIgniter 中的其他类一样，在你的控制器中使用 ``$this->load->library()``
+方法来初始化引用通告类::
 
 	$this->load->library('trackback');
 
-Once loaded, the Trackback library object will be available using::
+初始化之后，引用通告类的对象就可以这样访问::
 
 	$this->trackback
 
-Sending Trackbacks
+发送引用通告
 ==================
 
-A Trackback can be sent from any of your controller functions using code
-similar to this example::
+可以在你的控制器的任何方法中使用类似于如下代码来发送引用通告::
 
 	$this->load->library('trackback');
 
@@ -57,65 +55,52 @@ similar to this example::
 		echo 'Trackback was sent!';
 	}
 
-Description of array data:
+数组中每一项的解释：
 
--  **ping_url** - The URL of the site you are sending the Trackback to.
-   You can send Trackbacks to multiple URLs by separating each URL with a comma.
--  **url** - The URL to YOUR site where the weblog entry can be seen.
--  **title** - The title of your weblog entry.
--  **excerpt** - The content of your weblog entry.
--  **blog_name** - The name of your weblog.
--  **charset** - The character encoding your weblog is written in. If omitted, UTF-8 will be used.
+-  **ping_url** - 你想发送引用通告到该站点的 URL ，你可以同时向发送多个 URL 发送，多个 URL 之间使用逗号分割
+-  **url** - 对应的是你的博客的 URL
+-  **title** - 你的博客标题
+-  **excerpt** - 你的博客内容（摘要）
+-  **blog_name** - 你的博客的名称
+-  **charset** - 你的博客所使用的字符编码，如果忽略，默认使用 UTF-8
 
-.. note:: The Trackback class will automatically send only the first 500 characters of your 
-	entry. It will also strip all HTML.
+.. note:: 引用通告类会自动发送你的博客的前 500 个字符，同时它也会去除所有的 HTML 标签。
 
-The Trackback sending method returns TRUE/FALSE (boolean) on success
-or failure. If it fails, you can retrieve the error message using::
+发送引用通告的方法会根据成功或失败返回 TRUE 或 FALSE ，如果失败，可以使用下面的代码获取错误信息::
 
 	$this->trackback->display_errors();
 
-Receiving Trackbacks
+接受引用通告
 ====================
 
-Before you can receive Trackbacks you must create a weblog. If you don't
-have a blog yet there's no point in continuing.
+在接受引用通告之前，你必须先创建一个博客，如果你还没有博客，
+那么接下来的内容对你来说就没什么意义。
 
-Receiving Trackbacks is a little more complex than sending them, only
-because you will need a database table in which to store them, and you
-will need to validate the incoming trackback data. You are encouraged to
-implement a thorough validation process to guard against spam and
-duplicate data. You may also want to limit the number of Trackbacks you
-allow from a particular IP within a given span of time to further
-curtail spam. The process of receiving a Trackback is quite simple; the
-validation is what takes most of the effort.
+接受引用通告比发送要复杂一点，这是因为你需要一个数据库表来保存它们，
+而且你还需要对接受到的引用通告数据进行验证。我们鼓励你实现一个完整的验证过程，
+来防止垃圾信息和重复数据。你可能还希望限制一段时间内从某个 IP 发送过来的引用通告的数量，
+以此减少垃圾信息。接受引用通告的过程很简单，验证才是难点。
 
-Your Ping URL
+你的 Ping URL
 =============
 
-In order to accept Trackbacks you must display a Trackback URL next to
-each one of your weblog entries. This will be the URL that people will
-use to send you Trackbacks (we will refer to this as your "Ping URL").
+为了接受引用通告，你必须在你的每篇博客旁边显示一个引用通告 URL ，
+人们使用这个 URL 来向你发送引用通告（我们称其为 Ping URL）。
 
-Your Ping URL must point to a controller function where your Trackback
-receiving code is located, and the URL must contain the ID number for
-each particular entry, so that when the Trackback is received you'll be
-able to associate it with a particular entry.
+你的 Ping URL 必须指向一个控制器方法，在该方法中写接受引用通告的代码，而且该 URL
+必须包含你博客的 ID ，这样当接受到引用通告时你就可以知道是针对哪篇博客的。
 
-For example, if your controller class is called Trackback, and the
-receiving function is called receive, your Ping URLs will look something
-like this::
+例如，假设你的控制器类叫 Trackback ，接受方法叫 receive ，你的 Ping URL
+将类似于下面这样::
 
 	http://example.com/index.php/trackback/receive/entry_id
 
-Where entry_id represents the individual ID number for each of your
-entries.
+其中，entry_id 代表你每篇博客的 ID 。
 
-Creating a Trackback Table
+新建 Trackback 表
 ==========================
 
-Before you can receive Trackbacks you must create a table in which to
-store them. Here is a basic prototype for such a table::
+在接受引用通告之前，你必须创建一个数据库表来储存它。下面是表的一个基本原型::
 
 	CREATE TABLE trackbacks (
 		tb_id int(10) unsigned NOT NULL auto_increment,
@@ -130,17 +115,13 @@ store them. Here is a basic prototype for such a table::
 		KEY `entry_id` (`entry_id`)
 	);
 
-The Trackback specification only requires four pieces of information to
-be sent in a Trackback (url, title, excerpt, blog_name), but to make
-the data more useful we've added a few more fields in the above table
-schema (date, IP address, etc.).
+在引用通告的规范中只有四项信息是发送一个引用通告所必须的：url、title、excerpt 和 blog_name 。
+但为了让数据更有用，我们还在表中添加了几个其他的字段（date、ip_address 等）。
 
-Processing a Trackback
+处理引用通告
 ======================
 
-Here is an example showing how you will receive and process a Trackback.
-The following code is intended for use within the controller function
-where you expect to receive Trackbacks.::
+下面是一个如何接受并处理引用通告的例子。下面的代码将放在你的接受引用通告的控制器方法中::
 
 	$this->load->library('trackback');
 	$this->load->database();
@@ -171,57 +152,49 @@ where you expect to receive Trackbacks.::
 
 	$this->trackback->send_success();
 
-Notes:
+说明
 ^^^^^^
 
-The entry ID number is expected in the third segment of your URL. This
-is based on the URI example we gave earlier::
+entry_id 将从你的 URL 的第三段获取，这是基于我们之前例子中的 URL::
 
 	http://example.com/index.php/trackback/receive/entry_id
 
-Notice the entry_id is in the third URI segment, which you can retrieve
-using::
+注意 entry_id 是第三段，你可以这样获取::
 
 	$this->uri->segment(3);
 
-In our Trackback receiving code above, if the third segment is missing,
-we will issue an error. Without a valid entry ID, there's no reason to
-continue.
+在我们上面的接受引用通告的代码中，如果第三段为空，我们将发送一个错误信息。
+如果没有有效的 entry_id ，没必要继续处理下去。
 
-The $this->trackback->receive() function is simply a validation function
-that looks at the incoming data and makes sure it contains the four
-pieces of data that are required (url, title, excerpt, blog_name). It
-returns TRUE on success and FALSE on failure. If it fails you will issue
-an error message.
+$this->trackback->receive() 是个简单的验证方法，它检查接受到的数据并确保包含了
+我们所需的四种信息：url、title、excerpt 和 blog_name 。该方法成功返回 TRUE ，
+失败返回 FALSE 。如果失败，也发送一个错误信息。
 
-The incoming Trackback data can be retrieved using this function::
+接受到的引用通告数据可以通过下面的方法来获取::
 
 	$this->trackback->data('item')
 
-Where item represents one of these four pieces of info: url, title,
-excerpt, or blog_name
+其中，item 代表四种信息中的一种：url、title、excerpt 和 blog_name 。
 
-If the Trackback data is successfully received, you will issue a success
-message using::
+如果引用通告数据成功接受，你可以使用下面的代码发送一个成功消息::
 
 	$this->trackback->send_success();
 
-.. note:: The above code contains no data validation, which you are
-	encouraged to add.
+.. note:: 上面的代码中不包含数据校验，我们建议你添加。
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Trackback
 
 	.. attribute:: $data = array('url' => '', 'title' => '', 'excerpt' => '', 'blog_name' => '', 'charset' => '')
 
-		Trackback data array.
+		引用通告数据的数组。
 
 	.. attribute:: $convert_ascii = TRUE
 
-		Whether to convert high ASCII and MS Word characters to HTML entities.
+		是否将高位 ASCII 和 MS Word 特殊字符 转换为 HTML 实体。
 
 	.. php:method:: send($tb_data)
 
@@ -229,32 +202,32 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Send trackback.
+		发送引用通告。
 
 	.. php:method:: receive()
 
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		This method simply validates the incoming TB data, returning TRUE on success and FALSE on failure.
-		If the data is valid it is set to the ``$this->data`` array so that it can be inserted into a database.
+		该方法简单的检验接受到的引用通告数据，成功返回 TRUE ，失败返回 FALSE 。
+		如果数据是有效的，将添加到 ``$this->data`` 数组，以便保存到数据库。
 
 	.. php:method:: send_error([$message = 'Incomplete information')
 
 		:param	string	$message: Error message
 		:rtype: void
 
-		Responses to a trackback request with an error message.
+		向引用通告请求返回一条错误信息。
 
-		.. note:: This method will terminate script execution.
+		.. note:: 该方法将会终止脚本的执行。
 
 	.. php:method:: send_success()
 
 		:rtype:	void
 
-		Responses to a trackback request with a success message.
+		向引用通告请求返回一条成功信息。
 
-		.. note:: This method will terminate script execution.
+		.. note:: 该方法将会终止脚本的执行。
 
 	.. php:method:: data($item)
 
@@ -262,7 +235,7 @@ Class Reference
 		:returns:	Data value or empty string if not found
 		:rtype:	string
 
-		Returns a single item from the reponse data array.
+		从引用通告数据中获取一项记录。
 
 	.. php:method:: process($url, $data)
 
@@ -271,7 +244,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Opens a socket connection and passes the data to the server, returning TRUE on success and FALSE on failure.
+		打开一个 socket 连接，并将数据传送到服务器。成功返回 TRUE ，失败返回 FALSE 。
 
 	.. php:method:: extract_urls($urls)
 
@@ -279,14 +252,15 @@ Class Reference
 		:returns:	Array of URLs
 		:rtype:	array
 
-		This method lets multiple trackbacks to be sent. It takes a string of URLs (separated by comma or space) and puts each URL into an array.
+		该方法用于发送多条引用通告，它接受一个包含多条 URL 的字符串
+		（以逗号或空格分割），将其转换为一个数组。
 
 	.. php:method:: validate_url(&$url)
 
 		:param	string	$url: Trackback URL
 		:rtype:	void
 
-		Simply adds the *http://* prefix it it's not already present in the URL.
+		如果 URL 中没有包括协议部分，该方法简单将 *http://* 前缀添加到 URL 前面。
 
 	.. php:method:: get_id($url)
 
@@ -294,7 +268,7 @@ Class Reference
 		:returns:	URL ID or FALSE on failure
 		:rtype:	string
 
-		Find and return a trackback URL's ID or FALSE on failure.
+		查找并返回一个引用通告 URL 的 ID ，失败返回 FALSE 。
 
 	.. php:method:: convert_xml($str)
 
@@ -302,7 +276,7 @@ Class Reference
 		:returns:	Converted string
 		:rtype:	string
 
-		Converts reserved XML characters to entities.
+		将 XML 保留字符转换为实体。
 
 	.. php:method:: limit_characters($str[, $n = 500[, $end_char = '&#8230;']])
 
@@ -312,7 +286,7 @@ Class Reference
 		:returns:	Shortened string
 		:rtype:	string
 
-		Limits the string based on the character count. Will preserve complete words.
+		将字符串裁剪到指定字符个数，会保持单词的完整性。
 
 	.. php:method:: convert_ascii($str)
 
@@ -320,14 +294,14 @@ Class Reference
 		:returns:	Converted string
 		:rtype:	string
 
-		Converts high ASCII text and MS Word special characterss to HTML entities.
+		将高位 ASCII 和 MS Word 特殊字符转换为 HTML 实体。
 
 	.. php:method:: set_error($msg)
 
 		:param	string	$msg: Error message
 		:rtype:	void
 
-		Set an log an error message.
+		设置一个错误信息。
 
 	.. php:method:: display_errors([$open = '<p>'[, $close = '</p>']])
 
@@ -336,4 +310,4 @@ Class Reference
 		:returns:	HTML formatted error messages
 		:rtype:	string
 
-		Returns error messages formatted in HTML or an empty string if there are no errors.
+		返回 HTML 格式的错误信息，如果没有错误，返回空字符串。
