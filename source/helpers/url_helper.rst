@@ -1,8 +1,8 @@
 ##########
-URL Helper
+URL 辅助库
 ##########
 
-The URL Helper file contains functions that assist in working with URLs.
+URL 辅助库文件包含了一些帮助你处理 URL 的函数。
 
 .. contents::
   :local:
@@ -11,17 +11,17 @@ The URL Helper file contains functions that assist in working with URLs.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('url');
 
-The following functions are available:
-
-Available Functions
+可用函数
 ===================
+
+该辅助库有下列可用函数：
 
 .. php:function:: site_url([$uri = ''[, $protocol = NULL]])
 
@@ -30,30 +30,23 @@ Available Functions
 	:returns:	Site URL
 	:rtype:	string
 
-	Returns your site URL, as specified in your config file. The index.php
-	file (or whatever you have set as your site **index_page** in your config
-	file) will be added to the URL, as will any URI segments you pass to the
-	function, plus the **url_suffix** as set in your config file.
+	根据配置文件返回你的站点 URL 。index.php （获取其他你在配置文件中设置的 **index_page** 参数）
+	将会包含在你的 URL 中，另外再加上你传给函数的 URI 参数，以及配置文件中设置的 **url_suffix** 参数。
 
-	You are encouraged to use this function any time you need to generate a
-	local URL so that your pages become more portable in the event your URL
-	changes.
+	推荐在任何时候都使用这种方法来生成你的 URL ，这样在你的 URL 变动时你的代码将具有可移植性。
 
-	Segments can be optionally passed to the function as a string or an
-	array. Here is a string example::
+	传给函数的 URI 段参数可以是一个字符串，也可以是个数组，下面是字符串的例子::
 
 		echo site_url('news/local/123');
 
-	The above example would return something like:
-	*http://example.com/index.php/news/local/123*
+	上例将返回类似于：*http://example.com/index.php/news/local/123*	
 
-	Here is an example of segments passed as an array::
+	下面是使用数组的例子::
 
 		$segments = array('news', 'local', '123');
 		echo site_url($segments);
 
-	This function is an alias for ``CI_Config::site_url()``. For more info,
-	please see the :doc:`Config Library <../libraries/config>` documentation.
+	该函数是 ``CI_Config::site_url()`` 的别名，更多信息请查阅 :doc:`配置类 <../libraries/config>` 文档。
 
 .. php:function:: base_url($uri = '', $protocol = NULL)
 
@@ -62,41 +55,34 @@ Available Functions
 	:returns:	Base URL
 	:rtype:	string
 
-	Returns your site base URL, as specified in your config file. Example::
+	根据配置文件返回你站点的根 URL ，例如::
 
 		echo base_url();
 
-	This function returns the same thing as :php:func:`site_url()`, without
-	the *index_page* or *url_suffix* being appended.
+	该函数和 :php:func:`site_url()` 函数相同，只是不会在 URL 的后面加上 *index_page* 或 *url_suffix* 。
 
-	Also like :php:func:`site_url()`, you can supply segments as a string or
-	an array. Here is a string example::
+	另外，和 :php:func:`site_url()` 一样的是，你也可以使用字符串或数组格式的 URI 段。下面是字符串的例子::
 
 		echo base_url("blog/post/123");
 
-	The above example would return something like:
-	*http://example.com/blog/post/123*
+	上例将返回类似于：*http://example.com/blog/post/123*
 
-	This is useful because unlike :php:func:`site_url()`, you can supply a
-	string to a file, such as an image or stylesheet. For example::
+	跟 :php:func:`site_url()` 函数不一样的是，你可以指定一个文件路径（例如图片或样式文件），这将很有用，例如::
 
 		echo base_url("images/icons/edit.png");
 
-	This would give you something like:
-	*http://example.com/images/icons/edit.png*
+	将返回类似于：*http://example.com/images/icons/edit.png*
 
-	This function is an alias for ``CI_Config::base_url()``. For more info,
-	please see the :doc:`Config Library <../libraries/config>` documentation.
+	该函数是 ``CI_Config::base_url()`` 的别名，更多信息请查阅 :doc:`配置类 <../libraries/config>` 文档。
 
 .. php:function:: current_url()
 
 	:returns:	The current URL
 	:rtype:	string
 
-	Returns the full URL (including segments) of the page being currently
-	viewed.
+	返回当前正在浏览的页面的完整 URL （包括分段）。
 
-	.. note:: Calling this function is the same as doing this:
+	.. note:: 该函数和调用下面的代码效果是一样的：
 		|
 		| site_url(uri_string());
 
@@ -106,17 +92,15 @@ Available Functions
 	:returns:	An URI string
 	:rtype:	string
 
-	Returns the URI segments of any page that contains this function.
-	For example, if your URL was this::
+	返回包含该函数的页面的 URI 分段。例如，如果你的 URL 是::
 
 		http://some-site.com/blog/comments/123
 
-	The function would return::
+	函数将返回::
 
 		blog/comments/123
 
-	This function is an alias for ``CI_Config::uri_string()``. For more info,
-	please see the :doc:`Config Library <../libraries/config>` documentation.
+	该函数是 ``CI_Config::uri_string()`` 的别名，更多信息请查阅 :doc:`配置类 <../libraries/config>` 文档。
 
 
 .. php:function:: index_page()
@@ -124,8 +108,7 @@ Available Functions
 	:returns:	'index_page' value
 	:rtype:	mixed
 
-	Returns your site **index_page**, as specified in your config file.
-	Example::
+	返回你在配置文件中配置的 **index_page** 参数，例如::
 
 		echo index_page();
 
@@ -137,25 +120,19 @@ Available Functions
 	:returns:	HTML hyperlink (anchor tag)
 	:rtype:	string
 
-	Creates a standard HTML anchor link based on your local site URL.
+	根据你提供的 URL 生成一个标准的 HTML 链接。
 
-	The first parameter can contain any segments you wish appended to the
-	URL. As with the :php:func:`site_url()` function above, segments can
-	be a string or an array.
+	第一个参数可以包含任何你想添加到 URL 上的段，和上面的 :php:func:`site_url()` 函数一样，URL 
+	的段可以是字符串或数组。
 
-	.. note:: If you are building links that are internal to your application
-		do not include the base URL (http&#58;//...). This will be added
-		automatically from the information specified in your config file.
-		Include only the URI segments you wish appended to the URL.
+	.. note:: 如果你创建的链接是指向你自己的应用程序，那么不用包含根 URL （http&#58;//...）。
+		这个会根据你的配置文件自动添加到 URL 前面。所以你只需指定要添加的 URL 段就可以了。
 
-	The second segment is the text you would like the link to say. If you
-	leave it blank, the URL will be used.
+	第二个参数是链接的文本，如果留空，将使用链接本身作为文本。
 
-	The third parameter can contain a list of attributes you would like
-	added to the link. The attributes can be a simple string or an
-	associative array.
+	第三个参数为你希望添加到链接的属性，可以是一个字符串，也可以是个关联数组。
 
-	Here are some examples::
+	这里是一些例子::
 
 		echo anchor('news/local/123', 'My News', 'title="News title"');
 		// Prints: <a href="http://example.com/index.php/news/local/123" title="News title">My News</a>
@@ -175,13 +152,11 @@ Available Functions
 	:returns:	Pop-up hyperlink
 	:rtype:	string
 
-	Nearly identical to the :php:func:`anchor()` function except that it
-	opens the URL in a new window. You can specify JavaScript window
-	attributes in the third parameter to control how the window is opened.
-	If the third parameter is not set it will simply open a new window with
-	your own browser settings.
+	和 :php:func:`anchor()` 函数非常类似，只是它生成的 URL 将会在新窗口被打开。你可以通过第三个参数指定
+	JavaScript 的窗口属性，以此来控制窗口将如何被打开。如果没有设置第三个参数，将会使用你的浏览器设置打开
+	一个新窗口。
 
-	Here is an example with attributes::
+	这里是属性的例子::
 
 		$atts = array(
 			'width'       => 800,
@@ -196,19 +171,16 @@ Available Functions
 
 		echo anchor_popup('news/local/123', 'Click Me!', $atts);
 
-	.. note:: The above attributes are the function defaults so you only need to
-		set the ones that are different from what you need. If you want the
-		function to use all of its defaults simply pass an empty array in the
-		third parameter:
+	.. note:: 上面的属性是函数的默认值，所以你只需要设置和你想要的不一样的参数。如果想使用所有默认的参数，
+		只要简单的传一个空数组即可：
 		|
 		| echo anchor_popup('news/local/123', 'Click Me!', array());
 
-	.. note:: The **window_name** is not really an attribute, but an argument to
-		the JavaScript `window.open() <http://www.w3schools.com/jsref/met_win_open.asp>`
-		method, which accepts either a window name or a window target.
+	.. note:: **window_name** 其实并不算一个属性，而是 Javascript 的
+		`window.open() <http://www.w3schools.com/jsref/met_win_open.asp>` 函数的一个参数而已，
+		该函数接受一个窗口名称或一个 window 对象。
 
-	.. note:: Any other attribute than the listed above will be parsed as an
-		HTML attribute to the anchor tag.
+	.. note:: 任何不同于上面列出来的其他的属性将会作为 HTML 链接的属性。
 
 
 .. php:function:: mailto($email, $title = '', $attributes = '')
@@ -219,12 +191,11 @@ Available Functions
 	:returns:	A "mail to" hyperlink
 	:rtype:	string
 
-	Creates a standard HTML e-mail link. Usage example::
+	创建一个标准的 HTML e-mail 链接。例如::
 
 		echo mailto('me@my-site.com', 'Click Here to Contact Me');
 
-	As with the :php:func:`anchor()` tab above, you can set attributes using the
-	third parameter::
+	和上面的 :php:func:`anchor()` 函数一样，你可以通过第三个参数设置属性::
 
 		$attributes = array('title' => 'Mail me');
 		echo mailto('me@my-site.com', 'Contact Me', $attributes);
@@ -237,9 +208,8 @@ Available Functions
 	:returns:	A spam-safe "mail to" hyperlink
 	:rtype:	string
 
-	Identical to the :php:func:`mailto()` function except it writes an obfuscated
-	version of the *mailto* tag using ordinal numbers written with JavaScript to
-	help prevent the e-mail address from being harvested by spam bots.
+	和 :php:func:`mailto()` 函数一样，但是它的 *mailto* 标签使用了一个混淆的写法，
+	可以防止你的 e-mail 地址被垃圾邮件机器人爬到。
 
 .. php:function:: auto_link($str, $type = 'both', $popup = FALSE)
 
@@ -249,26 +219,22 @@ Available Functions
 	:returns:	Linkified string
 	:rtype:	string
 
-	Automatically turns URLs and e-mail addresses contained in a string into
-	links. Example::
+	将一个字符串中的 URL 和 e-mail 地址自动转换为链接，例如::
 
 		$string = auto_link($string);
 
-	The second parameter determines whether URLs and e-mails are converted or
-	just one or the other. Default behavior is both if the parameter is not
-	specified. E-mail links are encoded as :php:func:`safe_mailto()` as shown
-	above.
+	第二个参数用于决定是转换 URL 还是 e-mail 地址，默认情况不指定该参数，两者都会被转换。
+	E-mail 地址的链接是使用上面介绍的 :php:func:`safe_mailto()` 函数生成的。
 
-	Converts only URLs::
+	只转换 URL ::
 
 		$string = auto_link($string, 'url');
 
-	Converts only e-mail addresses::
+	只转换 e-mail 地址::
 
 		$string = auto_link($string, 'email');
 
-	The third parameter determines whether links are shown in a new window.
-	The value can be TRUE or FALSE (boolean)::
+	第三个参数用于指定链接是否要在新窗口打开。可以是布尔值 TRUE 或 FALSE ::
 
 		$string = auto_link($string, 'both', TRUE);
 
@@ -281,30 +247,26 @@ Available Functions
 	:returns:	URL-formatted string
 	:rtype:	string
 
-	Takes a string as input and creates a human-friendly URL string. This is
-	useful if, for example, you have a blog in which you'd like to use the
-	title of your entries in the URL. Example::
+	将字符串转换为对人类友好的 URL 字符串格式。例如，如果你有一个博客，你希望使用博客的标题作为 URL ，
+	这时该函数很有用。例如::
 
 		$title = "What's wrong with CSS?";
 		$url_title = url_title($title);
 		// Produces: Whats-wrong-with-CSS
 
-	The second parameter determines the word delimiter. By default dashes
-	are used. Preferred options are: **-** (dash) or **_** (underscore)
+	第二个参数指定分隔符，默认使用连字符。一般的选择有：**-** （连字符） 或者 **_** （下划线）
 
-	Example::
+	例如::
 
 		$title = "What's wrong with CSS?";
 		$url_title = url_title($title, 'underscore');
 		// Produces: Whats_wrong_with_CSS
 
-	.. note:: Old usage of 'dash' and 'underscore' as the second parameter
-		is DEPRECATED.
+	.. note:: 第二个参数连字符和下划线的老的用法已经废弃。
 
-	The third parameter determines whether or not lowercase characters are
-	forced. By default they are not. Options are boolean TRUE/FALSE.
+	第三个参数指定是否强制转换为小写。默认不会，参数类型为布尔值 TRUE 或 FALSE 。
 
-	Example::
+	例如::
 
 		$title = "What's wrong with CSS?";
 		$url_title = url_title($title, 'underscore', TRUE);
@@ -317,10 +279,9 @@ Available Functions
 	:returns:	Protocol-prefixed URL string
 	:rtype:	string
 
-	This function will add http&#58;// in the event that a protocol prefix
-	is missing from a URL.
+	当 URL 中缺少协议前缀部分时，使用该函数将会向 URL 中添加 http&#58;// 。
 
-	Pass the URL string to the function like this::
+	像下面这样使用该函数::
 
 		$url = prep_url('example.com');
 
@@ -332,21 +293,15 @@ Available Functions
 	:param	string	$code: HTTP Response code (usually 302 or 303)
 	:rtype:	void
 
-	Does a "header redirect" to the URI specified. If you specify the full
-	site URL that link will be built, but for local links simply providing
-	the URI segments to the controller you want to direct to will create the
-	link. The function will build the URL based on your config file values.
+	通过 HTTP 头重定向到指定 URL 。你可以指定一个完整的 URL ，也可以指定一个 URL 段，
+	该函数会根据配置文件自动生成改 URL 。
 
-	The optional second parameter allows you to force a particular redirection
-	method. The available methods are **auto**, **location** and **refresh**,
-	with location being faster but less reliable on IIS servers.
-	The default is **auto**, which will attempt to intelligently choose the
-	method based on the server environment.
+	第二个参数用于指定一种重定向方法。可用的方法有：**auto** 、 **location** 和 **refresh** 。
+	location 方法速度快，但是在 ISS 服务器上不可靠。默认值为 **auto** ，它会根据你的服务器环境
+	智能的选择使用哪种方法。
 
-	The optional third parameter allows you to send a specific HTTP Response
-	Code - this could be used for example to create 301 redirects for search
-	engine purposes. The default Response Code is 302. The third parameter is
-	*only* available with **location** redirects, and not *refresh*. Examples::
+	第三个参数可选，允许你发送一个指定的 HTTP 状态码，这个可以用来为搜索引擎创建 301 重定向。
+	默认的状态码为 302 ，该参数只适用于 **location** 重定向方法，对于 *refresh* 方法无效。例如::
 
 		if ($logged_in == FALSE)
 		{      
@@ -356,18 +311,13 @@ Available Functions
 		// with 301 redirect
 		redirect('/article/13', 'location', 301);
 
-	.. note:: In order for this function to work it must be used before anything
-		is outputted to the browser since it utilizes server headers.
+	.. note:: 为了让该函数有效，它必须在任何内容输出到浏览器之前被调用。因为输出内容会使用服务器 HTTP 头。
 
-	.. note:: For very fine grained control over headers, you should use the
-		`Output Library </libraries/output>` ``set_header()`` method.
+	.. note:: 为了更好的控制服务器头，你应该使用 `输出类 </libraries/output>` 的 ``set_header()`` 方法。
 
-	.. note:: To IIS users: if you hide the `Server` HTTP header, the *auto*
-		method won't detect IIS, in that case it is advised you explicitly
-		use the **refresh** method.
+	.. note:: 使用 IIS 的用户要注意，如果你隐藏了 `Server` 这个 HTTP 头， *auto* 方法将无法检测到 IIS 。
+		在这种情况下，推荐你使用 **refresh** 方法。
 
-	.. note:: When the **location** method is used, an HTTP status code of 303
-		will *automatically* be selected when the page is currently accessed
-		via POST and HTTP/1.1 is used.
+	.. note:: 当使用 HTTP/1.1 的 POST 来访问你的页面时，如果你使用的是 **location** 方法，会自动使用 HTTP 303 状态码。
 
-	.. important:: This function will terminate script execution.
+	.. important:: 该函数会终止脚本的执行。

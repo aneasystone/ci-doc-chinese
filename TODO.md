@@ -100,7 +100,7 @@
  - [x]    335 ./source/general/controllers.rst
  - [ ]    338 ./source/libraries/trackback.rst
  - [ ]    355 ./source/libraries/file_uploading.rst
- - [ ]    372 ./source/helpers/url_helper.rst
+ - [x]    372 ./source/helpers/url_helper.rst
  - [ ]    397 ./source/libraries/cart.rst
  - [ ]    404 ./source/libraries/email.rst
  - [ ]    407 ./source/helpers/html_helper.rst
