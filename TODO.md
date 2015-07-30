@@ -97,7 +97,7 @@
  - [x]    313 ./source/libraries/pagination.rst
  - [x]    316 ./source/database/utilities.rst
  - [x]    321 ./source/libraries/javascript.rst
- - [ ]    335 ./source/general/controllers.rst
+ - [x]    335 ./source/general/controllers.rst
  - [ ]    338 ./source/libraries/trackback.rst
  - [ ]    355 ./source/libraries/file_uploading.rst
  - [ ]    372 ./source/helpers/url_helper.rst
