@@ -102,7 +102,7 @@
  - [ ]    355 ./source/libraries/file_uploading.rst
  - [x]    372 ./source/helpers/url_helper.rst
  - [ ]    397 ./source/libraries/cart.rst
- - [ ]    404 ./source/libraries/email.rst
+ - [x]    404 ./source/libraries/email.rst
  - [ ]    407 ./source/helpers/html_helper.rst
  - [ ]    408 ./source/database/forge.rst
  - [x]    417 ./source/database/results.rst
