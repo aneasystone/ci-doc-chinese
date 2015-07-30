@@ -1,6 +1,18 @@
 ############################
-CodeIgniter 用户指南
+CodeIgniter 3.0 中文文档
 ############################
+
+这里是 CodeIgniter 3.0.0 的中文文档，翻译自 CodeIgniter
+`官方的英文版本 <http://www.codeigniter.com/user_guide/index.html>`_ ，
+并参考了 `CodeIgniter 中国 <http://codeigniter.org.cn/>`_ 提供的
+`CodeIgniter 2.2.2 中文手册 <http://codeigniter.org.cn/user_guide/index.html>`_ 。
+
+文档中的大部分内容我都进行了重新整理和翻译，我并没有对原文进行逐字逐句的推敲，
+有些不好翻译的地方使用了一些自己组织的语言进行润色，力求做到语句通顺，易于理解。
+
+鉴于个人能力所限，翻译之中难免犯错，欢迎大家批评指正。
+你可以在 Github 上直接提交 Issues ，或者 Fork 我的项目作出修改然后向我提交 Pull Request ，
+我会尽快修复文档中的错误。
 
 ******************
 安装步骤
@@ -29,11 +41,10 @@ http://python.org/download/releases/2.7.2/
 5. ``cd user_guide_src``
 6. ``make html``
 
-注意：
+译注：
 
 1. Ubuntu 系统上安装 easy_install 可以直接：``sudo apt-get install python-setuptools``
 2. easy_install 需要 root 权限，前面加上 sudo
-3. 这里安装的 sphinx 版本为 1.2.3, 最新版本是多少？使用最新版本会有什么问题？
 
 编辑并创建文档
 ==================================
