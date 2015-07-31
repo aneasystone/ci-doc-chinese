@@ -1,17 +1,14 @@
 ###################
-DB Driver Reference
+数据库驱动器参考
 ###################
 
-This is the platform-independent base DB implementation class.
-This class will not be called directly. Rather, the adapter
-class for the specific database will extend and instantiate it.
+这是一个平台无关的数据库实现基类，该类不会被直接调用，
+而是通过特定的数据库适配器类来继承和实现该类。
 
-The how-to material for this has been split over several articles.
-This article is intended to be a reference for them.
+关于数据库驱动器，已经在其他几篇文档中介绍过，这篇文档将作为它们的一个参考。
 
-.. important:: Not all methods are supported by all database drivers,
-	some of them may fail (and return FALSE) if the underlying
-	driver does not support them.
+.. important:: 并不是所有的方法都被所有的数据库驱动器所支持，
+	当不支持的时候，有些方法可能会失败（返回 FALSE）。
 
 .. php:class:: CI_DB_driver
 
@@ -20,8 +17,7 @@ This article is intended to be a reference for them.
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Initialize database settings, establish a connection to
-		the database.
+		初始化数据库配置，建立对数据库的连接。
 
 	.. php:method:: db_connect($persistent = TRUE)
 
@@ -29,29 +25,26 @@ This article is intended to be a reference for them.
 		:returns:	Database connection resource/object or FALSE on failure
 		:rtype:	mixed
 
-		Establish a connection with the database.
+		建立对数据库的连接。
 
-		.. note:: The returned value depends on the underlying
-			driver in use. For example, a ``mysqli`` instance
-			will be returned with the 'mysqli' driver.
+		.. note:: 返回值取决于当前使用的数据库驱动器，例如 ``mysqli`` 实例将会返回 'mysqli' 驱动器。
 
 	.. php:method:: db_pconnect()
 
 		:returns:	Database connection resource/object or FALSE on failure
 		:rtype:	mixed
 
-		Establish a persistent connection with the database.
+		建立对数据库的连接，使用持久连接。
 
-		.. note:: This method is just an alias for ``db_connect(TRUE)``.
+		.. note:: 该方法其实就是调用 ``db_connect(TRUE)`` 。
 
 	.. php:method:: reconnect()
 
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Keep / reestablish the database connection if no queries
-		have been sent for a length of time exceeding the
-		server's idle timeout.
+		如果超过服务器的超时时间都没有发送任何查询请求，
+		使用该方法可以让数据库连接保持有效，或重新连接数据库。
 
 	.. php:method:: db_select([$database = ''])
 
@@ -59,7 +52,7 @@ This article is intended to be a reference for them.
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Select / switch the current database.
+		切换到某个数据库。
 
 	.. php:method:: db_set_charset($charset)
 
@@ -67,21 +60,21 @@ This article is intended to be a reference for them.
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Set client character set.
+		设置客户端字符集。
 
 	.. php:method:: platform()
 
 		:returns:	Platform name
 		:rtype:	string
 
-		The name of the platform in use (mysql, mssql, etc...).
+		当前使用的数据库平台（mysql、mssql 等）。
 
 	.. php:method:: version()
 
 		:returns:	The version of the database being used
 		:rtype:	string
 
-		Database version number.
+		数据库版本。
 
 	.. php:method:: query($sql[, $binds = FALSE[, $return_object = NULL]]])
 
@@ -91,20 +84,18 @@ This article is intended to be a reference for them.
 		:returns:	TRUE for successful "write-type" queries, CI_DB_result instance (method chaining) on "query" success, FALSE on failure
 		:rtype:	mixed
 
-		Execute an SQL query.
+		执行一个 SQL 查询。
 
-		Accepts an SQL string as input and returns a result object
-		upon successful execution of a "read" type query.
+		如果是读类型的查询，执行 SQL 成功后将返回结果对象。
 
-		Returns:
+		有以下几种可能的返回值：
 
-		   - Boolean TRUE upon successful execution of a "write type" queries
-		   - Boolean FALSE upon failure
-		   - ``CI_DB_result`` object for "read type" queries
+		   - 如果是写类型的查询，执行成功返回 TRUE 
+		   - 执行失败返回 FALSE 
+		   - 如果是读类型的查询，执行成功返回 ``CI_DB_result`` 对象
 
-		.. note: If 'db_debug' setting is set to TRUE, an error
-			page will be displayed instead of returning FALSE
-			on failures and script execution will stop.
+		.. note: 如果 'db_debug' 设置为 TRUE ，那么查询失败时将显示一个错误页面，
+			而不是返回 FALSE ，并终止脚本的执行
 
 	.. php:method:: simple_query($sql)
 
@@ -112,51 +103,45 @@ This article is intended to be a reference for them.
 		:returns:	Whatever the underlying driver's "query" function returns
 		:rtype:	mixed
 
-		A simplified version of the ``query()`` method, appropriate
-		for use when you don't need to get a result object or to
-		just send a query to the database and not care for the result.
+		``query()`` 方法的简化版，当你只需要简单的执行一个查询，并不关心查询的结果时，
+		可以使用该方法。
 
 	.. php:method:: trans_strict([$mode = TRUE])
 
 		:param	bool	$mode: Strict mode flag
 		:rtype:	void
 
-		Enable/disable transaction "strict" mode.
+		启用或禁用事务的严格模式。
 
-		When strict mode is enabled, if you are running multiple
-		groups of transactions and one group fails, all groups
-		will be rolled back.
-
-		If strict mode is disabled, each group is treated
-		autonomously, meaning a failure of one group will not
-		affect any others.
+		在严格模式下，如果你正在运行多组事务，只要有一组失败，所有组都会被回滚。
+		如果禁用严格模式，那么每一组都被视为独立的组，
+		这意味着其中一组失败不会影响其他的组。
 
 	.. php:method:: trans_off()
 
 		:rtype:	void
 
-		Disables transactions at run-time.
+		实时的禁用事务。
 
 	.. php:method:: trans_start([$test_mode = FALSE])
 
 		:param	bool	$test_mode: Test mode flag
 		:rtype:	void
 
-		Start a transaction.
+		开启一个事务。
 
 	.. php:method:: trans_complete()
 
 		:rtype:	void
 
-		Complete Transaction.
+		结束事务。
 
 	.. php:method:: trans_status()
 
-                :returns:	TRUE if the transaction succeeded, FALSE if it failed
+                	:returns:	TRUE if the transaction succeeded, FALSE if it failed
 		:rtype:	bool
 
-		Lets you retrieve the transaction status flag to
-		determine if it has failed.
+		获取事务的状态，用来判断事务是否执行成功。
 
 	.. php:method:: compile_binds($sql, $binds)
 
@@ -165,7 +150,7 @@ This article is intended to be a reference for them.
 		:returns:	The updated SQL statement
 		:rtype:	string
 
-		Compiles an SQL query with the bind values passed for it.
+		根据绑定的参数值编译 SQL 查询。
 
 	.. php:method:: is_write_type($sql)
 
@@ -173,8 +158,7 @@ This article is intended to be a reference for them.
 		:returns:	TRUE if the SQL statement is of "write type", FALSE if not
 		:rtype:	bool
 
-		Determines if a query is of a "write" type (such as
-		INSERT, UPDATE, DELETE) or "read" type (i.e. SELECT).
+		判断查询是写类型（INSERT、UPDATE、DELETE），还是读类型（SELECT）。
 
 	.. php:method:: elapsed_time([$decimals = 6])
 
@@ -182,22 +166,21 @@ This article is intended to be a reference for them.
 		:returns:	The aggregate query elapsed time, in microseconds
 		:rtype:	string
 
-		Calculate the aggregate query elapsed time.
+		计算查询所消耗的时间。
 
 	.. php:method:: total_queries()
 
 		:returns:	The total number of queries executed
 		:rtype:	int
 
-		Returns the total number of queries that have been
-		executed so far.
+		返回当前已经执行了多少次查询。
 
 	.. php:method:: last_query()
 
 		:returns:	The last query executed
 		:rtype:	string
 
-		Returns the last query that was executed.
+		返回上一次执行的查询。
 
 	.. php:method:: escape($str)
 
@@ -205,8 +188,7 @@ This article is intended to be a reference for them.
 		:returns:	The escaped value(s)
 		:rtype:	mixed
 
-		Escapes input data based on type, including boolean and
-		NULLs.
+		根据输入数据的类型进行数据转义，包括布尔值和空值。
 
 	.. php:method:: escape_str($str[, $like = FALSE])
 
@@ -215,10 +197,9 @@ This article is intended to be a reference for them.
 		:returns:	The escaped string(s)
 		:rtype:	mixed
 
-		Escapes string values.
+		转义字符串。
 
-		.. warning:: The returned strings do NOT include quotes
-			around them.
+		.. warning:: 返回的字符串没有用引号引起来。
 
 	.. php:method:: escape_like_str($str)
 
@@ -226,11 +207,10 @@ This article is intended to be a reference for them.
 		:returns:	The escaped string(s)
 		:rtype:	mixed
 
-		Escape LIKE strings.
+		转义 LIKE 字符串。
 
-		Similar to ``escape_str()``, but will also escape the ``%``
-		and ``_`` wildcard characters, so that they don't cause
-		false-positives in LIKE conditions.
+		和 ``escape_str()`` 方法类似，但同时也对 LIKE 语句中的 ``%`` 和 ``_`` 
+		通配符进行转义。
 
 	.. php:method:: primary($table)
 
@@ -238,11 +218,9 @@ This article is intended to be a reference for them.
 		:returns:	The primary key name, FALSE if none
 		:rtype:	string
 
-		Retrieves the primary key of a table.
+		获取一个表的主键。
 
-		.. note:: If the database platform does not support primary
-			key detection, the first column name may be assumed
-			as the primary key.
+		.. note:: 如果数据库不支持主键检测，将假设第一列就是主键。
 
 	.. php:method:: count_all([$table = ''])
 
@@ -250,8 +228,7 @@ This article is intended to be a reference for them.
 		:returns:	Row count for the specified table
 		:rtype:	int
 
-		Returns the total number of rows in a table, or 0 if no
-		table was provided.
+		返回表中的总记录数。
 
 	.. php:method:: list_tables([$constrain_by_prefix = FALSE])
 
@@ -259,7 +236,7 @@ This article is intended to be a reference for them.
 		:returns:	Array of table names or FALSE on failure
 		:rtype:	array
 
-		Gets a list of the tables in the current database.
+		返回当前数据库的所有表。
 
 	.. php:method:: table_exists($table_name)
 
@@ -267,7 +244,7 @@ This article is intended to be a reference for them.
 		:returns:	TRUE if that table exists, FALSE if not
 		:rtype:	bool
 
-		Determine if a particular table exists.
+		判断某个数据库表是否存在。
 
 	.. php:method:: list_fields($table)
 
@@ -275,7 +252,7 @@ This article is intended to be a reference for them.
 		:returns:	Array of field names or FALSE on failure
 		:rtype:	array
 
-		Gets a list of the field names in a table.
+		返回某个表的所有字段名。
 
 	.. php:method:: field_exists($field_name, $table_name)
 
@@ -284,7 +261,7 @@ This article is intended to be a reference for them.
 		:returns:	TRUE if that field exists in that table, FALSE if not
 		:rtype:	bool
 
-		Determine if a particular field exists.
+		判断某个字段是否存在。
 
 	.. php:method:: field_data($table)
 
@@ -292,7 +269,7 @@ This article is intended to be a reference for them.
 		:returns:	Array of field data items or FALSE on failure
 		:rtype:	array
 
-		Gets a list containing field data about a table.
+		获取某个表的所有字段信息。
 
 	.. php:method:: escape_identifiers($item)
 
@@ -300,7 +277,7 @@ This article is intended to be a reference for them.
 		:returns:	The input item(s), escaped
 		:rtype:	mixed
 
-		Escape SQL identifiers, such as column, table and names.
+		对 SQL 标识符进行转义，例如列名、表名、关键字。
 
 	.. php:method:: insert_string($table, $data)
 
@@ -309,7 +286,7 @@ This article is intended to be a reference for them.
 		:returns:	The SQL INSERT statement, as a string
 		:rtype:	string
 
-		Generate an INSERT statement string.
+		生成 INSERT 语句。
 
 	.. php:method:: update_string($table, $data, $where)
 
@@ -319,7 +296,7 @@ This article is intended to be a reference for them.
 		:returns:	The SQL UPDATE statement, as a string
 		:rtype:	string
 
-		Generate an UPDATE statement string.
+		生成 UPDATE 语句。
 
 	.. php:method:: call_function($function)
 
@@ -327,29 +304,28 @@ This article is intended to be a reference for them.
 		:returns:	The function result
 		:rtype:	string
 
-		Runs a native PHP function , using a platform agnostic
-		wrapper.
+		使用一种平台无关的方式执行一个原生的 PHP 函数。
 
 	.. php:method:: cache_set_path([$path = ''])
 
 		:param	string	$path: Path to the cache directory
 		:rtype:	void
 
-		Sets the directory path to use for caching storage.
+		设置缓存路径。
 
 	.. php:method:: cache_on()
 
 		:returns:	TRUE if caching is on, FALSE if not
 		:rtype:	bool
 
-		Enable database results caching.
+		启用数据库结果缓存。
 
 	.. php:method:: cache_off()
 
 		:returns:	TRUE if caching is on, FALSE if not
 		:rtype:	bool
 
-		Disable database results caching.
+		禁用数据库结果缓存。
 
 	.. php:method:: cache_delete([$segment_one = ''[, $segment_two = '']])
 
@@ -358,20 +334,20 @@ This article is intended to be a reference for them.
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Delete the cache files associated with a particular URI.
+		删除特定 URI 的缓存文件。
 
 	.. php:method:: cache_delete_all()
 
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Delete all cache files.
+		删除所有缓存文件。
 
 	.. php:method:: close()
 
 		:rtype:	void
 
-		Close the DB Connection.
+		关闭数据库的连接。
 
 	.. php:method:: display_error([$error = ''[, $swap = ''[, $native = FALSE]]])
 
@@ -379,14 +355,11 @@ This article is intended to be a reference for them.
 		:param	string	$swap: Any "swap" values
 		:param	bool	$native: Whether to localize the message
 		:rtype:	void
-
 		:returns:	Displays the DB error screensends the application/views/errors/error_db.php template
-                :rtype:	string
 
-		Display an error message and stop script execution.
+		显示一个错误信息，并终止脚本执行。
 
-		The message is displayed using the
-		*application/views/errors/error_db.php* template.
+		错误信息是使用 *application/views/errors/error_db.php* 文件中的模板来显示。
 
 	.. php:method:: protect_identifiers($item[, $prefix_single = FALSE[, $protect_identifiers = NULL[, $field_exists = TRUE]]])
 
@@ -397,24 +370,19 @@ This article is intended to be a reference for them.
 		:returns:	The modified item
 		:rtype:	string
 
-		Takes a column or table name (optionally with an alias)
-		and applies the configured *dbprefix* to it.
+		根据配置的 *dbprefix* 参数，给列名或表名（可能是表别名）添加一个前缀。
 
-		Some logic is necessary in order to deal with
-		column names that include the path. 
+		为了处理包含路径的列名，必须要考虑一些逻辑。
 
-		Consider a query like this::
+		例如下面的查询::
 
 			SELECT * FROM hostname.database.table.column AS c FROM hostname.database.table
 
-		Or a query with aliasing::
+		或者下面这个查询，使用了表别名::
 
 			SELECT m.member_id, m.member_name FROM members AS m
 
-		Since the column name can include up to four segments
-		(host, DB, table, column) or also have an alias prefix,
-		we need to do a bit of work to figure this out and
-		insert the table prefix (if it exists) in the proper
-		position, and escape only the correct identifiers.
+		由于列名可以包含四段（主机、数据库名、表名、字段名）或者有一个表别名的前缀，
+		我们需要做点工作来判断这一点，才能将 *dbprefix* 插入到正确的位置。
 
-		This method is used extensively by the Query Builder class.
+		该方法在查询构造器类中被广泛使用。

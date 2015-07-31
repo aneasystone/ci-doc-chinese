@@ -106,7 +106,7 @@
  - [x]    407 ./source/helpers/html_helper.rst
  - [ ]    408 ./source/database/forge.rst
  - [x]    417 ./source/database/results.rst
- - [ ]    419 ./source/database/db_driver_reference.rst
+ - [x]    419 ./source/database/db_driver_reference.rst
  - [x]    436 ./source/helpers/date_helper.rst
  - [ ]    460 ./source/libraries/loader.rst
  - [ ]    473 ./source/libraries/image_lib.rst
