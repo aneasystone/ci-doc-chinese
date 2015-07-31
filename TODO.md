@@ -103,7 +103,7 @@
  - [x]    372 ./source/helpers/url_helper.rst
  - [x]    397 ./source/libraries/cart.rst
  - [x]    404 ./source/libraries/email.rst
- - [ ]    407 ./source/helpers/html_helper.rst
+ - [x]    407 ./source/helpers/html_helper.rst
  - [ ]    408 ./source/database/forge.rst
  - [x]    417 ./source/database/results.rst
  - [ ]    419 ./source/database/db_driver_reference.rst

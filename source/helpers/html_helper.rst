@@ -1,29 +1,27 @@
-###########
-HTML Helper
-###########
+###############
+HTML 辅助库
+###############
 
-The HTML Helper file contains functions that assist in working with
-HTML.
+HTML 辅助库文件包含了用于处理 HTML 的一些函数。
 
 .. contents::
-	:local:
+  :local:
 
 .. raw:: html
 
-	<div class="custom-index container"></div>
+  <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('html');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: heading([$data = ''[, $h = '1'[, $attributes = '']]])
 
@@ -33,21 +31,18 @@ The following functions are available:
 	:returns:	HTML heading tag
 	:rtype:	string
 
-	Lets you create HTML heading tags. The first parameter will contain the
-	data, the second the size of the heading. Example::
+	用于创建 HTML 标题标签，第一个参数为标题内容，第二个参数为标题大小。例如::
 
 		echo heading('Welcome!', 3);
 
-	The above would produce: <h3>Welcome!</h3>
+	上面代码将生成：<h3>Welcome!</h3>
 
-	Additionally, in order to add attributes to the heading tag such as HTML
-	classes, ids or inline styles, a third parameter accepts either a string
-	or an array::
+	另外，为了向标题标签添加属性，例如 HTML class、id 或内联样式，可以通过第三个参数传一个字符串或者一个数组::
 
 		echo heading('Welcome!', 3, 'class="pink"');
 		echo heading('How are you?', 4, array('id' => 'question', 'class' => 'green'));
 
-	The above code produces:
+	上面代码将生成：
 
 	.. code-block:: html
 
@@ -62,23 +57,19 @@ The following functions are available:
 	:returns:	HTML image tag
 	:rtype:	string
 
-	Lets you create HTML <img /> tags. The first parameter contains the
-	image source. Example::
+	用于生成 HTML <img /> 标签，第一个参数为图片地址，例如::
 
 		echo img('images/picture.jpg'); // gives <img src="http://site.com/images/picture.jpg" />
 
-	There is an optional second parameter that is a TRUE/FALSE value that
-	specifics if the *src* should have the page specified by
-	``$config['index_page']`` added to the address it creates.
-	Presumably, this would be if you were using a media controller::
+	第二个参数可选，其值为 TRUE 或 FALSE，用于指定是否在生成的图片地址中添加由 ``$config['index_page']`` 所设置的起始页面。
+	一般来说，当你使用媒体控制器时才使用这个::
 
 		echo img('images/picture.jpg', TRUE); // gives <img src="http://site.com/index.php/images/picture.jpg" alt="" />
 
-	Additionally, an associative array can be passed to the ``img()`` function
-	for complete control over all attributes and values. If an *alt* attribute
-	is not provided, CodeIgniter will generate an empty string.
+	另外，你也可以通过向 ``img()`` 函数传递一个关联数组来完全控制所有的属性和值，如果没有提供 *alt* 属性，
+	CodeIgniter 默认使用一个空字符串。
 
-	Example::
+	例如::
 
 		$image_properties = array(
 			'src' 	=> 'images/picture.jpg',
@@ -104,19 +95,17 @@ The following functions are available:
 	:returns:	HTML link tag
 	:rtype:	string
 
-	Lets you create HTML <link /> tags. This is useful for stylesheet links,
-	as well as other links. The parameters are *href*, with optional *rel*,
-	*type*, *title*, *media* and *index_page*.
+	用于生成 HTML <link /> 标签，这在生成样式的 link 标签时很有用，当然也可以生成其他的 link 标签。
+	参数为 *href* ，后面的是可选的：*rel* 、 *type* 、 *title* 、 *media* 和 *index_page* 。
 
-	*index_page* is a boolean value that specifies if the *href* should have
-	the page specified by ``$config['index_page']`` added to the address it creates.
+	*index_page* 参数是个布尔值，用于指定是否在 *href* 链接中添加由 ``$config['index_page']`` 所设置的起始页面。
 
-	Example::
+	例如::
 
 		echo link_tag('css/mystyles.css');
 		// gives <link href="http://site.com/css/mystyles.css" rel="stylesheet" type="text/css" />
 
-	Further examples::
+	另一个例子::
 
 		echo link_tag('favicon.ico', 'shortcut icon', 'image/ico');
 		// <link href="http://site.com/favicon.ico" rel="shortcut icon" type="image/ico" />
@@ -124,8 +113,7 @@ The following functions are available:
 		echo link_tag('feed', 'alternate', 'application/rss+xml', 'My RSS Feed');
 		// <link href="http://site.com/feed" rel="alternate" type="application/rss+xml" title="My RSS Feed" />
 
-	Additionally, an associative array can be passed to the ``link()`` function
-	for complete control over all attributes and values::
+	另外，你也可以通过向 ``link()`` 函数传递一个关联数组来完全控制所有的属性和值::
 
 		$link = array(
 			'href'	=> 'css/printer.css',
@@ -145,8 +133,7 @@ The following functions are available:
 	:returns:	HTML-formatted unordered list
 	:rtype:	string
 
-	Permits you to generate ordered or unordered HTML lists from simple or
-	multi-dimensional arrays. Example::
+	用于生成 HTML 无序列表（ <ul> ），参数为简单的数组或者多维数组。例如::
 
 		$list = array(
 			'red',
@@ -162,7 +149,7 @@ The following functions are available:
 
 		echo ul($list, $attributes);
 
-	The above code will produce this:
+	上面的代码将生成：
 
 	.. code-block:: html
 
@@ -173,7 +160,7 @@ The following functions are available:
 			<li>yellow</li>
 		</ul>
 
-	Here is a more complex example, using a multi-dimensional array::
+	下面是个更复杂的例子，使用了多维数组::
 
 		$attributes = array(
 			'class'	=> 'boldlist',
@@ -212,7 +199,7 @@ The following functions are available:
 
 		echo ul($list, $attributes);
 
-	The above code will produce this:
+	上面的代码将生成：
 
 	.. code-block:: html
 
@@ -265,8 +252,7 @@ The following functions are available:
 	:returns:	HTML-formatted ordered list
 	:rtype:	string
 
-	Identical to :php:func:`ul()`, only it produces the <ol> tag for
-	ordered lists instead of <ul>.
+	和 :php:func:`ul()` 函数一样，只是它生成的是有序列表（ <ol> ）。
 
 .. php:function:: meta([$name = ''[, $content = ''[, $type = 'name'[, $newline = "\n"]]]])
 
@@ -277,10 +263,9 @@ The following functions are available:
 	:returns:	HTML meta tag
 	:rtype:	string
 
-	Helps you generate meta tags. You can pass strings to the function, or
-	simple arrays, or multidimensional ones.
+	用于生成 meta 标签，你可以传递一个字符串参数，或者一个数组，或者一个多维数组。
 
-	Examples::
+	例如::
 
 		echo meta('description', 'My Great site');
 		// Generates:  <meta name="description" content="My Great Site" />
@@ -330,20 +315,18 @@ The following functions are available:
 	:returns:	HTML DocType tag
 	:rtype:	string
 
-	Helps you generate document type declarations, or DTD's. XHTML 1.0
-	Strict is used by default, but many doctypes are available.
+	用于生成 DTD （文档类型声明，document type declaration），默认使用的是 XHTML 1.0 Strict ，但是你也可以选择其他的。
 
-	Example::
+	例如::
 
 		echo doctype(); // <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 		echo doctype('html4-trans'); // <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
-	The following is a list of doctype choices. These are configurable, and
-	pulled from application/config/doctypes.php
+	下表是可选的文档类型，它是可配置的，你可以在 application/config/doctypes.php 文件中找到它。
 
 	=============================== =================== ==================================================================================================================================================
-	Document type                   Option              Result
+	文档类型                        选项                 结果
 	=============================== =================== ==================================================================================================================================================
 	XHTML 1.1                       xhtml11             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 	XHTML 1.0 Strict                xhtml1-strict       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -372,19 +355,18 @@ The following functions are available:
 	:returns:	HTML line break tag
 	:rtype:	string
 
-	Generates line break tags (<br />) based on the number you submit.
-	Example::
+	根据指定的个数生成多个换行标签（ <br /> ）。
+	例如::
 
 		echo br(3);
 
-	The above would produce:
+	上面的代码将生成：
 
 	.. code-block:: html
 
 		<br /><br /><br />
 
-	.. note:: This function is DEPRECATED. Use the native ``str_repeat()``
-		in combination with ``<br />`` instead.
+	.. note:: 该函数已经废弃，请使用原生的 ``str_repeat()`` 函数代替。
 
 .. php:function:: nbs([$num = 1])
 
@@ -392,16 +374,15 @@ The following functions are available:
 	:returns:	A sequence of non-breaking space HTML entities
 	:rtype:	string
 
-	Generates non-breaking spaces (&nbsp;) based on the number you submit.
-	Example::
+	根据指定的个数生成多个不换行空格（&nbsp;）。
+	例如::
 
 		echo nbs(3);
 
-	The above would produce:
+	上面的代码将生成：
 
 	.. code-block:: html
 
 		&nbsp;&nbsp;&nbsp;
 
-	.. note:: This function is DEPRECATED. Use the native ``str_repeat()``
-		in combination with ``&nbsp;`` instead.
+	.. note:: 该函数已经废弃，请使用原生的 ``str_repeat()`` 函数代替。
