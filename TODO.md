@@ -99,7 +99,7 @@
  - [x]    321 ./source/libraries/javascript.rst
  - [x]    335 ./source/general/controllers.rst
  - [x]    338 ./source/libraries/trackback.rst
- - [ ]    355 ./source/libraries/file_uploading.rst
+ - [x]    355 ./source/libraries/file_uploading.rst
  - [x]    372 ./source/helpers/url_helper.rst
  - [x]    397 ./source/libraries/cart.rst
  - [x]    404 ./source/libraries/email.rst
