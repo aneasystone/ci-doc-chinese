@@ -1,8 +1,8 @@
 ###########
-Date Helper
+日期辅助库
 ###########
 
-The Date Helper file contains functions that help you work with dates.
+日期辅助库文件包含了一些帮助你处理日期的函数。
 
 .. contents::
   :local:
@@ -11,18 +11,17 @@ The Date Helper file contains functions that help you work with dates.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+该辅助库通过下面的代码加载::
 
 	$this->load->helper('date');
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: now([$timezone = NULL])
 
@@ -30,18 +29,14 @@ The following functions are available:
 	:returns:	UNIX timestamp
 	:rtype:	int
 
-	Returns the current time as a UNIX timestamp, referenced either to your server's
-	local time or any PHP suported timezone, based on the "time reference" setting
-	in your config file. If you do not intend to set your master time reference to
-	any other PHP supported timezone (which you'll typically do if you run a site
-	that lets each user set their own timezone settings) there is no benefit to using
-	this function over PHP's ``time()`` function.
+	根据服务器的本地时间，以及一个 PHP 支持的时区参数或配置文件中的 "基准时间" 参数返回当前时间的 UNIX 时间戳，
+	如果你不打算设置 "基准时间" （如果你的站点允许用户设置他们自己的时区，你通常需要设置这个），
+	该函数就和 PHP 的 ``time()`` 函数没什么区别。
 	::
 
 		echo now('Australia/Victoria');
 
-	If a timezone is not provided, it will return ``time()`` based on the
-	**time_reference** setting.
+	如果没有指定时区，该函数将使用 **time_reference** 参数调用 ``time()`` 函数。
 
 .. php:function:: mdate([$datestr = ''[, $time = '']])
 
@@ -50,22 +45,18 @@ The following functions are available:
 	:returns:	MySQL-formatted date
 	:rtype:	string
 
-	This function is identical to PHP's `date() <http://php.net/manual/en/function.date.php>`_
-	function, except that it lets you use MySQL style date codes, where each
-	code letter is preceded with a percent sign, e.g. `%Y %m %d`
+	该函数和 PHP 的 `date() <http://php.net/manual/en/function.date.php>`_ 函数一样，
+	但是它支持 MySQL 风格的日期格式，在代码之前使用百分号，例如：`%Y %m %d`
 
-	The benefit of doing dates this way is that you don't have to worry
-	about escaping any characters that are not date codes, as you would
-	normally have to do with the ``date()`` function.
+	使用这个函数的好处是你不用关心去转义那些不是日期代码的字符，如果使用 ``date()`` 函数时，你就要这么做。
 
-	Example::
+	例如::
 
 		$datestring = 'Year: %Y Month: %m Day: %d - %h:%i %a';
 		$time = time();
 		echo mdate($datestring, $time);
 
-	If a timestamp is not included in the second parameter the current time
-	will be used.
+	如果第二个参数没有提供一个时间，那么默认会使用当前时间。
 
 .. php:function:: standard_date([$fmt = 'DATE_RFC822'[, $time = NULL]])
 
@@ -74,22 +65,21 @@ The following functions are available:
 	:returns:	Formatted date or FALSE on invalid format
 	:rtype:	string
 
-	Lets you generate a date string in one of several standardized formats.
+	生成标准格式的时间字符串。
 
-	Example::
+	例如::
 
 		$format = 'DATE_RFC822';
 		$time = time();
 		echo standard_date($format, $time);
 
-	.. note:: This function is DEPRECATED. Use the native ``date()`` combined with
-		`DateTime's format constants
-		<http://php.net/manual/en/class.datetime.php#datetime.constants.types>`_
-		instead::
+	.. note:: 该函数已经废弃，请使用原生的 ``date()`` 函数和
+		`时间格式化常量 <http://php.net/manual/en/class.datetime.php#datetime.constants.types>`_
+		替代::
 
 			echo date(DATE_RFC822, time());
 
-	**Supported formats:**
+	**支持的格式：**
 
 	===============	=======================	======================================
 	Constant        Description             Example
@@ -112,9 +102,9 @@ The following functions are available:
 	:returns:	UNIX timestamp
 	:rtype:	int
 
-	Takes a UNIX timestamp as input and returns it as GMT.
+	将时间转换为 GMT 时间。
 
-	Example::
+	例如::
 
 		$gmt = local_to_gmt(time());
 
@@ -126,11 +116,9 @@ The following functions are available:
 	:returns:	UNIX timestamp
 	:rtype:	int
 
-	Takes a UNIX timestamp (referenced to GMT) as input, and converts it to
-	a localized timestamp based on the timezone and Daylight Saving Time
-	submitted.
+	根据指定的时区和 DST （夏令时，Daylight Saving Time） 将 GMT 时间转换为本地时间。
 
-	Example::
+	例如::
 
 		$timestamp = 1140153693;
 		$timezone  = 'UM8';
@@ -138,7 +126,7 @@ The following functions are available:
 		echo gmt_to_local($timestamp, $timezone, $daylight_saving);
 
 
-	.. note:: For a list of timezones see the reference at the bottom of this page.
+	.. note:: 时区列表请参见本页末尾。
 
 .. php:function:: mysql_to_unix([$time = ''])
 
@@ -146,9 +134,9 @@ The following functions are available:
 	:returns:	UNIX timestamp
 	:rtype:	int
 
-	Takes a MySQL Timestamp as input and returns it as a UNIX timestamp.
+	将 MySQL 时间戳转换为 UNIX 时间戳。
 
-	Example::
+	例如::
 
 		$unix = mysql_to_unix('20061124092345');
 
@@ -160,19 +148,16 @@ The following functions are available:
 	:returns:	Formatted date
 	:rtype:	string
 
-	Takes a UNIX timestamp as input and returns it in a human readable
-	format with this prototype::
+	将 UNIX 时间戳转换为方便人类阅读的格式，如下::
 
 		YYYY-MM-DD HH:MM:SS AM/PM
 
-	This can be useful if you need to display a date in a form field for
-	submission.
+	这在当你需要在一个表单字段中显示日期时很有用。
 
-	The time can be formatted with or without seconds, and it can be set to
-	European or US format. If only the timestamp is submitted it will return
-	the time without seconds formatted for the U.S.
+	格式化后的时间可以带也可以不带秒数，也可以设置成欧洲或美国时间格式。
+	如果只指定了一个时间参数，将使用不带秒数的美国时间格式。
 
-	Examples::
+	例如::
 
 		$now = time();
 		echo unix_to_human($now); // U.S. time, no seconds
@@ -185,12 +170,10 @@ The following functions are available:
 	:returns:	UNIX timestamp or FALSE on failure
 	:rtype:	int
 
-	The opposite of the :php:func:`unix_to_time()` function. Takes a "human"
-	time as input and returns it as a UNIX timestamp. This is useful if you
-	accept "human" formatted dates submitted via a form. Returns boolean FALSE
-	date string passed to it is not formatted as indicated above.
+	该函数和 :php:func:`unix_to_human()` 函数相反，将一个方便人类阅读的时间格式转换为 UNIX 时间戳。
+	这在当你需要在一个表单字段中显示日期时很有用。如果输入的时间不同于上面的格式，函数返回 FALSE 。
 
-	Example::
+	例如::
 
 		$now = time();
 		$human = unix_to_human($now);
@@ -203,14 +186,11 @@ The following functions are available:
 	:returns:	Formatted date
 	:rtype:	string
 
-	This function can take a number poorly-formed date formats and convert
-	them into something useful. It also accepts well-formed dates.
+	该函数解析一个没有格式化过的数字格式的日期，并将其转换为格式化的日期。它也能解析格式化好的日期。
 
-	The function will return a UNIX timestamp by default. You can, optionally,
-	pass a format string (the same type as the PHP ``date()`` function accepts)
-	as the second parameter.
+	默认该函数将返回 UNIX 时间戳，你也可以提供一个格式化字符串给第二个参数（和 PHP 的 ``date()`` 函数一样）。
 
-	Example::
+	例如::
 
 		$bad_date = '199605';
 		// Should Produce: 1996-05-01
@@ -228,29 +208,25 @@ The following functions are available:
 	:returns:	Formatted time difference
 	:rtype:	string
 
-	Formats a UNIX timestamp so that is appears similar to this::
+	将一个 UNIX 时间戳转换为以下这种格式::
 
 		1 Year, 10 Months, 2 Weeks, 5 Days, 10 Hours, 16 Minutes
 
-	The first parameter must contain a UNIX timestamp.
-	The second parameter must contain a timestamp that is greater that the
-	first timestamp.
-	The thirdparameter is optional and limits the number of time units to display.
+	第一个参数为一个 UNIX 时间戳，第二个参数是一个比第一个参数大的 UNIX 时间戳。
+	第三个参数可选，用于限制要显示的时间单位个数。
 
-	If the second parameter empty, the current time will be used.
+	如果第二个参数为空，将使用当前时间。
 
-	The most common purpose for this function is to show how much time has
-	elapsed from some point in time in the past to now.
+	这个函数最常见的用途是，显示从过去某个时间点到当前时间经过了多少时间。
 
-	Example::
+	例如::
 
 		$post_date = '1079621429';
 		$now = time();
 		$units = 2;
 		echo timespan($post_date, $now, $units);
 
-	.. note:: The text generated by this function is found in the following language
-		file: `language/<your_lang>/date_lang.php`
+	.. note:: 该函数生成的本文可以在语言文件 `language/<your_lang>/date_lang.php` 中找到。
 
 .. php:function:: days_in_month([$month = 0[, $year = '']])
 
@@ -259,17 +235,15 @@ The following functions are available:
 	:returns:	Count of days in the specified month
 	:rtype:	int
 
-	Returns the number of days in a given month/year. Takes leap years into
-	account.
+	返回指定某个月的天数，会考虑闰年。
 
-	Example::
+	例如::
 
 		echo days_in_month(06, 2005);
 
-	If the second parameter is empty, the current year will be used.
+	如果第二个参数为空，将使用今年。
 
-	.. note:: This function will alias the native ``cal_days_in_month()``, if
-		it is available.
+	.. note:: 该函数其实是原生的 ``cal_days_in_month()`` 函数的别名，如果它可用的话。
 
 .. php:function:: date_range([$unix_start = ''[, $mixed = ''[, $is_unix = TRUE[, $format = 'Y-m-d']]]])
 
@@ -280,9 +254,9 @@ The following functions are available:
 	:returns:	An array of dates
 	:rtype:	array
 
-	Returns a list of dates within a specified period.
+	返回某一段时间的日期列表。
 
-	Example::
+	例如::
 
 		$range = date_range('2012-01-01', '2012-01-15');
 		echo "First 15 days of 2012:";
@@ -297,16 +271,14 @@ The following functions are available:
 	:returns:	Hour difference from UTC
 	:rtype:	int
 
-	Takes a timezone reference (for a list of valid timezones, see the
-	"Timezone Reference" below) and returns the number of hours offset from
-	UTC.
+	根据指定的时区（可用的时区列表参见下文的 "时区参考"）返回它的 UTC 时间偏移。
 
-	Example::
+	例如::
 
 		echo timezones('UM5');
 
 
-	This function is useful when used with :php:func:`timezone_menu()`.
+	这个函数和 :php:func:`timezone_menu()` 函数一起使用时很有用。
 
 .. php:function:: timezone_menu([$default = 'UTC'[, $class = ''[, $name = 'timezones'[, $attributes = '']]]])
 
@@ -317,7 +289,7 @@ The following functions are available:
 	:returns:	HTML drop down menu with time zones
 	:rtype:	string
 
-	Generates a pull-down menu of timezones, like this one:
+	该函数用于生成一个时区下拉菜单，像下面这样::
 
 	.. raw:: html
 
@@ -367,71 +339,68 @@ The following functions are available:
 		</form>
 
 
-	This menu is useful if you run a membership site in which your users are
-	allowed to set their local timezone value.
+	当你的站点允许用户选择自己的本地时区时，这个菜单会很有用。
 
-	The first parameter lets you set the "selected" state of the menu. For
-	example, to set Pacific time as the default you will do this::
+	第一个参数为菜单默认选定的时区，例如，要设置太平洋时间为默认值，你可以这样::
 
 		echo timezone_menu('UM8');
 
-	Please see the timezone reference below to see the values of this menu.
+	菜单中的值请参见下面的时区参考。
 
-	The second parameter lets you set a CSS class name for the menu.
+	第二个参数用于为菜单设置一个 CSS 类名。
 
-	The fourth parameter lets you set one or more attributes on the generated select tag.
+	第四个参数用于为生成的 select 标签设置一个或多个属性。
 
-	.. note:: The text contained in the menu is found in the following
-		language file: `language/<your_lang>/date_lang.php`
+	.. note:: 菜单中的文本可以在语言文件 `language/<your_lang>/date_lang.php` 中找到。
 
-Timezone Reference
+时区参考
 ==================
 
-The following table indicates each timezone and its location.
+下表列出了每个时区和它所对应的位置。
 
-Note some of the location lists have been abridged for clarity and formatting.
+注意，为了表述清晰和格式工整，有些位置信息做了适当的删减。
 
 ===========     =====================================================================
-Time Zone       Location
+时区            位置
 ===========     =====================================================================
-UM12            (UTC - 12:00) Baker/Howland Island
-UM11            (UTC - 11:00) Samoa Time Zone, Niue
-UM10            (UTC - 10:00) Hawaii-Aleutian Standard Time, Cook Islands
-UM95            (UTC - 09:30) Marquesas Islands
-UM9             (UTC - 09:00) Alaska Standard Time, Gambier Islands
-UM8             (UTC - 08:00) Pacific Standard Time, Clipperton Island
-UM7             (UTC - 07:00) Mountain Standard Time
-UM6             (UTC - 06:00) Central Standard Time
-UM5             (UTC - 05:00) Eastern Standard Time, Western Caribbean
-UM45            (UTC - 04:30) Venezuelan Standard Time
-UM4             (UTC - 04:00) Atlantic Standard Time, Eastern Caribbean
-UM35            (UTC - 03:30) Newfoundland Standard Time
-UM3             (UTC - 03:00) Argentina, Brazil, French Guiana, Uruguay
-UM2             (UTC - 02:00) South Georgia/South Sandwich Islands
-UM1             (UTC -1:00) Azores, Cape Verde Islands
-UTC             (UTC) Greenwich Mean Time, Western European Time
-UP1             (UTC +1:00) Central European Time, West Africa Time
-UP2             (UTC +2:00) Central Africa Time, Eastern European Time
-UP3             (UTC +3:00) Moscow Time, East Africa Time
-UP35            (UTC +3:30) Iran Standard Time
-UP4             (UTC +4:00) Azerbaijan Standard Time, Samara Time
-UP45            (UTC +4:30) Afghanistan
-UP5             (UTC +5:00) Pakistan Standard Time, Yekaterinburg Time
-UP55            (UTC +5:30) Indian Standard Time, Sri Lanka Time
-UP575           (UTC +5:45) Nepal Time
-UP6             (UTC +6:00) Bangladesh Standard Time, Bhutan Time, Omsk Time
-UP65            (UTC +6:30) Cocos Islands, Myanmar
-UP7             (UTC +7:00) Krasnoyarsk Time, Cambodia, Laos, Thailand, Vietnam
-UP8             (UTC +8:00) Australian Western Standard Time, Beijing Time
-UP875           (UTC +8:45) Australian Central Western Standard Time
-UP9             (UTC +9:00) Japan Standard Time, Korea Standard Time, Yakutsk
-UP95            (UTC +9:30) Australian Central Standard Time
-UP10            (UTC +10:00) Australian Eastern Standard Time, Vladivostok Time
-UP105           (UTC +10:30) Lord Howe Island
-UP11            (UTC +11:00) Srednekolymsk Time, Solomon Islands, Vanuatu
-UP115           (UTC +11:30) Norfolk Island
-UP12            (UTC +12:00) Fiji, Gilbert Islands, Kamchatka, New Zealand
-UP1275          (UTC +12:45) Chatham Islands Standard Time
-UP13            (UTC +13:00) Phoenix Islands Time, Tonga
-UP14            (UTC +14:00) Line Islands
+UM12            (UTC - 12:00) 贝克岛、豪兰岛
+UM11            (UTC - 11:00) 萨摩亚时区、纽埃
+UM10            (UTC - 10:00) 夏威夷-阿留申标准时间、库克群岛
+UM95            (UTC - 09:30) 马克萨斯群岛
+UM9             (UTC - 09:00) 阿拉斯加标准时间、甘比尔群岛
+UM8             (UTC - 08:00) 太平洋标准时间、克利珀顿岛
+UM7             (UTC - 07:00) 山区标准时间
+UM6             (UTC - 06:00) 中部标准时间
+UM5             (UTC - 05:00) 东部标准时间、西加勒比
+UM45            (UTC - 04:30) 委内瑞拉标准时间
+UM4             (UTC - 04:00) 大西洋标准时间、东加勒比
+UM35            (UTC - 03:30) 纽芬兰标准时间
+UM3             (UTC - 03:00) 阿根廷、巴西、法属圭亚那、乌拉圭
+UM2             (UTC - 02:00) 南乔治亚岛、南桑威奇群岛
+UM1             (UTC -1:00) 亚速尔群岛、佛得角群岛
+UTC             (UTC) 格林尼治标准时间、西欧时间
+UP1             (UTC +1:00) 中欧时间、西非时间
+UP2             (UTC +2:00) 中非时间、东欧时间
+UP3             (UTC +3:00) 莫斯科时间、东非时间
+UP35            (UTC +3:30) 伊朗标准时间
+UP4             (UTC +4:00) 阿塞拜疆标准时间、萨马拉时间
+UP45            (UTC +4:30) 阿富汗
+UP5             (UTC +5:00) 巴基斯坦标准时间、叶卡捷琳堡时间
+UP55            (UTC +5:30) 印度标准时间、斯里兰卡时间
+UP575           (UTC +5:45) 尼泊尔时间
+UP6             (UTC +6:00) 孟加拉国标准时间、不丹时间、鄂木斯克时间
+UP65            (UTC +6:30) 可可岛、缅甸
+UP7             (UTC +7:00) 克拉斯诺亚尔斯克时间、柬埔寨、老挝、泰国、越南
+UP8             (UTC +8:00) 澳大利亚西部标准时间、北京时间
+UP875           (UTC +8:45) 澳大利亚中西部标准时间
+UP9             (UTC +9:00) 日本标准时间、韩国标准时间、雅库茨克
+UP95            (UTC +9:30) 澳大利亚中部标准时间
+UP10            (UTC +10:00) 澳大利亚东部标准时间、海参崴时间
+UP105           (UTC +10:30) 豪勋爵岛
+UP11            (UTC +11:00) 中科雷姆斯克时间、所罗门群岛、瓦努阿图
+UP115           (UTC +11:30) 诺福克岛
+UP12            (UTC +12:00) 斐济、吉尔伯特群岛、堪察加半岛、新西兰
+UP1275          (UTC +12:45) 查塔姆群岛标准时间
+UP13            (UTC +13:00) 凤凰岛、汤加
+UP14            (UTC +14:00) 莱恩群岛
 ===========	=====================================================================
