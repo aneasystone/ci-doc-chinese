@@ -1,49 +1,42 @@
 ####################
-Database Forge Class
+数据库工厂类
 ####################
 
-The Database Forge Class contains methods that help you manage your
-database.
+数据库工厂类提供了一些方法来帮助你管理你的数据库。
 
 .. contents:: Table of Contents
     :depth: 3
 
 ****************************
-Initializing the Forge Class
+初始化数据库工厂类
 ****************************
 
-.. important:: In order to initialize the Forge class, your database
-	driver must already be running, since the forge class relies on it.
+.. important:: 由于数据库工厂类依赖于数据库驱动器，为了初始化该类，你的数据库驱动器必须已经运行。
 
-Load the Forge Class as follows::
+加载数据库工厂类的代码如下::
 
 	$this->load->dbforge()
 
-You can also pass another database object to the DB Forge loader, in case
-the database you want to manage isn't the default one::
+如果你想管理的不是你正在使用的数据库，你还可以传另一个数据库对象到数据库工具类的加载方法::
 
 	$this->myforge = $this->load->dbforge($this->other_db, TRUE);
 
-In the above example, we're passing a custom database object as the first
-parameter and then tell it to return the dbforge object, instead of
-assigning it directly to ``$this->dbforge``.
+上例中，我们通过第一个参数传递了一个自定义的数据库对象，第二个参数表示方法将返回 dbforge 对象，
+而不是直接赋值给 ``$this->dbforge`` 。
 
-.. note:: Both of the parameters can be used individually, just pass an empty
-	value as the first one if you wish to skip it.
+.. note:: 两个参数都可以独立使用，如果你只想传第二个参数，可以将第一个参数置空。
 
-Once initialized you will access the methods using the ``$this->dbforge``
-object::
+一旦初始化结束，你就可以使用 ``$this->dbforge`` 对象来访问它的方法::
 
 	$this->dbforge->some_method();
 
 *******************************
-Creating and Dropping Databases
+创建和删除数据库
 *******************************
 
 **$this->dbforge->create_database('db_name')**
 
-Permits you to create the database specified in the first parameter.
-Returns TRUE/FALSE based on success or failure::
+用于创建指定数据库，根据成败返回 TRUE 或 FALSE ::
 
 	if ($this->dbforge->create_database('my_db'))
 	{
@@ -52,8 +45,7 @@ Returns TRUE/FALSE based on success or failure::
 
 **$this->dbforge->drop_database('db_name')**
 
-Permits you to drop the database specified in the first parameter.
-Returns TRUE/FALSE based on success or failure::
+用于删除指定数据库，根据成败返回 TRUE 或 FALSE ::
 
 	if ($this->dbforge->drop_database('my_db'))
 	{
@@ -62,20 +54,16 @@ Returns TRUE/FALSE based on success or failure::
 
 
 ****************************
-Creating and Dropping Tables
+创建和删除数据表
 ****************************
 
-There are several things you may wish to do when creating tables. Add
-fields, add keys to the table, alter columns. CodeIgniter provides a
-mechanism for this.
+创建表涉及到这样几件事：添加字段、添加键、修改字段。CodeIgniter 提供了这几个方法。
 
-Adding fields
+添加字段
 =============
 
-Fields are created via an associative array. Within the array you must
-include a 'type' key that relates to the datatype of the field. For
-example, INT, VARCHAR, TEXT, etc. Many datatypes (for example VARCHAR)
-also require a 'constraint' key.
+字段通过一个关联数组来创建，数组中必须包含一个 'type' 索引，代表字段的数据类型。
+例如，INT、VARCHAR、TEXT 等，有些数据类型（例如 VARCHAR）还需要加一个 'constraint' 索引。
 
 ::
 
@@ -88,15 +76,12 @@ also require a 'constraint' key.
 	// will translate to "users VARCHAR(100)" when the field is added.
 
 
-Additionally, the following key/values can be used:
+另外，还可以使用下面的键值对：
 
--  unsigned/true : to generate "UNSIGNED" in the field definition.
--  default/value : to generate a default value in the field definition.
--  null/true : to generate "NULL" in the field definition. Without this,
-   the field will default to "NOT NULL".
--  auto_increment/true : generates an auto_increment flag on the
-   field. Note that the field type must be a type that supports this,
-   such as integer.
+-  unsigned/true : 在字段定义中生成 "UNSIGNED" 
+-  default/value : 在字段定义中生成一个默认值
+-  null/true : 在字段定义中生成 "NULL" ，如果没有这个，字段默认为 "NOT NULL"
+-  auto_increment/true : 在字段定义中生成自增标识，注意数据类型必须支持这个，譬如整型
 
 ::
 
@@ -123,34 +108,30 @@ Additionally, the following key/values can be used:
 	);
 
 
-After the fields have been defined, they can be added using
-``$this->dbforge->add_field($fields);`` followed by a call to the
-``create_table()`` method.
+字段定义好了之后，就可以在调用 ``create_table()`` 方法的后面使用
+``$this->dbforge->add_field($fields);`` 方法来添加字段了。
 
 **$this->dbforge->add_field()**
 
-The add fields method will accept the above array.
+添加字段方法的参数就是上面介绍的数组。
 
 
-Passing strings as fields
--------------------------
+使用字符串参数添加字段
+---------------------------------
 
-If you know exactly how you want a field to be created, you can pass the
-string into the field definitions with add_field()
+如果你非常清楚的知道你要添加的字段，你可以使用字段的定义字符串来传给 add_field() 方法
 
 ::
 
 	$this->dbforge->add_field("label varchar(100) NOT NULL DEFAULT 'default label'");
 
 
-.. note:: Multiple calls to add_field() are cumulative.
+.. note:: 多次调用 add_field() 将会累积
 
-Creating an id field
+创建 id 字段
 --------------------
 
-There is a special exception for creating id fields. A field with type
-id will automatically be assigned as an INT(9) auto_incrementing
-Primary Key.
+创建 id 字段和创建其他字段非常不一样，id 字段将会自动定义成类型为 INT(9)  的自增主键。
 
 ::
 
@@ -158,16 +139,13 @@ Primary Key.
 	// gives id INT(9) NOT NULL AUTO_INCREMENT
 
 
-Adding Keys
+添加键
 ===========
 
-Generally speaking, you'll want your table to have Keys. This is
-accomplished with $this->dbforge->add_key('field'). An optional second
-parameter set to TRUE will make it a primary key. Note that add_key()
-must be followed by a call to create_table().
+通常来说，表都会有键。这可以使用 $this->dbforge->add_key('field') 方法来实现。
+第二个参数可选，可以将其设置为主键。注意 add_key() 方法必须紧跟在 create_table() 方法的后面。
 
-Multiple column non-primary keys must be sent as an array. Sample output
-below is for MySQL.
+包含多列的非主键必须使用数组来添加，下面是 MySQL 的例子。
 
 ::
 
@@ -185,41 +163,34 @@ below is for MySQL.
 	// gives KEY `blog_name_blog_label` (`blog_name`, `blog_label`)
 
 
-Creating a table
+创建表
 ================
 
-After fields and keys have been declared, you can create a new table
-with
-
-::
+字段和键都定义好了之后，你可以使用下面的方法来创建表::
 
 	$this->dbforge->create_table('table_name');
 	// gives CREATE TABLE table_name
 
-
-An optional second parameter set to TRUE adds an "IF NOT EXISTS" clause
-into the definition
+第二个参数设置为 TRUE ，可以在定义中添加 "IF NOT EXISTS" 子句。
 
 ::
 
 	$this->dbforge->create_table('table_name', TRUE);
 	// gives CREATE TABLE IF NOT EXISTS table_name
 
-You could also pass optional table attributes, such as MySQL's ``ENGINE``::
+你还可以指定表的属性，譬如 MySQL 的 ``ENGINE`` ::
 
 	$attributes = array('ENGINE' => 'InnoDB');
 	$this->dbforge->create_table('table_name', FALSE, $attributes);
 	// produces: CREATE TABLE `table_name` (...) ENGINE = InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
 
-.. note:: Unless you specify the ``CHARACTER SET`` and/or ``COLLATE`` attributes,
-	``create_table()`` will always add them with your configured *char_set*
-	and *dbcollat* values, as long as they are not empty (MySQL only).
+.. note:: 除非你指定了 ``CHARACTER SET`` 或 ``COLLATE`` 属性，``create_table()`` 方法
+	默认会使用配置文件中 *char_set* 和 *dbcollat* 的值（仅针对 MySQL）。
 
-
-Dropping a table
+删除表
 ================
 
-Execute a DROP TABLE statement and optionally add an IF EXISTS clause.
+执行一个 DROP TABLE 语句，可以选择添加 IF EXISTS 子句。
 
 ::
 
@@ -230,10 +201,10 @@ Execute a DROP TABLE statement and optionally add an IF EXISTS clause.
 	$this->dbforge->drop_table('table_name',TRUE);
 
 
-Renaming a table
+重命名表
 ================
 
-Executes a TABLE rename
+执行一个重命名表语句。
 
 ::
 
@@ -242,17 +213,16 @@ Executes a TABLE rename
 
 
 ****************
-Modifying Tables
+修改表
 ****************
 
-Adding a Column to a Table
+给表添加列
 ==========================
 
 **$this->dbforge->add_column()**
 
-The ``add_column()`` method is used to modify an existing table. It
-accepts the same field array as above, and can be used for an unlimited
-number of additional fields.
+``add_column()`` 方法用于对现有数据表进行修改，它的参数和上面介绍的
+字段数组一样。
 
 ::
 
@@ -262,10 +232,9 @@ number of additional fields.
 	$this->dbforge->add_column('table_name', $fields); 
 	// Executes: ALTER TABLE table_name ADD preferences TEXT
 
-If you are using MySQL or CUBIRD, then you can take advantage of their
-AFTER and FIRST clauses to position the new column.
+如果你使用 MySQL 或 CUBIRD ，你可以使用 AFTER 和 FIRST 语句来为新添加的列指定位置。
 
-Examples::
+例如::
 
 	// Will place the new column after the `another_field` column:
 	$fields = array(
@@ -277,28 +246,25 @@ Examples::
 		'preferences' => array('type' => 'TEXT', 'first' => TRUE)
 	);
 
-
-Dropping a Column From a Table
+从表中删除列
 ==============================
 
 **$this->dbforge->drop_column()**
 
-Used to remove a column from a table.
+用于从表中删除指定列。
 
 ::
 
 	$this->dbforge->drop_column('table_name', 'column_to_drop');
 
 
-
-Modifying a Column in a Table
+修改表中的某个列
 =============================
 
 **$this->dbforge->modify_column()**
 
-The usage of this method is identical to ``add_column()``, except it
-alters an existing column rather than adding a new one. In order to
-change the name you can add a "name" key into the field defining array.
+该方法的用法和 ``add_column()`` 一样，只是它用于对现有的列进行修改，而不是添加新列。
+如果要修改列的名称，你可以在列的定义数组中添加一个 "name" 索引。
 
 ::
 
@@ -313,7 +279,7 @@ change the name you can add a "name" key into the field defining array.
 
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_DB_forge
@@ -326,15 +292,15 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Adds a column to a table. Usage:  See `Adding a Column to a Table`_.
+		给表添加列。用法参见 `给表添加列`_ 。
 
 	.. php:method:: add_field($field)
 
 		:param	array	$field: Field definition to add
 		:returns:	CI_DB_forge instance (method chaining)
 		:rtype:	CI_DB_forge
-
-                Adds a field to the set that will be used to create a table. Usage:  See `Adding fields`_.
+                
+                	添加字段到集合，用于创建一个表。用法参见 `添加字段`_ 。
 
 	.. php:method:: add_key($key[, $primary = FALSE])
 
@@ -343,7 +309,7 @@ Class Reference
 		:returns:	CI_DB_forge instance (method chaining)
 		:rtype:	CI_DB_forge
 
-		Adds a key to the set that will be used to create a table. Usage:  See `Adding Keys`_.
+		添加键到集合，用于创建一个表。用法参见：`添加键`_ 。
 
 	.. php:method:: create_database($db_name)
 
@@ -351,7 +317,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Creates a new database. Usage:  See `Creating and Dropping Databases`_.
+		创建数据库。用法参见：`创建和删除数据库`_ 。
 
 	.. php:method:: create_table($table[, $if_not_exists = FALSE[, array $attributes = array()]])
 
@@ -361,7 +327,7 @@ Class Reference
 		:returns:  TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Creates a new table. Usage:  See `Creating a table`_.
+		创建表。用法参见：`创建表`_ 。
 
 	.. php:method:: drop_column($table, $column_name)
 
@@ -370,7 +336,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Drops a column from a table. Usage:  See `Dropping a Column From a Table`_.
+		删除某个表的字段。用法参见：`从表中删除列`_ 。
 
 	.. php:method:: drop_database($db_name)
 
@@ -378,7 +344,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Drops a database. Usage:  See `Creating and Dropping Databases`_.
+		删除数据库。用法参见：`创建和删除数据库`_ 。
 
 	.. php:method:: drop_table($table_name[, $if_exists = FALSE])
 
@@ -387,7 +353,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Drops a table. Usage:  See `Dropping a table`_.
+		删除表。用法参见：`删除表`_ 。
 
 	.. php:method:: modify_column($table, $field)
 
@@ -396,7 +362,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Modifies a table column. Usage:  See `Modifying a Column in a Table`_.
+		修改表的某个列。用法参见：`修改表中的某个列`_ 。
 
 	.. php:method:: rename_table($table_name, $new_table_name)
 
@@ -405,4 +371,4 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Renames a table. Usage:  See `Renaming a table`_.
+		重命名表。用法参见：`重命名表`_ 。
