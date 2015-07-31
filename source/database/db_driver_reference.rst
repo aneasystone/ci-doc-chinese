@@ -138,7 +138,7 @@
 
 	.. php:method:: trans_status()
 
-                	:returns:	TRUE if the transaction succeeded, FALSE if it failed
+		:returns:	TRUE if the transaction succeeded, FALSE if it failed
 		:rtype:	bool
 
 		获取事务的状态，用来判断事务是否执行成功。

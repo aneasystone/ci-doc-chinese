@@ -289,7 +289,7 @@
 	:returns:	HTML drop down menu with time zones
 	:rtype:	string
 
-	该函数用于生成一个时区下拉菜单，像下面这样::
+	该函数用于生成一个时区下拉菜单，像下面这样。
 
 	.. raw:: html
 
