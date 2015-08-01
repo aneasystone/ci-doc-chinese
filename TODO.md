@@ -114,7 +114,7 @@
  - [x]    577 ./source/libraries/xmlrpc.rst
  - [ ]    584 ./source/libraries/encryption.rst
  - [ ]    635 ./source/general/styleguide.rst
- - [ ]    720 ./source/helpers/form_helper.rst
+ - [x]    720 ./source/helpers/form_helper.rst
  - [ ]   1057 ./source/libraries/sessions.rst
  - [ ]   1135 ./source/libraries/form_validation.rst
  - [x]   1462 ./source/database/query_builder.rst

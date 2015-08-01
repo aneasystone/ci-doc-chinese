@@ -1,9 +1,8 @@
 ###########
-Form Helper
+表单辅助库
 ###########
 
-The Form Helper file contains functions that assist in working with
-forms.
+表单辅助库包含了一些函数用于帮助你处理表单。
 
 .. contents::
   :local:
@@ -12,43 +11,37 @@ forms.
 
   <div class="custom-index container"></div>
 
-Loading this Helper
+加载辅助库
 ===================
 
-This helper is loaded using the following code::
+使用下面的代码来加载表单辅助库::
 
 	$this->load->helper('form');
 
-Escaping field values
+对域值转义
 =====================
 
-You may need to use HTML and characters such as quotes within your form
-elements. In order to do that safely, you'll need to use
-:doc:`common function <../general/common_functions>`
-:func:`html_escape()`.
+你可能会需要在表单元素中使用 HTML 或者诸如引号这样的字符，为了安全性，
+你需要使用 :doc:`通用函数 <../general/common_functions>` :func:`html_escape()` 。
 
-Consider the following example::
+考虑下面这个例子::
 
 	$string = 'Here is a string containing "quoted" text.';
 
 	<input type="text" name="myfield" value="<?php echo $string; ?>" />
 
-Since the above string contains a set of quotes, it will cause the form
-to break. The :php:func:`html_escape()` function converts HTML special
-characters so that it can be used safely::
+因为上面的字符串中包含了一对引号，它会破坏表单，使用 :php:func:`html_escape()`
+函数可以对 HTML 的特殊字符进行转义，从而可以安全的在域值中使用字符串::
 
 	<input type="text" name="myfield" value="<?php echo html_escape($string); ?>" />
 
-.. note:: If you use any of the form helper functions listed on this page,
-	the form values will be automatically escaped, so there is no need
-	to call this function. Use it only if you are creating your own
-	form elements.
+.. note:: 如果你使用了这个页面上介绍的任何一个函数，表单的域值会被自动转义，
+	所以你无需再调用这个函数。只有在你创建自己的表单元素时需要使用它。
 
-Available Functions
+可用函数
 ===================
 
-The following functions are available:
-
+该辅助库有下列可用函数：
 
 .. php:function:: form_open([$action = ''[, $attributes = ''[, $hidden = array()]]])
 
@@ -58,50 +51,46 @@ The following functions are available:
 	:returns:	An HTML form opening tag
 	:rtype:	string
 
-	Creates an opening form tag with a base URL **built from your config preferences**.
-	It will optionally let you add form attributes and hidden input fields, and
-	will always add the `accept-charset` attribute based on the charset value in your
-	config file.
+	生成一个 form 起始标签，并且它的 action URL 会根据你的配置文件自动生成。
+	你还可以给表单添加属性和隐藏域，另外，它还会根据你配置文件中的字符集参数
+	自动生成 `accept-charset` 属性。
 
-	The main benefit of using this tag rather than hard coding your own HTML is that
-	it permits your site to be more portable in the event your URLs ever change.
+	使用该函数来生成标签比你自己写 HTML 代码最大的好处是：当你的 URL 变动时，
+	它可以提供更好的可移植性。
 
-	Here's a simple example::
+	这里是个简单的例子::
 
 		echo form_open('email/send');
 
-	The above example would create a form that points to your base URL plus the
-	"email/send" URI segments, like this::
+	上面的代码会创建一个表单，它的 action 为根 URL 加上 "email/send"，向下面这样::
 
 		<form method="post" accept-charset="utf-8" action="http://example.com/index.php/email/send">
 
-	**Adding Attributes**
+	**添加属性**
 
-		Attributes can be added by passing an associative array to the second
-		parameter, like this::
+		可以通过第二个参数传递一个关联数组来添加属性，例如::
 
 			$attributes = array('class' => 'email', 'id' => 'myform');
 			echo form_open('email/send', $attributes);
 
-		Alternatively, you can specify the second parameter as a string::
+		另外，第二个参数你也可以直接使用字符串::
 
 			echo form_open('email/send', 'class="email" id="myform"');
 
-		The above examples would create a form similar to this::
+		上面的代码会创建一个类似于下面的表单::
 
 			<form method="post" accept-charset="utf-8" action="http://example.com/index.php/email/send" class="email" id="myform">
 
-	**Adding Hidden Input Fields**
+	**添加隐藏域**
 
-		Hidden fields can be added by passing an associative array to the
-		third parameter, like this::
+		可以通过第三个参数传递一个关联数组来添加隐藏域，例如::
 
 			$hidden = array('username' => 'Joe', 'member_id' => '234');
 			echo form_open('email/send', '', $hidden);
 
-		You can skip the second parameter by passing any falsy value to it.
+		你可以使用一个空值跳过第二个参数。
 
-		The above example would create a form similar to this::
+		上面的代码会创建一个类似于下面的表单::
 
 			<form method="post" accept-charset="utf-8" action="http://example.com/index.php/email/send">
 				<input type="hidden" name="username" value="Joe" />
@@ -116,9 +105,8 @@ The following functions are available:
 	:returns:	An HTML multipart form opening tag
 	:rtype:	string
 
-	This function is absolutely identical to :php:func:`form_open()` above,
-	except that it adds a *multipart* attribute, which is necessary if you
-	would like to use the form to upload files with.
+	这个函数和上面的 :php:func:`form_open()` 函数完全一样，
+	只是它会给表单添加一个 *multipart* 属性，在你使用表单上传文件时必须使用它。
 
 
 .. php:function:: form_hidden($name[, $value = ''])
@@ -128,13 +116,12 @@ The following functions are available:
 	:returns:	An HTML hidden input field tag
 	:rtype:	string
 
-	Lets you generate hidden input fields. You can either submit a
-	name/value string to create one field::
+	生成隐藏域。你可以使用名称和值两个参数来创建一个隐藏域::
 
 		form_hidden('username', 'johndoe');
 		// Would produce: <input type="hidden" name="username" value="johndoe" />
 
-	... or you can submit an associative array to create multiple fields::
+	... 或者你可以使用一个关联数组，来生成多个隐藏域::
 
 		$data = array(
 			'name'	=> 'John Doe',
@@ -151,7 +138,7 @@ The following functions are available:
 			<input type="hidden" name="url" value="http://example.com" />
 		*/
 
-	You can also pass an associative array to the value field::
+	你还可以向第二个参数传递一个关联数组::
 
 		$data = array(
 			'name'	=> 'John Doe',
@@ -169,7 +156,7 @@ The following functions are available:
 			<input type="hidden" name="my_array[url]" value="http://example.com" />
 		*/
 
-	If you want to create hidden input fields with extra attributes::
+	如果你想创建带有其他属性的隐藏域，可以这样::
 
 		$data = array(
 			'type'	=> 'hidden',
@@ -195,13 +182,11 @@ The following functions are available:
 	:returns:	An HTML text input field tag
 	:rtype:	string
 
-	Lets you generate a standard text input field. You can minimally pass
-	the field name and value in the first and second parameter::
+	用于生成标准的文本输入框，你可以简单的使用文本域的名称和值::
 
 		echo form_input('username', 'johndoe');
 
-	Or you can pass an associative array containing any data you wish your
-	form to contain::
+	或者使用一个关联数组，来包含任何你想要的数据::
 
 		$data = array(
 			'name'		=> 'username',
@@ -220,8 +205,7 @@ The following functions are available:
 			<input type="text" name="username" value="johndoe" id="username" maxlength="100" size="50" style="width:50%"  />
 		*/
 
-	If you would like your form to contain some additional data, like
-	JavaScript, you can pass it as a string in the third parameter::
+	如果你还希望能包含一些额外的数据，譬如 JavaScript ，你可以通过第三个参数传一个字符串::
 
 		$js = 'onClick="some_function()"';
 		echo form_input('username', 'johndoe', $js);
@@ -234,8 +218,7 @@ The following functions are available:
 	:returns:	An HTML password input field tag
 	:rtype:	string
 
-	This function is identical in all respects to the :php:func:`form_input()`
-	function above except that it uses the "password" input type.
+	该函数和上面的 :php:func:`form_input()` 函数一样，只是生成的输入框为 "password" 类型。
 
 
 .. php:function:: form_upload([$data = ''[, $value = ''[, $extra = '']]])
@@ -246,9 +229,8 @@ The following functions are available:
 	:returns:	An HTML file upload input field tag
 	:rtype:	string
 
-	This function is identical in all respects to the :php:func:`form_input()`
-	function above except that it uses the "file" input type, allowing it to
-	be used to upload files.
+	该函数和上面的 :php:func:`form_input()` 函数一样，只是生成的输入框为 "file" 类型，
+	可以用来上传文件。
 
 
 .. php:function:: form_textarea([$data = ''[, $value = ''[, $extra = '']]])
@@ -259,11 +241,10 @@ The following functions are available:
 	:returns:	An HTML textarea tag
 	:rtype:	string
 
-	This function is identical in all respects to the :php:func:`form_input()`
-	function above except that it generates a "textarea" type.
+	该函数和上面的 :php:func:`form_input()` 函数一样，只是生成的输入框为 "textarea" 类型。
 
-	.. note:: Instead of the *maxlength* and *size* attributes in the above example,
-		you will instead specify *rows* and *cols*.
+	.. note:: 对于 textarea 类型的输入框，你可以使用 *rows* 和 *cols* 属性，
+		来代替上面例子中的 *maxlength* 和 *size* 属性。
 
 .. php:function:: form_dropdown([$name = ''[, $options = array()[, $selected = array()[, $extra = '']]]])
 
@@ -274,14 +255,11 @@ The following functions are available:
 	:returns:	An HTML dropdown select field tag
 	:rtype:	string
 
-	Lets you create a standard drop-down field. The first parameter will
-	contain the name of the field, the second parameter will contain an
-	associative array of options, and the third parameter will contain the
-	value you wish to be selected. You can also pass an array of multiple
-	items through the third parameter, and CodeIgniter will create a
-	multiple select for you.
+	用于生成一个标准的下拉框域。第一个参数为域的名称，第二个参数为一个关联数组，
+	包含所有的选项，第三个参数为你希望默认选中的值。你也可以把第三个参数设置成
+	一个包含多个值的数组，CodeIgniter 将会为你生成多选下拉框。
 
-	Example::
+	例如::
 
 		$options = array(
 			'small'		=> 'Small Shirt',
@@ -317,16 +295,14 @@ The following functions are available:
 			</select>
 		*/
 
-	If you would like the opening <select> to contain additional data, like
-	an id attribute or JavaScript, you can pass it as a string in the fourth
-	parameter::
+	如果你希望为起始标签 <select> 添加一些额外的数据，例如 id 属性或 JavaScript ，
+	你可以通过第四个参数传一个字符串::
 
 		$js = 'id="shirts" onChange="some_function();"';
 		echo form_dropdown('shirts', $options, 'large', $js);
 
-	If the array passed as ``$options`` is a multidimensional array, then
-	``form_dropdown()`` will produce an <optgroup> with the array key as the
-	label.
+	如果你传递的 ``$options`` 数组是个多维数组，``form_dropdown()`` 函数将会生成带
+	<optgroup> 的下拉框，并使用数组的键作为 label 。
 
 
 .. php:function:: form_multiselect([$name = ''[, $options = array()[, $selected = array()[, $extra = '']]]])
@@ -338,14 +314,11 @@ The following functions are available:
 	:returns:	An HTML dropdown multiselect field tag
 	:rtype:	string
 
-	Lets you create a standard multiselect field. The first parameter will
-	contain the name of the field, the second parameter will contain an
-	associative array of options, and the third parameter will contain the
-	value or values you wish to be selected.
+	用于生成一个标准的多选下拉框。第一个参数为域的名称，第二个参数为一个关联数组，
+	包含所有的选项，第三个参数为你希望默认选中的一个或多个值。
 
-	The parameter usage is identical to using :php:func:`form_dropdown()` above,
-	except of course that the name of the field will need to use POST array
-	syntax, e.g. foo[].
+	参数的用法和上面的 :php:func:`form_dropdown()` 函数一样，只是域的名称需要使用
+	数组语法，例如：foo[]
 
 
 .. php:function:: form_fieldset([$legend_text = ''[, $attributes = array()]])
@@ -355,9 +328,9 @@ The following functions are available:
 	:returns:	An HTML fieldset opening tag
 	:rtype:	string
 
-	Lets you generate fieldset/legend fields.
+	用于生成 fieldset 和 legend 域。
 
-	Example::
+	例如::
 
 		echo form_fieldset('Address Information');
 		echo "<p>fieldset content here</p>\n";
@@ -372,8 +345,7 @@ The following functions are available:
 				</fieldset>
 		*/
 
-	Similar to other functions, you can submit an associative array in the
-	second parameter if you prefer to set additional attributes::
+	和其他的函数类似，你也可以通过给第二个参数传一个关联数组来添加额外的属性::
 
 		$attributes = array(
 			'id'	=> 'address_info',
@@ -401,9 +373,8 @@ The following functions are available:
 	:rtype:	string
 	
 
-	Produces a closing </fieldset> tag. The only advantage to using this
-	function is it permits you to pass data to it which will be added below
-	the tag. For example
+	用于生成结束标签 </fieldset> ，使用这个函数唯一的一个好处是，
+	它可以在结束标签的后面加上一些其他的数据。例如：
 
 	::
 
@@ -421,16 +392,14 @@ The following functions are available:
 	:returns:	An HTML checkbox input tag
 	:rtype:	string
 
-	Lets you generate a checkbox field. Simple example::
+	用于生成一个复选框，例如::
 
 		echo form_checkbox('newsletter', 'accept', TRUE);
 		// Would produce:  <input type="checkbox" name="newsletter" value="accept" checked="checked" />
 
-	The third parameter contains a boolean TRUE/FALSE to determine whether
-	the box should be checked or not.
+	第三个参数为布尔值 TRUE 或 FALSE ，用于指定复选框默认是否为选定状态。
 
-	Similar to the other form functions in this helper, you can also pass an
-	array of attributes to the function::
+	和其他函数一样，你可以传一个属性的数组给它::
 
 		$data = array(
 			'name'		=> 'newsletter',
@@ -443,9 +412,7 @@ The following functions are available:
 		echo form_checkbox($data);
 		// Would produce: <input type="checkbox" name="newsletter" id="newsletter" value="accept" checked="checked" style="margin:10px" />
 
-	Also as with other functions, if you would like the tag to contain
-	additional data like JavaScript, you can pass it as a string in the
-	fourth parameter::
+	另外，如果你希望向标签中添加额外的数据如 JavaScript ，也可以传一个字符串给第四个参数::
 
 		$js = 'onClick="some_function()"';
 		echo form_checkbox('newsletter', 'accept', TRUE, $js)
@@ -460,8 +427,7 @@ The following functions are available:
 	:returns:	An HTML radio input tag
 	:rtype:	string
 
-	This function is identical in all respects to the :php:func:`form_checkbox()`
-	function above except that it uses the "radio" input type.
+	该函数和 :php:func:`form_checkbox()` 函数完全一样，只是它生成的是单选框。
 
 
 .. php:function:: form_label([$label_text = ''[, $id = ''[, $attributes = array()]]])
@@ -472,15 +438,14 @@ The following functions are available:
 	:returns:	An HTML field label tag
 	:rtype:	string
 
-	Lets you generate a <label>. Simple example::
+	生成 <label> 标签，例如::
 
 		echo form_label('What is your Name', 'username');
 		// Would produce:  <label for="username">What is your Name</label>
 
-	Similar to other functions, you can submit an associative array in the
-	third parameter if you prefer to set additional attributes.
+	和其他的函数一样，如果你想添加额外的属性的话，可以传一个关联数组给第三个参数::
 
-	Example::
+	例如::
 
 		$attributes = array(
 			'class' => 'mycustomclass',
@@ -499,14 +464,13 @@ The following functions are available:
 	:returns:	An HTML input submit tag
 	:rtype:	string
 
-	Lets you generate a standard submit button. Simple example::
+	用于生成一个标准的提交按钮。例如::
 
 		echo form_submit('mysubmit', 'Submit Post!');
 		// Would produce:  <input type="submit" name="mysubmit" value="Submit Post!" />
 
-	Similar to other functions, you can submit an associative array in the
-	first parameter if you prefer to set your own attributes. The third
-	parameter lets you add extra data to your form, like JavaScript.
+	和其他的函数一样，如果你想添加额外的属性的话，可以传一个关联数组给第一个参数，
+	第三个参数可以向表单添加额外的数据，例如 JavaScript 。
 
 
 .. php:function:: form_reset([$data = ''[, $value = ''[, $extra = '']]])
@@ -517,8 +481,7 @@ The following functions are available:
 	:returns:	An HTML input reset button tag
 	:rtype:	string
 
-	Lets you generate a standard reset button. Use is identical to
-	:func:`form_submit()`.
+	用于生成一个标准的重置按钮。用法和 :func:`form_submit()` 函数一样。
 
 
 .. php:function:: form_button([$data = ''[, $content = ''[, $extra = '']]])
@@ -529,14 +492,12 @@ The following functions are available:
 	:returns:	An HTML button tag
 	:rtype:	string
 
-	Lets you generate a standard button element. You can minimally pass the
-	button name and content in the first and second parameter::
+	用于生成一个标准的按钮，你可以简单的使用名称和内容来生成按钮::
 
 		echo form_button('name','content');
 		// Would produce: <button name="name" type="button">Content</button>
 
-	Or you can pass an associative array containing any data you wish your
-	form to contain::
+	或者使用一个关联数组，来包含任何你想要的数据::
 
 		$data = array(
 			'name'		=> 'button',
@@ -549,8 +510,7 @@ The following functions are available:
 		echo form_button($data);
 		// Would produce: <button name="button" id="button" value="true" type="reset">Reset</button>
 
-	If you would like your form to contain some additional data, like
-	JavaScript, you can pass it as a string in the third parameter::
+	如果你还希望能包含一些额外的数据，譬如 JavaScript ，你可以通过第三个参数传一个字符串::
 
 		$js = 'onClick="some_function()"';
 		echo form_button('mybutton', 'Click Me', $js);
@@ -562,9 +522,8 @@ The following functions are available:
 	:returns:	An HTML form closing tag
 	:rtype:	string
 
-	Produces a closing </form> tag. The only advantage to using this
-	function is it permits you to pass data to it which will be added below
-	the tag. For example::
+	用于生成结束标签 </form> ，使用这个函数唯一的一个好处是，
+	它可以在结束标签的后面加上一些其他的数据。例如：
 
 		$string = '</div></div>';
 		echo form_close($string);
@@ -579,18 +538,15 @@ The following functions are available:
 	:returns:	Field value
 	:rtype:	string
 
-	Permits you to set the value of an input form or textarea. You must
-	supply the field name via the first parameter of the function. The
-	second (optional) parameter allows you to set a default value for the
-	form. The third (optional) parameter allows you to turn off HTML escaping
-	of the value, in case you need to use this function in combination with
-	i.e. :php:func:`form_input()` and avoid double-escaping.
+	用于你显示 input 或者 textarea 类型的输入框的值。你必须在第一个参数中指定名称，
+	第二个参数是可选的，允许你设置一个默认值，第三个参数也是可选，可以禁用对值的转义，
+	当你在和 :php:func:`form_input()` 函数一起使用时，可以避免重复转义。
 
-	Example::
+	例如::
 
 		<input type="text" name="quantity" value="<?php echo set_value('quantity', '0'); ?>" size="50" />
 
-	The above form will show "0" when loaded for the first time.
+	当上面的表单元素第一次加载时将会显示 "0" 。
 
 
 .. php:function:: set_select($field[, $value = ''[, $default = FALSE]])
@@ -601,14 +557,12 @@ The following functions are available:
 	:returns:	'selected' attribute or an empty string
 	:rtype:	string
 
-	If you use a <select> menu, this function permits you to display the
-	menu item that was selected.
+	如果你使用 <select> 下拉菜单，此函数允许你显示选中的菜单项。
 
-	The first parameter must contain the name of the select menu, the second
-	parameter must contain the value of each item, and the third (optional)
-	parameter lets you set an item as the default (use boolean TRUE/FALSE).
+	第一个参数为下拉菜单的名称，第二个参数必须包含每个菜单项的值。
+	第三个参数是可选的，用于设置菜单项是否为默认选中状态（TRUE / FALSE）。
 
-	Example::
+	例如::
 
 		<select name="myselect">
 			<option value="one" <?php echo  set_select('myselect', 'one', TRUE); ?> >One</option>
@@ -624,13 +578,12 @@ The following functions are available:
 	:returns:	'checked' attribute or an empty string
 	:rtype:	string
 
-	Permits you to display a checkbox in the state it was submitted.
+	允许你显示一个处于提交状态的复选框。
 
-	The first parameter must contain the name of the checkbox, the second
-	parameter must contain its value, and the third (optional) parameter
-	lets you set an item as the default (use boolean TRUE/FALSE).
+	第一个参数必须包含此复选框的名称，第二个参数必须包含它的值，
+	第三个参数是可选的，用于设置复选框是否为默认选中状态（TRUE / FALSE）。
 
-	Example::
+	例如::
 
 		<input type="checkbox" name="mycheck" value="1" <?php echo set_checkbox('mycheck', '1'); ?> />
 		<input type="checkbox" name="mycheck" value="2" <?php echo set_checkbox('mycheck', '2'); ?> />
@@ -643,19 +596,18 @@ The following functions are available:
 	:returns:	'checked' attribute or an empty string
 	:rtype:	string
 
-	Permits you to display radio buttons in the state they were submitted.
-	This function is identical to the :php:func:`set_checkbox()` function above.
+	允许你显示那些处于提交状态的单选框。
+	该函数和上面的 :php:func:`set_checkbox()` 函数一样。
 
-	Example::
+	例如::
 
 		<input type="radio" name="myradio" value="1" <?php echo  set_radio('myradio', '1', TRUE); ?> />
 		<input type="radio" name="myradio" value="2" <?php echo  set_radio('myradio', '2'); ?> />
 
-	.. note:: If you are using the Form Validation class, you must always specify
-		a rule for your field, even if empty, in order for the ``set_*()``
-		functions to work. This is because if a Form Validation object is
-		defined, the control for ``set_*()`` is handed over to a method of the
-		class instead of the generic helper function.
+	.. note:: 如果你正在使用表单验证类，你必须为你的每一个表单域指定一个规则，
+		即使是空的，这样可以确保 ``set_*()`` 函数能正常运行。
+		这是因为如果定义了一个表单验证对象，将会调用表单验证的 ``set_*()`` 函数，
+		而不是调用辅助库里的函数。
 
 .. php:function:: form_error([$field = ''[, $prefix = ''[, $suffix = '']]])
 
@@ -665,12 +617,10 @@ The following functions are available:
 	:returns:	HTML-formatted form validation error message(s)
 	:rtype:	string
 
-	Returns a validation error message from the :doc:`Form Validation Library
-	<../libraries/form_validation>`, associated with the specified field name.
-	You can optionally specify opening and closing tag(s) to put around the error
-	message.
+	从 :doc:`表单验证类 <../libraries/form_validation>` 返回验证错误消息，
+	并附上验证出错的域的名称，你可以设置错误消息的起始和结束标签。
 
-	Example::
+	例如::
 
 		// Assuming that the 'username' field value was incorrect:
 		echo form_error('myfield', '<div class="error">', '</div>');
@@ -685,12 +635,10 @@ The following functions are available:
 	:returns:	HTML-formatted form validation error message(s)
 	:rtype:	string
 
-	Similarly to the :php:func:`form_error()` function, returns all validation
-	error messages produced by the :doc:`Form Validation Library
-	<../libraries/form_validation>`, with optional opening and closing tags
-	around each of the messages.
+	和 :php:func:`form_error()` 函数类似，返回所有 :doc:`表单验证类 <../libraries/form_validation>`
+	生成的错误信息，你可以为为每个错误消息设置起始和结束标签。
 
-	Example::
+	例如::
 
 		echo validation_errors('<span class="error">', '</span>');
 
@@ -708,13 +656,10 @@ The following functions are available:
 	:returns:	Escaped value
 	:rtype:	string
 
-	Allows you to safely use HTML and characters such as quotes within form
-	elements without breaking out of the form.
+	允许你在表单元素中安全的使用 HTML 和譬如引号这样的字符，而不用担心对表单造成破坏。
 
-	.. note:: If you use any of the form helper functions listed in this page the form
-		values will be prepped automatically, so there is no need to call this
-		function. Use it only if you are creating your own form elements.
+	.. note:: 如果你使用了这个页面上介绍的任何一个函数，表单的域值会被自动转义，
+		所以你无需再调用这个函数。只有在你创建自己的表单元素时需要使用它。
 
-	.. note:: This function is DEPRECATED and is just an alias for
-		:doc:`common function <../general/common_functions>`
-		:func:`html_escape()` - please use that instead.
+	.. note:: 该函数已经废弃，现在只是 :doc:`通用函数 <../general/common_functions>` :func:`html_escape()`
+		的一个别名，请使用 :func:`html_escape()` 代替它。
