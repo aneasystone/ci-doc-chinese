@@ -1,23 +1,20 @@
 ########################
-Image Manipulation Class
+图像处理类
 ########################
 
-CodeIgniter's Image Manipulation class lets you perform the following
-actions:
+CodeIgniter 的图像处理类可以使你完成以下的操作：
 
--  Image Resizing
--  Thumbnail Creation
--  Image Cropping
--  Image Rotating
--  Image Watermarking
+-  调整图像大小
+-  创建缩略图
+-  图像裁剪
+-  图像旋转
+-  添加图像水印
 
-All three major image libraries are supported: GD/GD2, NetPBM, and
-ImageMagick
+可以很好的支持三个主流的图像库：GD/GD2、NetPBM 和 ImageMagick 。
 
-.. note:: Watermarking is only available using the GD/GD2 library. In
-	addition, even though other libraries are supported, GD is required in
-	order for the script to calculate the image properties. The image
-	processing, however, will be performed with the library you specify.
+.. note:: 添加水印操作仅仅在使用 GD/GD2 时可用。另外，即使支持其他的图像处理库，
+	但是为了计算图像的属性，GD 仍是必需的。然而在进行图像处理操作时，
+	还是会使用你指定的库。
 
 .. contents::
   :local:
@@ -27,25 +24,24 @@ ImageMagick
   <div class="custom-index container"></div>
 
 **********************
-Initializing the Class
+初始化类
 **********************
 
-Like most other classes in CodeIgniter, the image class is initialized
-in your controller using the $this->load->library function::
+跟 CodeIgniter 中的其他类一样，可以在你的控制器中使用 ``$this->load->library()`` 
+方法加载图像处理类::
 
 	$this->load->library('image_lib');
 
-Once the library is loaded it will be ready for use. The image library
-object you will use to call all functions is: ``$this->image_lib``
+一旦加载，图像处理类就可以像下面这样使用::
 
-Processing an Image
+	$this->image_lib
+
+处理图像
 ===================
 
-Regardless of the type of processing you would like to perform
-(resizing, cropping, rotation, or watermarking), the general process is
-identical. You will set some preferences corresponding to the action you
-intend to perform, then call one of four available processing functions.
-For example, to create an image thumbnail you'll do this::
+不管你想进行何种图像处理操作（调整大小，图像裁剪，图像旋转，添加水印），
+通常过程都是一样的。你会先设置一些你想进行的图像操作的参数，
+然后调用四个可用方法中的一个。例如，创建一个图像缩略图::
 
 	$config['image_library'] = 'gd2';
 	$config['source_image']	= '/path/to/image/mypic.jpg';
@@ -58,153 +54,131 @@ For example, to create an image thumbnail you'll do this::
 
 	$this->image_lib->resize();
 
-The above code tells the image_resize function to look for an image
-called *mypic.jpg* located in the source_image folder, then create a
-thumbnail that is 75 X 50 pixels using the GD2 image_library. Since the
-maintain_ratio option is enabled, the thumb will be as close to the
-target width and height as possible while preserving the original aspect
-ratio. The thumbnail will be called *mypic_thumb.jpg*
+以上代码告诉 image_resize 函数去查找位于 source_image 目录下的名为 mypic.jpg
+的图片，然后运用 GD2 图像库创建一个 75 X 50 像素的缩略图。 当 maintain_ratio 
+选项设为 TRUE 时，生成的缩略图将保持图像的纵横比例，同时尽可能的在宽度和
+高度上接近所设定的 width 和 height 。
+缩略图将被命名为类似 mypic_thumb.jpg 的形式。
 
-.. note:: In order for the image class to be allowed to do any
-	processing, the folder containing the image files must have write
-	permissions.
+.. note:: 为了让图像类能进行所有操作，包含图片的文件夹必须开启可写权限。
 
-.. note:: Image processing can require a considerable amount of server
-	memory for some operations. If you are experiencing out of memory errors
-	while processing images you may need to limit their maximum size, and/or
-	adjust PHP memory limits.
+.. note:: 图像处理的某些操作可能需要大量的服务器内存。如果在处理图像时，
+	你遇到了内存不足错误，您可能需要限制图像大小的最大值，
+	和/或调整 PHP 的内存限制。
 
-Processing Methods
+处理函数
 ==================
 
-There are four available processing methods:
+有五个处理函数可以调用：
 
 -  $this->image_lib->resize()
 -  $this->image_lib->crop()
 -  $this->image_lib->rotate()
 -  $this->image_lib->watermark()
 
-These methods return boolean TRUE upon success and FALSE for failure.
-If they fail you can retrieve the error message using this function::
+当调用成功时，这些函数会返回 TRUE ，否则会返回 FALSE 。
+如果调用失败时，用以下函数可以获取错误信息::
 
 	echo $this->image_lib->display_errors();
 
-A good practice is to use the processing function conditionally, showing an
-error upon failure, like this::
+下面是一个好的做法，将函数调用放在条件判断里，当调用失败时显示错误的信息::
 
 	if ( ! $this->image_lib->resize())
 	{
 		echo $this->image_lib->display_errors();
 	}
 
-.. note:: You can optionally specify the HTML formatting to be applied to
-	the errors, by submitting the opening/closing tags in the function,
-	like this::
+.. note:: 你也可以给错误信息指定 HTML 格式，像下面这样添加起始和结束标签::
 
 	$this->image_lib->display_errors('<p>', '</p>');
 
 .. _processing-preferences:
 
-Preferences
+参数
 ===========
 
-The preferences described below allow you to tailor the image processing
-to suit your needs.
+你可以用下面的参数来对图像处理进行配置，满足你的要求。
 
-Note that not all preferences are available for every function. For
-example, the x/y axis preferences are only available for image cropping.
-Likewise, the width and height preferences have no effect on cropping.
-The "availability" column indicates which functions support a given
-preference.
+注意，不是所有的参数都可以应用到每一个函数中。例如，x/y 轴参数只能被图像裁剪使用。
+但是，宽度和高度参数对裁剪函数是无效的。下表的 "可用性" 一栏将指明哪些函数可以使用对应的参数。
 
-Availability Legend:
+"可用性" 符号说明：
 
--  R - Image Resizing
--  C - Image Cropping
--  X - Image Rotation
--  W - Image Watermarking
+-  R - 调整图像大小
+-  C - 图像裁剪
+-  X - 图像旋转
+-  W - 添加图像水印
 
 ======================= ======================= =============================== =========================================================================== =============
-Preference              Default Value           Options                         Description                                                                 Availability
+参数              默认值           选项                         描述                                                                 可用性
 ======================= ======================= =============================== =========================================================================== =============
-**image_library**       GD2                     GD, GD2, ImageMagick, NetPBM    Sets the image library to be used.                                          R, C, X, W
-**library_path**        None                    None                            Sets the server path to your ImageMagick or NetPBM library. If you use      R, C, X
-                                                                                either of those libraries you must supply the path.                         R, C, S, W
-**source_image**        None                    None                            Sets the source image name/path. The path must be a relative or absolute
-                                                                                server path, not a URL.
-**dynamic_output**      FALSE                   TRUE/FALSE (boolean)            Determines whether the new image file should be written to disk or          R, C, X, W
-                                                                                generated dynamically. Note: If you choose the dynamic setting, only one
-                                                                                image can be shown at a time, and it can't be positioned on the page. It
-                                                                                simply outputs the raw image dynamically to your browser, along with
-                                                                                image headers.
-**file_permissions**    0644                    (integer)                       File system permissions to apply on the resulting image file,               R, C, X, W
-                                                                                writing it to the disk. WARNING: Use octal integer notation!
-**quality**             90%                     1 - 100%                        Sets the quality of the image. The higher the quality the larger the        R, C, X, W
-                                                                                file size.
-**new_image**           None                    None                            Sets the destination image name/path. You'll use this preference when       R, C, X, W
-                                                                                creating an image copy. The path must be a relative or absolute server
-                                                                                path, not a URL.
-**width**               None                    None                            Sets the width you would like the image set to.                             R, C
-**height**              None                    None                            Sets the height you would like the image set to.                            R, C
-**create_thumb**        FALSE                   TRUE/FALSE (boolean)            Tells the image processing function to create a thumb.                      R
-**thumb_marker**        _thumb                  None                            Specifies the thumbnail indicator. It will be inserted just before the      R
-                                                                                file extension, so mypic.jpg would become mypic_thumb.jpg
-**maintain_ratio**      TRUE                    TRUE/FALSE (boolean)            Specifies whether to maintain the original aspect ratio when resizing or    R, C
-                                                                                use hard values.
-**master_dim**          auto                    auto, width, height             Specifies what to use as the master axis when resizing or creating          R
-                                                                                thumbs. For example, let's say you want to resize an image to 100 X 75
-                                                                                pixels. If the source image size does not allow perfect resizing to
-                                                                                those dimensions, this setting determines which axis should be used as
-                                                                                the hard value. "auto" sets the axis automatically based on whether the
-                                                                                image is taller than wider, or vice versa.
-**rotation_angle**      None                    90, 180, 270, vrt, hor          Specifies the angle of rotation when rotating images. Note that PHP         X
-                                                                                rotates counter-clockwise, so a 90 degree rotation to the right must be
-                                                                                specified as 270.
-**x_axis**              None                    None                            Sets the X coordinate in pixels for image cropping. For example, a          C
-                                                                                setting of 30 will crop an image 30 pixels from the left.
-**y_axis**              None                    None                            Sets the Y coordinate in pixels for image cropping. For example, a          C
-                                                                                setting of 30 will crop an image 30 pixels from the top.
+**image_library**       GD2                     GD, GD2, ImageMagick, NetPBM    设置要使用的图像库                                          R, C, X, W
+**library_path**        None                    None                            设置 ImageMagick 或 NetPBM 库在服务器上的路径。      R, C, X
+                                                                                要使用它们中的其中任何一个，你都需要设置它们的路径。                         R, C, S, W
+**source_image**        None                    None                            设置原始图像的名称和路径。 
+                                                                                路径只能是相对或绝对的服务器路径，不能使用URL 。
+**dynamic_output**      FALSE                   TRUE/FALSE (boolean)            决定新生成的图像是要写入硬盘还是内存中。          R, C, X, W
+                                                                                注意，如果是生成到内存的话，一次只能显示一副图像，而且
+                                                                                不能调整它在你页面中的位置，它只是简单的将图像数据以及图像的
+                                                                                HTTP 头发送到浏览器。
+**file_permissions**    0644                    (integer)                       设置生成图像文件的权限。               R, C, X, W
+                                                                                注意：权限值为八进制表示法。
+**quality**             90%                     1 - 100%                        设置图像的品质。品质越高，图像文件越大。        R, C, X, W
+**new_image**           None                    None                            设置目标图像的名称和路径。       R, C, X, W
+                                                                                创建图像副本时使用该参数，路径只能是相对或绝对的服务器路径，
+                                                                                不能使用URL 。
+**width**               None                    None                            设置你想要的图像宽度。                             R, C
+**height**              None                    None                            设置你想要的图像高度。                            R, C
+**create_thumb**        FALSE                   TRUE/FALSE (boolean)            告诉图像处理函数生成缩略图。                      R
+**thumb_marker**        _thumb                  None                            指定缩略图后缀，它会被插入到文件扩展名的前面，      R
+                                                                                所以 mypic.jpg 文件会变成 mypic_thumb.jpg
+**maintain_ratio**      TRUE                    TRUE/FALSE (boolean)            指定是否在缩放或使用硬值的时候    R, C
+                                                                                使图像保持原始的纵横比例。
+**master_dim**          auto                    auto, width, height             指定一个选项作为缩放和创建缩略图时的主轴。          R
+                                                                                例如，你想要将一张图片缩放到 100×75 像素。
+                                                                                如果原来的图像的大小不能完美的缩放到这个尺寸，
+                                                                                那么由这个参数决定把哪个轴作为硬值。
+                                                                                "auto" 依据图片到底是过高还是过长自动设定轴。
+**rotation_angle**      None                    90, 180, 270, vrt, hor          指定图片旋转的角度。         X
+                                                                                注意，旋转是逆时针的，如果想向右转 90 度，
+                                                                                就得把这个参数定义为 270 。
+**x_axis**              None                    None                            为图像的裁剪设定 X 轴上的长度。          C
+                                                                                例如，设为 30 就是将图片左边的 30 像素裁去。
+**y_axis**              None                    None                            为图像的裁剪设定Y轴上的长度。          C
+                                                                                例如，设为30就是将图片顶端的30像素裁去。
 ======================= ======================= =============================== =========================================================================== =============
 
-Setting preferences in a config file
+在配置文件中设置参数
 ====================================
 
-If you prefer not to set preferences using the above method, you can
-instead put them into a config file. Simply create a new file called
-image_lib.php, add the $config array in that file. Then save the file
-in *config/image_lib.php* and it will be used automatically. You will
-NOT need to use the ``$this->image_lib->initialize()`` method if you save
-your preferences in a config file.
+如果你不喜欢使用上面的方法来设置参数，你可以将参数保存到配置文件中。你只需简单的创建一个文件 
+image_lib.php 并将 $config 数组放到该文件中，然后保存文件到 **config/image_lib.php** ，这些参数将会自动被使用。
+如果你在配置文件中设置参数，那么你就不需要使用 ``$this->image_lib->initialize()`` 方法了。
 
 ******************
-Image Watermarking
+添加图像水印
 ******************
 
-The Watermarking feature requires the GD/GD2 library.
+水印处理功能需要 GD/GD2 库的支持。
 
-Two Types of Watermarking
+水印的两种类型
 =========================
 
-There are two types of watermarking that you can use:
+你可以使用以下两种图像水印处理方式：
 
--  **Text**: The watermark message will be generated using text, either
-   with a True Type font that you specify, or using the native text
-   output that the GD library supports. If you use the True Type version
-   your GD installation must be compiled with True Type support (most
-   are, but not all).
--  **Overlay**: The watermark message will be generated by overlaying an
-   image (usually a transparent PNG or GIF) containing your watermark
-   over the source image.
+-  **Text**：水印信息将以文字方式生成，要么使用你所指定的 TrueType 字体，
+   要么使用 GD 库所支持的内部字体。如果你要使用 TrueType 版本，
+   那么你安装的 GD 库必须是以支持 TrueType 的形式编译的（大多数都是，但不是所有）。
+-  **Overlay**：水印信息将以图像方式生成，新生成的水印图像
+   （通常是透明的 PNG 或者 GIF）将覆盖在原图像上。
 
 .. _watermarking:
 
-Watermarking an Image
+给图像添加水印
 =====================
 
-Just as with the other methods (resizing, cropping, and rotating) the
-general process for watermarking involves setting the preferences
-corresponding to the action you intend to perform, then calling the
-watermark function. Here is an example::
+类似使用其他类型的图像处理函数（resizing、cropping 和 rotating），
+你也要对水印处理函数进行参数设置来生成你要的结果，例子如下::
 
 	$config['source_image']	= '/path/to/image/mypic.jpg';
 	$config['wm_text'] = 'Copyright 2006 - John Doe';
@@ -220,100 +194,83 @@ watermark function. Here is an example::
 
 	$this->image_lib->watermark();
 
-The above example will use a 16 pixel True Type font to create the text
-"Copyright 2006 - John Doe". The watermark will be positioned at the
-bottom/center of the image, 20 pixels from the bottom of the image.
+上面的例子是使用 16 像素 True Type 字体来生成文本水印 "Copyright 2006 - John Doe" ，
+该水印将出现在离图像底部 20 像素的中下部位置。
 
-.. note:: In order for the image class to be allowed to do any
-	processing, the image file must have "write" file permissions
-	For example, 777.
+.. note:: 当调用图像类处理图像时，所有的目标图片必须有 "写入" 权限， 例如：777
 
-Watermarking Preferences
+水印处理参数
 ========================
 
-This table shows the preferences that are available for both types of
-watermarking (text or overlay)
+下表列举的参数对于两种水印处理方式（text 或 overlay）都适用。
 
 ======================= =================== ======================= ==========================================================================
-Preference              Default Value       Options                 Description
+参数              默认值       选项                 描述
 ======================= =================== ======================= ==========================================================================
-**wm_type**             text                text, overlay           Sets the type of watermarking that should be used.
-**source_image**        None                None                    Sets the source image name/path. The path must be a relative or absolute
-                                                                    server path, not a URL.
-**dynamic_output**      FALSE               TRUE/FALSE (boolean)    Determines whether the new image file should be written to disk or
-                                                                    generated dynamically. Note: If you choose the dynamic setting, only one
-                                                                    image can be shown at a time, and it can't be positioned on the page. It
-                                                                    simply outputs the raw image dynamically to your browser, along with
-                                                                    image headers.
-**quality**             90%                 1 - 100%                Sets the quality of the image. The higher the quality the larger the
-                                                                    file size.
-**wm_padding**          None                A number                The amount of padding, set in pixels, that will be applied to the
-                                                                    watermark to set it away from the edge of your images.
-**wm_vrt_alignment**    bottom              top, middle, bottom     Sets the vertical alignment for the watermark image.
-**wm_hor_alignment**    center              left, center, right     Sets the horizontal alignment for the watermark image.
-**wm_hor_offset**       None                None                    You may specify a horizontal offset (in pixels) to apply to the
-                                                                    watermark position. The offset normally moves the watermark to the
-                                                                    right, except if you have your alignment set to "right" then your offset
-                                                                    value will move the watermark toward the left of the image.
-**wm_vrt_offset**       None                None                    You may specify a vertical offset (in pixels) to apply to the watermark
-                                                                    position. The offset normally moves the watermark down, except if you
-                                                                    have your alignment set to "bottom" then your offset value will move the
-                                                                    watermark toward the top of the image.
+**wm_type**             text                text, overlay           设置想要使用的水印处理类型。
+**source_image**        None                None                    设置原图像的名称和路径，路径必须是相对或绝对路径，不能是 URL 。
+**dynamic_output**      FALSE               TRUE/FALSE (boolean)    决定新生成的图像是要写入硬盘还是内存中。
+                                                                    注意，如果是生成到内存的话，一次只能显示一副图像，而且
+                                                                    不能调整它在你页面中的位置，它只是简单的将图像数据以及图像的
+                                                                    HTTP 头发送到浏览器。
+**quality**             90%                 1 - 100%                设置图像的品质。品质越高，图像文件越大。
+**wm_padding**          None                A number                内边距，以像素为单位，是水印与图片边缘之间的距离。
+**wm_vrt_alignment**    bottom              top, middle, bottom     设置水印图像的垂直对齐方式。
+**wm_hor_alignment**    center              left, center, right     设置水印图像的水平对齐方式。
+**wm_hor_offset**       None                None                    你可以指定一个水平偏移量（以像素为单位），
+                                                                    用于设置水印的位置。偏移量通常是向右移动水印，
+                                                                    除非你把水平对齐方式设置为 "right" ，那么你的偏移量将会向左移动水印。
+**wm_vrt_offset**       None                None                    你可以指定一个垂直偏移量（以像素为单位），
+                                                                    用于设置水印的位置。偏移量通常是向下移动水印，
+                                                                    除非你把垂直对齐方式设置为 "bottom"，那么你的偏移量将会向上移动水印。
 ======================= =================== ======================= ==========================================================================
 
-Text Preferences
+Text 参数
 ----------------
 
-This table shows the preferences that are available for the text type of
-watermarking.
+下表列举的参数只适用于 text 水印处理方式。
 
 ======================= =================== =================== ==========================================================================
-Preference              Default Value       Options             Description
+参数              默认值       选项             描述
 ======================= =================== =================== ==========================================================================
-**wm_text**             None                None                The text you would like shown as the watermark. Typically this will be a
-                                                                copyright notice.
-**wm_font_path**        None                None                The server path to the True Type Font you would like to use. If you do
-                                                                not use this option, the native GD font will be used.
-**wm_font_size**        16                  None                The size of the text. Note: If you are not using the True Type option
-                                                                above, the number is set using a range of 1 - 5. Otherwise, you can use
-                                                                any valid pixel size for the font you're using.
-**wm_font_color**       ffffff              None                The font color, specified in hex. Both the full 6-length (ie, 993300) and
-                                                                the short three character abbreviated version (ie, fff) are supported.
-**wm_shadow_color**     None                None                The color of the drop shadow, specified in hex. If you leave this blank
-                                                                a drop shadow will not be used. Both the full 6-length (ie, 993300) and
-                                                                the short three character abbreviated version (ie, fff) are supported.
-**wm_shadow_distance**  3                   None                The distance (in pixels) from the font that the drop shadow should
-                                                                appear.
+**wm_text**             None                None                你想作为水印显示的文本。通常是一份版权声明。
+**wm_font_path**        None                None                你想使用的 TTF 字体（TrueType）在服务器上的路径。
+                                                                如果你没有使用这个选项，系统将使用原生的GD字体。
+**wm_font_size**        16                  None                字体大小。 说明：如果你没有使用上面的 TTF 字体选项，
+                                                                那么这个数值必须是 1-5 之间的一个数字，如果使用了 TTF ，
+                                                                你可以使用任意有效的字体大小。
+**wm_font_color**       ffffff              None                字体颜色，以十六进制给出。
+                                                                注意，你必须给出完整的 6 位数的十六进制值（如：993300），
+                                                                而不能使用 3 位数的简化值（如：fff）。
+**wm_shadow_color**     None                None                阴影的颜色, 以十六进制给出。如果此项为空，将不使用阴影。
+                                                                注意，你必须给出完整的 6 位数的十六进制值（如：993300），
+                                                                而不能使用 3 位数的简化值（如：fff）。
+**wm_shadow_distance**  3                   None                阴影与文字之间的距离（以像素为单位）。
 ======================= =================== =================== ==========================================================================
 
-Overlay Preferences
+Overlay 参数
 -------------------
 
-This table shows the preferences that are available for the overlay type
-of watermarking.
+下表列举的参数只适用于 overlay 水印处理方式。
 
 ======================= =================== =================== ==========================================================================
-Preference              Default Value       Options             Description
+参数              默认值       选项             描述
 ======================= =================== =================== ==========================================================================
-**wm_overlay_path**     None                None                The server path to the image you wish to use as your watermark. Required
-                                                                only if you are using the overlay method.
-**wm_opacity**          50                  1 - 100             Image opacity. You may specify the opacity (i.e. transparency) of your
-                                                                watermark image. This allows the watermark to be faint and not
-                                                                completely obscure the details from the original image behind it. A 50%
-                                                                opacity is typical.
-**wm_x_transp**         4                   A number            If your watermark image is a PNG or GIF image, you may specify a color
-                                                                on the image to be "transparent". This setting (along with the next)
-                                                                will allow you to specify that color. This works by specifying the "X"
-                                                                and "Y" coordinate pixel (measured from the upper left) within the image
-                                                                that corresponds to a pixel representative of the color you want to be
-                                                                transparent.
-**wm_y_transp**         4                   A number            Along with the previous setting, this allows you to specify the
-                                                                coordinate to a pixel representative of the color you want to be
-                                                                transparent.
+**wm_overlay_path**     None                None                你想要用作水印的图片在你服务器上的路径。
+                                                                只在你使用了 overlay 方法时需要。
+**wm_opacity**          50                  1 - 100             图像不透明度。你可以指定你的水印图片的不透明度。
+                                                                这将使水印模糊化，从而不会掩盖住底层原始图片，通常设置为 50 。
+**wm_x_transp**         4                   A number            如果你的水印图片是一个 PNG 或 GIF 图片，
+                                                                你可以指定一种颜色用来使图片变得 "透明" 。这项设置
+                                                                （以及下面那项）将允许你指定这种颜色。它的原理是，通过指定
+                                                                "X" 和 "Y" 坐标值（从左上方开始测量）来确定图片上对应位置的某个像素，
+                                                                这个像素所代表的颜色就是你要设置为透明的颜色。
+**wm_y_transp**         4                   A number            与前一个选项一起，允许你指定某个像素的坐标值，
+                                                                这个像素所代表的颜色就是你要设置为透明的颜色。
 ======================= =================== =================== ==========================================================================
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Image_lib
@@ -324,71 +281,63 @@ Class Reference
 		:returns:	TRUE on success, FALSE in case of invalid settings
 		:rtype:	bool
 
-		Initializes the class for processing an image.
+		初始化图像处理类。
 
 	.. php:method:: resize()
 
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		The image resizing method lets you resize the original image, create a
-		copy (with or without resizing), or create a thumbnail image.
+		该函数让你能调整原始图像的大小，创建一个副本（调整或未调整过的），
+		或者创建一个缩略图。
 
-		For practical purposes there is no difference between creating a copy
-		and creating a thumbnail except a thumb will have the thumbnail marker
-		as part of the name (i.e. mypic_thumb.jpg).
+		创建一个副本和创建一个缩略图之间没有实际上的区别，
+		除了缩略图的文件名会有一个自定义的后缀（如：mypic_thumb.jpg）。
 
-		All preferences listed in the :ref:`processing-preferences` table are available for this
-		method except these three: *rotation_angle*, *x_axis* and *y_axis*.
+		所有列在上面 :ref:`processing-preferences` 表中的参数对这个函数都可用，
+		除了这三个： *rotation_angle* 、 *x_axis* 和 *y_axis* 。
 
-		**Creating a Thumbnail**
+		**创建一个缩略图**
 
-		The resizing method will create a thumbnail file (and preserve the
-		original) if you set this preference to TRUE::
+		resize 函数能用来创建缩略图（并保留原图），只要你把这个参数设为 TRUE ::
 
 			$config['create_thumb'] = TRUE;
 
-		This single preference determines whether a thumbnail is created or not.
+		这一个参数决定是否创建一个缩略图。
 
-		**Creating a Copy**
+		**创建一个副本**
 
-		The resizing method will create a copy of the image file (and preserve
-		the original) if you set a path and/or a new filename using this
-		preference::
+		resize 函数能创建一个图像的副本（并保留原图），
+		只要你通过以下参数设置一个新的路径或者文件名::
 
 			$config['new_image'] = '/path/to/new_image.jpg';
 
-		Notes regarding this preference:
+		注意以下规则：
 
-		-  If only the new image name is specified it will be placed in the same
-		   folder as the original
-		-  If only the path is specified, the new image will be placed in the
-		   destination with the same name as the original.
-		-  If both the path and image name are specified it will placed in its
-		   own destination and given the new name.
+		-  如果只指定新图像的名字，那么它会被放在原图像所在的文件夹下。
+		-  如果只指定路径，新图像会被放在指定的文件夹下，并且名字和原图像相同。
+		-  如果同时定义了路径和新图像的名字，那么新图像会以指定的名字放在指定的文件夹下。
 
-		**Resizing the Original Image**
+		**调整原图像的大小**
 
-		If neither of the two preferences listed above (create_thumb, and
-		new_image) are used, the resizing method will instead target the
-		original image for processing.
+		如果上述两个参数（create_thumb 和 new_image）均未被指定，
+		resize 函数的处理将直接作用于原图像。
 
 	.. php:method:: crop()
 
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		The cropping method works nearly identically to the resizing function
-		except it requires that you set preferences for the X and Y axis (in
-		pixels) specifying where to crop, like this::
+		crop 函数的用法与 resize 函数十分接近，除了它需要你设置用于裁剪的 X 和 Y 值
+		（单位是像素），如下::
 
 			$config['x_axis'] = 100;
 			$config['y_axis'] = 40;
 
-		All preferences listed in the :ref:`processing-preferences` table are available for this
-		method except these: *rotation_angle*, *create_thumb* and *new_image*.
+		前面那张 :ref:`processing-preferences` 表中所列的所有参数都可以用于这个函数，
+		除了这些：*rotation_angle* 、*width* 、*height* 、*create_thumb* 、*new_image* 。
 
-		Here's an example showing how you might crop an image::
+		这是一个如何裁剪一张图片的示例::
 
 			$config['image_library'] = 'imagemagick';
 			$config['library_path'] = '/usr/X11R6/bin/';
@@ -403,31 +352,29 @@ Class Reference
 				echo $this->image_lib->display_errors();
 			}
 
-		.. note:: Without a visual interface it is difficult to crop images, so this
-			method is not very useful unless you intend to build such an
-			interface. That's exactly what we did using for the photo gallery module
-			in ExpressionEngine, the CMS we develop. We added a JavaScript UI that
-			lets the cropping area be selected.
+		.. note:: 如果没有一个可视化的界面，是很难裁剪一张图片的。
+			因此，除非你打算制作这么一个界面，否则这个函数并不是很有用。
+			事实上我们在自己开发的 CMS 系统 ExpressionEngine 的相册模块中
+			添加的一个基于 JavaScript 的用户界面来选择裁剪的区域。
 
 	.. php:method:: rotate()
 
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		The image rotation method requires that the angle of rotation be set
-		via its preference::
+		rotate 函数需要通过参数设置旋转的角度::
 
 			$config['rotation_angle'] = '90';
 
-		There are 5 rotation options:
+		以下是 5 个可选项：
 
-		#. 90 - rotates counter-clockwise by 90 degrees.
-		#. 180 - rotates counter-clockwise by 180 degrees.
-		#. 270 - rotates counter-clockwise by 270 degrees.
-		#. hor - flips the image horizontally.
-		#. vrt - flips the image vertically.
+		#. 90 - 逆时针旋转90度。
+		#. 180 - 逆时针旋转180度。
+		#. 270 - 逆时针旋转270度。
+		#. hor - 水平翻转。
+		#. vrt - 垂直翻转。
 
-		Here's an example showing how you might rotate an image::
+		下面是旋转图片的一个例子::
 
 			$config['image_library'] = 'netpbm';
 			$config['library_path'] = '/usr/bin/';
@@ -446,16 +393,13 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Creates a watermark over an image, please refer to the :ref:`watermarking`
-		section for more info.		
+		在图像上添加一个水印，更多信息请参考 :ref:`_watermarking` 。
 
 	.. php:method:: clear()
 
 		:rtype:	void
 
-		The clear method resets all of the values used when processing an
-		image. You will want to call this if you are processing images in a
-		loop.
+		clear 函数重置所有之前用于处理图片的值。当你用循环来处理一批图片时，你可能会想使用它。
 
 		::
 
@@ -468,7 +412,7 @@ Class Reference
 		:returns:	Error messages
 		:rtype:	string
 
-		Returns all detected errors formatted as a string.
+		返回所有检测到的错误信息。
 		::
 
 			echo $this->image_lib->diplay_errors();

@@ -109,7 +109,7 @@
  - [x]    419 ./source/database/db_driver_reference.rst
  - [x]    436 ./source/helpers/date_helper.rst
  - [ ]    460 ./source/libraries/loader.rst
- - [ ]    473 ./source/libraries/image_lib.rst
+ - [x]    473 ./source/libraries/image_lib.rst
  - [ ]    474 ./source/libraries/input.rst
  - [ ]    577 ./source/libraries/xmlrpc.rst
  - [ ]    584 ./source/libraries/encryption.rst
