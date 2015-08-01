@@ -1,69 +1,55 @@
 ###############
-Form Validation
+表单验证类
 ###############
 
-CodeIgniter provides a comprehensive form validation and data prepping
-class that helps minimize the amount of code you'll write.
+CodeIgniter 提供了一个全面的表单验证和数据预处理类可以帮你少写很多代码。
 
 .. contents:: Page Contents
 
 ********
-Overview
+概述
 ********
 
-Before explaining CodeIgniter's approach to data validation, let's
-describe the ideal scenario:
+在解释 CodeIgniter 的数据验证处理之前，让我们先描述一下一般的情况：
 
-#. A form is displayed.
-#. You fill it in and submit it.
-#. If you submitted something invalid, or perhaps missed a required
-   item, the form is redisplayed containing your data along with an
-   error message describing the problem.
-#. This process continues until you have submitted a valid form.
+#. 显示一个表单。
+#. 你填写并提交了它。
+#. 如果你提交了一些无效的信息，或者可能漏掉了一个必填项，
+   表单将会重新显示你的数据，并提示一个错误信息。
+#. 这个过程将继续，直到你提交了一个有效的表单。
 
-On the receiving end, the script must:
+在接收端，脚本必须：
 
-#. Check for required data.
-#. Verify that the data is of the correct type, and meets the correct
-   criteria. For example, if a username is submitted it must be
-   validated to contain only permitted characters. It must be of a
-   minimum length, and not exceed a maximum length. The username can't
-   be someone else's existing username, or perhaps even a reserved word.
-   Etc.
-#. Sanitize the data for security.
-#. Pre-format the data if needed (Does the data need to be trimmed? HTML
-   encoded? Etc.)
-#. Prep the data for insertion in the database.
+#. 检查必填的数据。
+#. 验证数据类型是否为正确，条件是否满足。例如，如果提交一个用户名，
+   必须验证它是否只包含了允许的字符，必须有一个最小长度，不能超过最大长度。
+   用户名不能和已存在的其他人名字相同，或者不能是某个保留字，等等。
+#. 为确保安全性对数据进行过滤。
+#. 如果需要，预格式化数据（数据需要清除空白吗？需要 HTML 编码？等等）
+#. 准备数据，插入数据库。
 
-Although there is nothing terribly complex about the above process, it
-usually requires a significant amount of code, and to display error
-messages, various control structures are usually placed within the form
-HTML. Form validation, while simple to create, is generally very messy
-and tedious to implement.
+尽管上面的过程并不是很复杂，但是通常需要编写很多代码，而且为了显示错误信息，
+在网页中经常要使用多种不同的控制结构。表单验证虽然简单，但是实现起来却非常枯燥。
 
 ************************
-Form Validation Tutorial
+表单验证指南
 ************************
 
-What follows is a "hands on" tutorial for implementing CodeIgniters Form
-Validation.
+下面是实现 CodeIgniter 表单验证的一个简易教程。
 
-In order to implement form validation you'll need three things:
+为了进行表单验证，你需要这三样东西：
 
-#. A :doc:`View <../general/views>` file containing a form.
-#. A View file containing a "success" message to be displayed upon
-   successful submission.
-#. A :doc:`controller <../general/controllers>` method to receive and
-   process the submitted data.
+#. 一个包含表单的 :doc:`视图 <../general/views>` 文件。
+#. 一个包含“成功”信息的视图文件，在成功提交后将被显示。
+#. 一个接收并处理所提交数据的 :doc:`控制器 <../general/controllers>` 方法。
 
-Let's create those three things, using a member sign-up form as the
-example.
+让我们以一个会员注册表单为例来创建这三样东西。
 
-The Form
+表单
 ========
 
-Using a text editor, create a form called myform.php. In it, place this
-code and save it to your application/views/ folder::
+使用文本编辑器创建一个名为 myform.php 的文件，在它里面插入如下代码，
+并把它保存到你的 applications/views/ 目录下::
 
 	<html>
 	<head>
@@ -94,11 +80,11 @@ code and save it to your application/views/ folder::
 	</body>
 	</html>
 
-The Success Page
+成功页面
 ================
 
-Using a text editor, create a form called formsuccess.php. In it, place
-this code and save it to your application/views/ folder::
+使用文本编辑器创建一个名为 formsuccess.php 的文件，在它里面插入如下代码，
+并把它保存到你的 applications/views/ 目录下::
 
 	<html>
 	<head>
@@ -113,11 +99,11 @@ this code and save it to your application/views/ folder::
 	</body>
 	</html>
 
-The Controller
+控制器
 ==============
 
-Using a text editor, create a controller called form.php. In it, place
-this code and save it to your application/controllers/ folder::
+使用文本编辑器创建一个名为 Form.php 的控制器文件，在它里面插入如下代码，
+并把它保存到你的 application/controllers/ 目录下::
 
 	<?php
 
@@ -140,80 +126,68 @@ this code and save it to your application/controllers/ folder::
 		}
 	}
 
-Try it!
-=======
+试一下！
+========
 
-To try your form, visit your site using a URL similar to this one::
+访问类似于下面这样的 URL 来体验一下你的表单::
 
 	example.com/index.php/form/
 
-If you submit the form you should simply see the form reload. That's
-because you haven't set up any validation rules yet.
+如果你提交表单，你会看到表单只是简单重新加载了，这是因为你还没有设置任何验证规则。
 
-**Since you haven't told the Form Validation class to validate anything
-yet, it returns FALSE (boolean false) by default. ``The run()`` method
-only returns TRUE if it has successfully applied your rules without any
-of them failing.**
+**由于你还没有告诉表单验证类验证什么东西，它默认返回 FALSE， ``run()``
+方法只在全部成功匹配了你的规则后才会返回 TRUE 。**
 
-Explanation
+解释
 ===========
 
-You'll notice several things about the above pages:
+在这个页面上你会注意到以下几点：
 
-The form (myform.php) is a standard web form with a couple exceptions:
+例子中的表单（myform.php）是一个标准的 Web 表单，除了以下两点：
 
-#. It uses a form helper to create the form opening. Technically, this
-   isn't necessary. You could create the form using standard HTML.
-   However, the benefit of using the helper is that it generates the
-   action URL for you, based on the URL in your config file. This makes
-   your application more portable in the event your URLs change.
-#. At the top of the form you'll notice the following function call:
+#. 它使用了一个 表单辅助函数 来创建表单的起始标签。，严格来说这并不是必要的，
+   你完全可以使用标准的 HTML 来创建，使用辅助函数的好处是它生成 action 的时候，
+   是基于你配置文件来生成 URL 的，这使得你的应用在更改 URL 时更具移植性。
+#. 在表单的顶部你将注意到如下函数调用：
    ::
 
 	<?php echo validation_errors(); ?>
 
-   This function will return any error messages sent back by the
-   validator. If there are no messages it returns an empty string.
+   这个函数将会返回验证器返回的所有错误信息。如果没有错误信息，它将返回空字符串。
 
-The controller (form.php) has one method: ``index()``. This method
-initializes the validation class and loads the form helper and URL
-helper used by your view files. It also runs the validation routine.
-Based on whether the validation was successful it either presents the
-form or the success page.
+控制器（Form.php）有一个方法： ``index()`` 。这个方法初始化验证类，
+并加载你视图中用到的 表单辅助库 和 URL 辅助库，它也会 执行 验证流程，
+基于验证是否成功，它会重新显示表单或显示成功页面。
 
 .. _setting-validation-rules:
 
-Setting Validation Rules
+设置验证规则
 ========================
 
-CodeIgniter lets you set as many validation rules as you need for a
-given field, cascading them in order, and it even lets you prep and
-pre-process the field data at the same time. To set validation rules you
-will use the ``set_rules()`` method::
+CodeIgniter 允许你为单个表单域创建多个验证规则，按顺序层叠在一起，
+你也可以同时对表单域的数据进行预处理。要设置验证规则，
+可以使用 ``set_rules()``  方法::
 
 	$this->form_validation->set_rules();
 
-The above method takes **three** parameters as input:
+上面的方法有 **三个** 参数：
 
-#. The field name - the exact name you've given the form field.
-#. A "human" name for this field, which will be inserted into the error
-   message. For example, if your field is named "user" you might give it
-   a human name of "Username".
-#. The validation rules for this form field.
-#. (optional) Set custom error messages on any rules given for current field. If not provided will use the default one.
+#. 表单域名 - 就是你给表单域取的那个名字。
+#. 表单域的 "人性化" 名字，它将被插入到错误信息中。例如，
+   如果你有一个表单域叫做 “user” ，你可能会给它一个人性化的名字叫做 “用户名” 。
+#. 为此表单域设置的验证规则。
+#. （可选的）当此表单域设置自定义的错误信息，如果没有设置该参数，将使用默认的。
 
-.. note:: If you would like the field name to be stored in a language
-	file, please see :ref:`translating-field-names`.
+.. note:: 如果你想让表单域的名字保存在一个语言文件里，请参考 :ref:`translating-field-names`
 
-Here is an example. In your controller (form.php), add this code just
-below the validation initialization method::
+下面是个例子，在你的控制器（Form.php）中紧接着验证初始化函数之后，添加这段代码::
 
 	$this->form_validation->set_rules('username', 'Username', 'required');
 	$this->form_validation->set_rules('password', 'Password', 'required');
 	$this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
 	$this->form_validation->set_rules('email', 'Email', 'required');
 
-Your controller should now look like this::
+你的控制器现在看起来像这样::
 
 	<?php
 
@@ -243,19 +217,17 @@ Your controller should now look like this::
 		}
 	}
 
-Now submit the form with the fields blank and you should see the error
-messages. If you submit the form with all the fields populated you'll
-see your success page.
+现在如果你不填写表单就提交，你将会看到错误信息。如果你填写了所有的表单域并提交，你会看到成功页。
 
-.. note:: The form fields are not yet being re-populated with the data
-	when there is an error. We'll get to that shortly.
+.. note:: 当出现错误时表单页将重新加载，所有的表单域将会被清空，并没有被重新填充。
+	稍后我们再去处理这个问题。
 
-Setting Rules Using an Array
+使用数组来设置验证规则
 ============================
 
-Before moving on it should be noted that the rule setting method can
-be passed an array if you prefer to set all your rules in one action. If
-you use this approach, you must name your array keys as indicated::
+在继续之前请注意，如果你更喜欢通过一个操作设置所有规则的话，
+你也可以使用一个数组来设置验证规则，如果你使用这种方式，
+你必须像下面这样来定义你的数组::
 
 	$config = array(
 		array(
@@ -285,11 +257,10 @@ you use this approach, you must name your array keys as indicated::
 
 	$this->form_validation->set_rules($config);
 
-Cascading Rules
-===============
+级联规则（Cascading Rules）
+==============================
 
-CodeIgniter lets you pipe multiple rules together. Let's try it. Change
-your rules in the third parameter of rule setting method, like this::
+CodeIgniter 允许你将多个规则连接在一起。让我们试一试，修改规则设置函数中的第三个参数，如下::
 
 	$this->form_validation->set_rules(
 		'username', 'Username',
@@ -303,59 +274,47 @@ your rules in the third parameter of rule setting method, like this::
 	$this->form_validation->set_rules('passconf', 'Password Confirmation', 'required|matches[password]');
 	$this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
 
-The above code sets the following rules:
+上面的代码设置了以下规则：
 
-#. The username field be no shorter than 5 characters and no longer than
-   12.
-#. The password field must match the password confirmation field.
-#. The email field must contain a valid email address.
+#. 用户名表单域长度不得小于 5 个字符、不得大于 12 个字符。
+#. 密码表单域必须跟密码确认表单域的数据一致。
+#. 电子邮件表单域必须是一个有效邮件地址。
 
-Give it a try! Submit your form without the proper data and you'll see
-new error messages that correspond to your new rules. There are numerous
-rules available which you can read about in the validation reference.
+马上试试看！提交不合法的数据后你会看到新的错误信息，跟你设置的新规则相符。
+还有很多其他的验证规则，你可以阅读验证规则参考。
 
-.. note:: You can also pass an array of rules to ``set_rules()``,
-	instead of a string. Example::
+.. note:: 你也可以传一个包含规则的数组给 ``set_rules()`` 方法来替代字符串，例如::
 
 	$this->form_validation->set_rules('username', 'Username', array('required', 'min_length[5]'));
 
-Prepping Data
+预处理数据
 =============
 
-In addition to the validation method like the ones we used above, you
-can also prep your data in various ways. For example, you can set up
-rules like this::
+除了上面我们使用的那些验证函数，你还可以以多种方式来预处理你的数据。
+例如，你可以设置像这样的规则::
 
 	$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[12]');
 	$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
 	$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]');
 	$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
-In the above example, we are "trimming" the fields, checking for length
-where necessary and making sure that both password fields match.
+在上面的例子里，我们去掉字符串两端空白（trimming），检查字符串的长度，确保两次输入的密码一致。
 
-**Any native PHP function that accepts one parameter can be used as a
-rule, like ``htmlspecialchars()``, ``trim()``, etc.**
+**任何只有一个参数的 PHP 原生函数都可以被用作一个规则，比如 ``htmlspecialchars``， ``trim`` 等等。**
 
-.. note:: You will generally want to use the prepping functions
-	**after** the validation rules so if there is an error, the
-	original data will be shown in the form.
+.. note:: 你一般会在验证规则**之后**使用预处理功能，这样如果发生错误，原数据将会被显示在表单。
 
-Re-populating the form
+重新填充表单
 ======================
 
-Thus far we have only been dealing with errors. It's time to repopulate
-the form field with the submitted data. CodeIgniter offers several
-helper functions that permit you to do this. The one you will use most
-commonly is::
+目前为止我们只是在处理错误，是时候用提交的数据重新填充表单了。
+CodeIgniter 为此提供了几个辅助函数，你最常用到的一个是::
 
 	set_value('field name')
 
-Open your myform.php view file and update the **value** in each field
-using the :php:func:`set_value()` function:
+打开 myform.php 视图文件并使用 :php:func:`set_value()` 函数更新每个表单域的 **值** ：
 
-**Don't forget to include each field name in the :php:func:`set_value()`
-function calls!**
+**不要忘记在 :php:func:`set_value()` 函数中包含每个表单域的名字！**
 
 ::
 
@@ -388,35 +347,28 @@ function calls!**
 	</body>
 	</html>
 
-Now reload your page and submit the form so that it triggers an error.
-Your form fields should now be re-populated
+现在刷新你的页面并提交表单触发一个错误，你的表单域应该被重新填充了。
 
-.. note:: The :ref:`class-reference` section below
-	contains methods that permit you to re-populate <select> menus,
-	radio buttons, and checkboxes.
+.. note:: 下面的 :ref:`class-reference` 节包含了可以让你重填下拉菜单，单选框和复选框的函数。
 
-.. important:: If you use an array as the name of a form field, you
-	must supply it as an array to the function. Example::
+.. important:: 如果你使用一个数组作为一个表单域的名字，那么函数的参数也应该是一个数组。例如::
 
 	<input type="text" name="colors[]" value="<?php echo set_value('colors[]'); ?>" size="50" />
 
-For more info please see the :ref:`using-arrays-as-field-names` section below.
+更多信息请参考下面的 :ref:`using-arrays-as-field-names` 一节。
 
-Callbacks: Your own Validation Methods
+回调：你自己的验证函数
 ======================================
 
-The validation system supports callbacks to your own validation
-methods. This permits you to extend the validation class to meet your
-needs. For example, if you need to run a database query to see if the
-user is choosing a unique username, you can create a callback method
-that does that. Let's create an example of this.
+验证系统支持设置你自己的验证函数，这样你可以扩展验证类以适应你自己的需求。
+例如，如果你需要查询数据库来检查用户名是否唯一，你可以创建一个回调函数，
+让我们来新建一个例子。
 
-In your controller, change the "username" rule to this::
+在你的控制器中，将用户名的规则修改为::
 
 	$this->form_validation->set_rules('username', 'Username', 'callback_username_check');
 
-Then add a new method called ``username_check()`` to your controller.
-Here's how your controller should now look::
+然后在你的控制器中添加一个新的方法 ``username_check()`` 。你的控制器现在看起来是这样::
 
 	<?php
 
@@ -458,29 +410,24 @@ Here's how your controller should now look::
 
 	}
 
-Reload your form and submit it with the word "test" as the username. You
-can see that the form field data was passed to your callback method
-for you to process.
+重新载入表单并以 “test” 作为用户名提交数据，你会看到表单域数据被传递到你的回调函数中处理了。
 
-To invoke a callback just put the method name in a rule, with
-"callback\_" as the rule **prefix**. If you need to receive an extra
-parameter in your callback method, just add it normally after the
-method name between square brackets, as in: "callback_foo**[bar]**",
-then it will be passed as the second argument of your callback method.
+要调用一个回调函数只需把函数名加一个 "callback\_" **前缀**并放在验证规则里。
+如果你需要在你的回调函数中调用一个额外的参数，你只需要在回调函数后面用[]把参数
+（这个参数只能是字符串类型）括起来，例如："callback_foo**[bar]**" ，
+其中 bar 将成为你的回调函数中的第二个参数。
 
-.. note:: You can also process the form data that is passed to your
-	callback and return it. If your callback returns anything other than a
-	boolean TRUE/FALSE it is assumed that the data is your newly processed
-	form data.
+.. note:: 你也可以对传给你的表单数据进行处理并返回，如果你的回调函数返回了除布尔型的 
+	TRUE 或 FALSE 之外的任何值，它将被认为是你新处理过的表单数据。
 
-Callable: Use anything as a rule
+使用任何可调用的方法作为验证规则
 ================================
 
-If callback rules aren't good enough for you (for example, because they are
-limited to your controller), don't get disappointed, there's one more way
-to create custom rules: anything that ``is_callable()`` would return TRUE for.
+如果回调的规则对你来说还不够好（譬如，它们被限制只能定义在控制器中），
+别失望，还有一种方法来创建自定义的规则：任何 ``is_callable()`` 函数返回 
+TRUE 的东西都可以作为规则。
 
-Consider the following example::
+看下面的例子::
 
 	$this->form_validation->set_rules(
 		'username', 'Username',
@@ -490,13 +437,10 @@ Consider the following example::
 		)
 	);
 
-The above code would use the ``valid_username()`` method from your
-``Users_model`` object.
+上面的代码将使用 ``Users_model`` 模型的 ``valid_username()`` 方法来作为验证规则。
 
-This is just an example of course, and callbacks aren't limited to models.
-You can use any object/method that accepts the field value as its' first
-parameter. Or if you're running PHP 5.3+, you can also use an anonymous
-function::
+当然，这只是个例子，规则不只限于使用模型的方法，你可以使用任何对象和方法
+来接受域值作为第一个参数。如果你使用 PHP 5.3+ ，还可以使用匿名方法::
 
 	$this->form_validation->set_rules(
 		'username', 'Username',
@@ -509,10 +453,9 @@ function::
 		)
 	);
 
-Of course, since a Callable rule by itself is not a string, it isn't
-a rule name either. That is a problem when you want to set error messages
-for them. In order to get around that problem, you can put such rules as
-the second element of an array, with the first one being the rule name::
+但是，由于可调用的规则并不是一个字符串，也没有一个规则名，所以当你需要为它们设置
+相应的错误消息时会有麻烦。为了解决这个问题，你可以将这样的规则放到一个数组的第二个值，
+第一个值放置规则名::
 
 	$this->form_validation->set_rules(
 		'username', 'Username',
@@ -522,7 +465,7 @@ the second element of an array, with the first one being the rule name::
 		)
 	);
 
-Anonymous function (PHP 5.3+) version::
+下面是使用匿名方法（PHP 5.3+）的版本::
 
 	$this->form_validation->set_rules(
 		'username', 'Username',
@@ -540,112 +483,98 @@ Anonymous function (PHP 5.3+) version::
 
 .. _setting-error-messages:
 
-Setting Error Messages
+设置错误信息
 ======================
 
-All of the native error messages are located in the following language
-file: **system/language/english/form_validation_lang.php**
+所有原生的错误信息都位于下面的语言文件中： 
+**language/english/form_validation_lang.php**
 
-To set your own global custom message for a rule, you can either 
-edit that file, or use the following method::
+如果要为某个规则设置你的自定义信息你可以编辑那个文件，或使用下面的方法::
 
 	$this->form_validation->set_message('rule', 'Error Message');
 
-If you need to set a custom error message for a particular field on 
-some particular rule, use the set_rules() method::
+如果你要为某个域的某个规则设置你的自定义信息，可以使用 set_rules() 方法::
 
 	$this->form_validation->set_rules('field_name', 'Field Label', 'rule1|rule2|rule3',
 		array('rule2' => 'Error Message on rule2 for this field_name')
 	);
 
-Where rule corresponds to the name of a particular rule, and Error
-Message is the text you would like displayed.
+其中， rule 是该规则的名称，Error Message 为该规则显示的错误信息。
 
-If you'd like to include a field's "human" name, or the optional
-parameter some rules allow for (such as max_length), you can add the
-**{field}** and **{param}** tags to your message, respectively::
+如果你希望在错误信息中包含域的人性化名称，或者某些规则设置的一个可选参数
+（例如：max_length），你可以在消息中使用 **{field}** 和 **{param}** 标签::
 
 	$this->form_validation->set_message('min_length', '{field} must have at least {param} characters.');
 
-On a field with the human name Username and a rule of min_length[5], an
-error would display: "Username must have at least 5 characters."
+如果域的人性化名称为 Username ，并有一个规则 min_length[5] ，那么错误信息会显示：
+"Username must have at least 5 characters."
 
-.. note:: The old `sprintf()` method of using **%s** in your error messages
-	will still work, however it will override the tags above. You should
-	use one or the other.
+.. note:: 老的 `sprintf()` 方法和在字符串使用 **%s** 也还可以工作，但是会覆写掉上面的标签。
+	所以你同时只应该使用两个中的一个。
 
-In the callback rule example above, the error message was set by passing
-the name of the method (without the "callback\_" prefix)::
+在上面回调的例子中，错误信息是通过方法的名称（不带 "callback\_" 前缀）来设置的::
 
 	$this->form_validation->set_message('username_check')
 
 .. _translating-field-names:
 
-Translating Field Names
+翻译表单域名称
 =======================
 
-If you would like to store the "human" name you passed to the
-``set_rules()`` method in a language file, and therefore make the name
-able to be translated, here's how:
+如果你希望将传递给 ``set_rules()`` 方法的人性化名称存储在一个语言文件中，
+使他们能被翻译成其他语言，你可以这么做：
 
-First, prefix your "human" name with **lang:**, as in this example::
+首先，给人性化名称添加一个前缀：**lang:**，如下：
 
 	 $this->form_validation->set_rules('first_name', 'lang:first_name', 'required');
 
-Then, store the name in one of your language file arrays (without the
-prefix)::
+然后，将该名称保存到你的某个语言文件数组中（不带前缀）::
 
 	$lang['first_name'] = 'First Name';
 
-.. note:: If you store your array item in a language file that is not
-	loaded automatically by CI, you'll need to remember to load it in your
-	controller using::
+.. note:: 如果你保存的语言文件没有自动被 CI 加载，你要记住在你的控制器中使用下面的方法手工加载::
 
 	$this->lang->load('file_name');
 
-See the :doc:`Language Class <language>` page for more info regarding
-language files.
+关于语言文件的更多信息，参看 :doc:`语言类 <language>` 。
 
 .. _changing-delimiters:
 
-Changing the Error Delimiters
+更改错误定界符
 =============================
 
-By default, the Form Validation class adds a paragraph tag (<p>) around
-each error message shown. You can either change these delimiters
-globally, individually, or change the defaults in a config file.
+在默认情况下，表单验证类会使用 <p> 标签来分割每条错误信息。
+你可以通过全局的，单独的，或者通过配置文件对其进行自定义。
 
-#. **Changing delimiters Globally**
-   To globally change the error delimiters, in your controller method,
-   just after loading the Form Validation class, add this::
+#. **全局的修改定界符**
+   要在全局范围内修改错误定界符，你可以在控制器方法中加载表单验证类之后，使用下面的代码::
 
       $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
-   In this example, we've switched to using div tags.
+   在这个例子中，我们改成使用 <div> 标签来作为定界符。
 
-#. **Changing delimiters Individually**
-   Each of the two error generating functions shown in this tutorial can
-   be supplied their own delimiters as follows::
+#. **单独的修改定界符**
+   有两个错误生成方法可以用于设置它们自己的定界符，如下::
 
       <?php echo form_error('field name', '<div class="error">', '</div>'); ?>
 
-   Or::
+   或者::
 
       <?php echo validation_errors('<div class="error">', '</div>'); ?>
 
-#. **Set delimiters in a config file**
-   You can add your error delimiters in application/config/form_validation.php as follows::
+#. **在配置文件中设置定界符**
+   你还可以在配置文件 application/config/form_validation.php 中定义错误定界符，如下::
 
       $config['error_prefix'] = '<div class="error_prefix">';
       $config['error_suffix'] = '</div>';
 
-Showing Errors Individually
+单独显示错误
 ===========================
 
-If you prefer to show an error message next to each form field, rather
-than as a list, you can use the :php:func:`form_error()` function.
+如果你喜欢紧挨着每个表单域显示错误信息而不是显示为一个列表，
+你可以使用 :php:func:`form_error()` 方法。
 
-Try it! Change your form so that it looks like this::
+尝试一下！修改你的表单如下::
 
 	<h5>Username</h5>
 	<?php echo form_error('username'); ?>
@@ -663,23 +592,21 @@ Try it! Change your form so that it looks like this::
 	<?php echo form_error('email'); ?>
 	<input type="text" name="email" value="<?php echo set_value('email'); ?>" size="50" />
 
-If there are no errors, nothing will be shown. If there is an error, the
-message will appear.
+如果没有错误信息，将不会显示。如果有错误信息，将会在输入框的旁边单独显示。
 
-.. important:: If you use an array as the name of a form field, you
-	must supply it as an array to the function. Example::
+.. important:: 如果你使用一个数组作为一个表单域的名字，那么函数的参数也应该是一个数组。例如::
 
 	<?php echo form_error('options[size]'); ?>
 	<input type="text" name="options[size]" value="<?php echo set_value("options[size]"); ?>" size="50" />
 
-For more info please see the :ref:`using-arrays-as-field-names` section below.
+更多信息，请参考下面的 :ref:`using-arrays-as-field-names` 一节。
 
-Validating an Array (other than $_POST)
+验证数组（除 $_POST 数组）
 =======================================
 
-Sometimes you may want to validate an array that does not originate from ``$_POST`` data.
+有时你可能希望对一个单纯的数组进行验证，而不是对 ``$_POST`` 数组。
 
-In this case, you can specify the array to be validated::
+在这种情况下，你可以先定义要验证的数组::
 
 	$data = array(
 		'username' => 'johndoe',
@@ -689,34 +616,26 @@ In this case, you can specify the array to be validated::
 
 	$this->form_validation->set_data($data);
 
-Creating validation rules, running the validation, and retrieving error messages works the
-same whether you are validating ``$_POST`` data or an array.
+创建验证规则，运行验证，获取错误消息和上面说讲的那些验证 ``$_POST`` 数组是一样的。
 
-.. important:: If you want to validate more than one array during a single
-	execution, then you should call the ``reset_validation()`` method
-	before setting up rules and validating the new array.
+.. important:: 如果你想验证多个数组，那么你应该在验证下一个新数组之前先调用 ``reset_validation()`` 方法。
 
-For more info please see the :ref:`class-reference` section below.
+更多信息，请参数下面的 :ref:`class-reference` 一节。
 
 .. _saving-groups:
 
 ************************************************
-Saving Sets of Validation Rules to a Config File
+将一系列验证规则保存到一个配置文件
 ************************************************
 
-A nice feature of the Form Validation class is that it permits you to
-store all your validation rules for your entire application in a config
-file. You can organize these rules into "groups". These groups can
-either be loaded automatically when a matching controller/method is
-called, or you can manually call each set as needed.
+表单验证类的一个不错的特性是，它允许你将整个应用的所有验证规则存储到一个配置文件中去。
+你可以对这些规则进行分组，这些组既可以在匹配控制器和方法时自动加载，也可以在需要时手动调用。
 
-How to save your rules
+如何保存你的规则
 ======================
 
-To store your validation rules, simply create a file named
-form_validation.php in your application/config/ folder. In that file
-you will place an array named $config with your rules. As shown earlier,
-the validation array will have this prototype::
+如果要保存验证规则，你需要在 application/config/ 目录下创建一个名为 form_validation.php 的文件。
+然后在该文件中，将验证规则保存在数组 $config 中即可。和之前介绍的一样，验证规则数组格式如下::
 
 	$config = array(
 		array(
@@ -741,18 +660,16 @@ the validation array will have this prototype::
 		)
 	);
 
-Your validation rule file will be loaded automatically and used when you
-call the ``run()`` method.
+你的验证规则会被自动加载，当用户触发 ``run()`` 方法时被调用。
 
-Please note that you MUST name your ``$config`` array.
+请务必要将数组名称定义成 ``$config`` 。
 
-Creating Sets of Rules
+创建规则集
 ======================
 
-In order to organize your rules into "sets" requires that you place them
-into "sub arrays". Consider the following example, showing two sets of
-rules. We've arbitrarily called these two rules "signup" and "email".
-You can name your rules anything you want::
+为了将你的多个规则组织成规则集，你需要将它们放置到子数组中。
+请参考下面的例子，在此例中我们设置了两组规则集，我们分别命名为 
+"signup" 和 "email" ，你可以根据自己的需求任意命名::
 
 	$config = array(
 		'signup' => array(
@@ -801,11 +718,11 @@ You can name your rules anything you want::
 		)
 	);
 
-Calling a Specific Rule Group
+调用某组验证规则
 =============================
 
-In order to call a specific group, you will pass its name to the ``run()``
-method. For example, to call the signup rule you will do this::
+为了调用特定组的验证规则，你可以将它的名称传给 ``run()`` 方法。
+例如，使用 signup 规则你可以这样::
 
 	if ($this->form_validation->run('signup') == FALSE)
 	{
@@ -816,13 +733,11 @@ method. For example, to call the signup rule you will do this::
 		$this->load->view('formsuccess');
 	}
 
-Associating a Controller Method with a Rule Group
+将控制器方法和规则集关联在一起
 =================================================
 
-An alternate (and more automatic) method of calling a rule group is to
-name it according to the controller class/method you intend to use it
-with. For example, let's say you have a controller named Member and a
-method named signup. Here's what your class might look like::
+调用一组规则的另一种方法是将控制器方法和规则集关联在一起（这种方法也更自动），
+例如，假设你有一个控制器类 Member 和一个方法 signup ，你的类如下::
 
 	<?php
 
@@ -843,8 +758,7 @@ method named signup. Here's what your class might look like::
 		}
 	}
 
-In your validation config file, you will name your rule group
-member/signup::
+在你的验证规则配置文件中，使用 member/signup 来给这组规则集命名::
 
 	$config = array(
 		'member/signup' => array(
@@ -871,152 +785,135 @@ member/signup::
 		)
 	);
 
-When a rule group is named identically to a controller class/method it
-will be used automatically when the ``run()`` method is invoked from that
-class/method.
+当一组规则的名称和控制器类/方法名称完全一样时，它会在该控制器类/方法中自动被 
+``run()`` 方法调用。
 
 .. _using-arrays-as-field-names:
 
 ***************************
-Using Arrays as Field Names
+使用数组作为域名称
 ***************************
 
-The Form Validation class supports the use of arrays as field names.
-Consider this example::
+表单验证类支持使用数组作为域名称，比如::
 
 	<input type="text" name="options[]" value="" size="50" />
 
-If you do use an array as a field name, you must use the EXACT array
-name in the :ref:`Helper Functions <helper-functions>` that require the
-field name, and as your Validation Rule field name.
+如果你将域名称定义为数组，那么在使用域名称作为参数的 :ref:`辅助库函数 <helper-functions>` 时，
+你必须传递给他们与域名称完全一样的数组名，对这个域名称的验证规则也一样。
 
-For example, to set a rule for the above field you would use::
+例如，为上面的域设置验证规则::
 
 	$this->form_validation->set_rules('options[]', 'Options', 'required');
 
-Or, to show an error for the above field you would use::
+或者，为上面的域显示错误信息::
 
 	<?php echo form_error('options[]'); ?>
 
-Or to re-populate the field you would use::
+或者，重新填充该域的值::
 
 	<input type="text" name="options[]" value="<?php echo set_value('options[]'); ?>" size="50" />
 
-You can use multidimensional arrays as field names as well. For example::
+你也可以使用多维数组作为域的名称，例如::
 
 	<input type="text" name="options[size]" value="" size="50" />
 
-Or even::
+甚至::
 
 	<input type="text" name="sports[nba][basketball]" value="" size="50" />
 
-As with our first example, you must use the exact array name in the
-helper functions::
+和上面的例子一样，你必须在辅助函数中使用完全一样的数组名::
 
 	<?php echo form_error('sports[nba][basketball]'); ?>
 
-If you are using checkboxes (or other fields) that have multiple
-options, don't forget to leave an empty bracket after each option, so
-that all selections will be added to the POST array::
+如果你正在使用复选框（或其他拥有多个选项的域），不要忘了在每个选项后加个空的方括号，
+这样，所有的选择才会被添加到 POST 数组中::
 
 	<input type="checkbox" name="options[]" value="red" />
 	<input type="checkbox" name="options[]" value="blue" />
 	<input type="checkbox" name="options[]" value="green" />
 
-Or if you use a multidimensional array::
+或者，使用多维数组::
 
 	<input type="checkbox" name="options[color][]" value="red" />
 	<input type="checkbox" name="options[color][]" value="blue" />
 	<input type="checkbox" name="options[color][]" value="green" />
 
-When you use a helper function you'll include the bracket as well::
+当你使用辅助函数时，也要添加方括号::
 
 	<?php echo form_error('options[color][]'); ?>
 
 
 **************
-Rule Reference
+规则参考
 **************
 
-The following is a list of all the native rules that are available to
-use:
+下表列出了所有可用的原生规则：
 
 ========================= ========== ============================================================================================= =======================
-Rule                      Parameter  Description                                                                                   Example
+规则                      参数  描述                                                                                   例子
 ========================= ========== ============================================================================================= =======================
-**required**              No         Returns FALSE if the form element is empty.
-**matches**               Yes        Returns FALSE if the form element does not match the one in the parameter.                    matches[form_item]
-**regex_match**           Yes        Returns FALSE if the form element does not match the regular expression.                      regex_match[/regex/]
-**differs**               Yes        Returns FALSE if the form element does not differ from the one in the parameter.              differs[form_item]
-**is_unique**             Yes        Returns FALSE if the form element is not unique to the table and field name in the            is_unique[table.field]
-                                     parameter. Note: This rule requires :doc:`Query Builder <../database/query_builder>` to be
-                                     enabled in order to work.
-**min_length**            Yes        Returns FALSE if the form element is shorter than the parameter value.                        min_length[3]
-**max_length**            Yes        Returns FALSE if the form element is longer than the parameter value.                         max_length[12]
-**exact_length**          Yes        Returns FALSE if the form element is not exactly the parameter value.                         exact_length[8]
-**greater_than**          Yes        Returns FALSE if the form element is less than or equal to the parameter value or not         greater_than[8]
-                                     numeric.
-**greater_than_equal_to** Yes        Returns FALSE if the form element is less than the parameter value,                           greater_than_equal_to[8]
-                                     or not numeric.
-**less_than**             Yes        Returns FALSE if the form element is greater than or equal to the parameter value or          less_than[8]
-                                     not numeric.
-**less_than_equal_to**    Yes        Returns FALSE if the form element is greater than the parameter value,                        less_than_equal_to[8]
-                                     or not numeric.
-**in_list**               Yes        Returns FALSE if the form element is not within a predetermined list.                         in_list[red,blue,green]
-**alpha**                 No         Returns FALSE if the form element contains anything other than alphabetical characters.
-**alpha_numeric**         No         Returns FALSE if the form element contains anything other than alpha-numeric characters.
-**alpha_numeric_spaces**  No         Returns FALSE if the form element contains anything other than alpha-numeric characters
-                                     or spaces.  Should be used after trim to avoid spaces at the beginning or end.
-**alpha_dash**            No         Returns FALSE if the form element contains anything other than alpha-numeric characters,
-                                     underscores or dashes.
-**numeric**               No         Returns FALSE if the form element contains anything other than numeric characters.
-**integer**               No         Returns FALSE if the form element contains anything other than an integer.
-**decimal**               No         Returns FALSE if the form element contains anything other than a decimal number.
-**is_natural**            No         Returns FALSE if the form element contains anything other than a natural number:
-                                     0, 1, 2, 3, etc.
-**is_natural_no_zero**    No         Returns FALSE if the form element contains anything other than a natural
-                                     number, but not zero: 1, 2, 3, etc.
-**valid_url**             No         Returns FALSE if the form element does not contain a valid URL.
-**valid_email**           No         Returns FALSE if the form element does not contain a valid email address.
-**valid_emails**          No         Returns FALSE if any value provided in a comma separated list is not a valid email.
-**valid_ip**              No         Returns FALSE if the supplied IP is not valid.
-                                     Accepts an optional parameter of 'ipv4' or 'ipv6' to specify an IP format.
-**valid_base64**          No         Returns FALSE if the supplied string contains anything other than valid Base64 characters.
+**required**              No         如果表单元素为空，返回 FALSE 
+**matches**               Yes        如果表单元素值与参数中对应的表单字段的值不相等，返回 FALSE                    matches[form_item]
+**regex_match**           Yes        如果表单元素不匹配正则表达式，返回 FALSE                      regex_match[/regex/]
+**differs**               Yes        如果表单元素值与参数中对应的表单字段的值相等，返回 FALSE              differs[form_item]
+**is_unique**             Yes        如果表单元素值在指定的表和字段中并不唯一，返回 FALSE            is_unique[table.field]
+                                     注意：这个规则需要启用 :doc:`查询构造器 <../database/query_builder>`
+**min_length**            Yes        如果表单元素值的长度小于参数值，返回 FALSE                        min_length[3]
+**max_length**            Yes       如果表单元素值的长度大于参数值，返回 FALSE                          max_length[12]
+**exact_length**          Yes       如果表单元素值的长度不等于参数值，返回 FALSE                          exact_length[8]
+**greater_than**          Yes        如果表单元素值小于或等于参数值或非数字，返回 FALSE         greater_than[8]
+**greater_than_equal_to** Yes        如果表单元素值小于参数值或非数字，返回 FALSE                           greater_than_equal_to[8]
+**less_than**             Yes        如果表单元素值大于或等于参数值或非数字，返回 FALSE          less_than[8]
+**less_than_equal_to**    Yes        如果表单元素值大于参数值或非数字，返回 FALSE                        less_than_equal_to[8]
+**in_list**               Yes        如果表单元素值不在规定的列表中，返回 FALSE                         in_list[red,blue,green]
+**alpha**                 No         如果表单元素值包含除字母以外的其他字符，返回 FALSE
+**alpha_numeric**         No         如果表单元素值包含除字母和数字以外的其他字符，返回 FALSE
+**alpha_numeric_spaces**  No         如果表单元素值包含除字母、数字和空格以外的其他字符，返回 FALSE
+                                     应该在 trim 之后使用，避免首尾的空格
+**alpha_dash**            No         如果表单元素值包含除字母/数字/下划线/破折号以外的其他字符，返回 FALSE
+**numeric**               No         如果表单元素值包含除数字以外的字符，返回 FALSE
+**integer**               No         如果表单元素包含除整数以外的字符，返回 FALSE
+**decimal**               No         如果表单元素包含非十进制数字时，返回 FALSE
+**is_natural**            No         如果表单元素值包含了非自然数的其他数值 （不包括零），返回 FALSE
+                                     自然数形如：0、1、2、3 .... 等等。
+**is_natural_no_zero**    No         如果表单元素值包含了非自然数的其他数值 （包括零），返回 FALSE
+                                     非零的自然数：1、2、3 .... 等等。
+**valid_url**             No         如果表单元素值包含不合法的 URL，返回 FALSE
+**valid_email**           No         如果表单元素值包含不合法的 email 地址，返回 FALSE
+**valid_emails**          No         如果表单元素值包含不合法的 email 地址（地址之间用逗号分割），返回 FALSE
+**valid_ip**              No         如果表单元素值不是一个合法的 IP 地址，返回 FALSE
+                                     通过可选参数 "ipv4" 或 "ipv6" 来指定 IP 地址格式。
+**valid_base64**          No         如果表单元素值包含除了 base64 编码字符之外的其他字符，返回 FALSE
 ========================= ========== ============================================================================================= =======================
 
-.. note:: These rules can also be called as discrete methods. For
-	example::
+.. note:: 这些规则也可以作为独立的函数被调用，例如::
 
 		$this->form_validation->required($string);
 
-.. note:: You can also use any native PHP functions that permit up
-	to two parameters, where at least one is required (to pass
-	the field data).
+.. note:: 你也可以使用任何一个接受两个参数的原生 PHP 函数（其中至少有一个参数是必须的，用于传递域值）
 
 ******************
-Prepping Reference
+预处理参考
 ******************
 
-The following is a list of all the prepping methods that are available
-to use:
+下表列出了所有可用的预处理方法：
 
 ==================== ========= =======================================================================================================
-Name                 Parameter Description
+名称                 参数 描述
 ==================== ========= =======================================================================================================
-**prep_for_form**    No        Converts special characters so that HTML data can be shown in a form field without breaking it.
-**prep_url**         No        Adds "\http://" to URLs if missing.
-**strip_image_tags** No        Strips the HTML from image tags leaving the raw URL.
-**encode_php_tags**  No        Converts PHP tags to entities.
+**prep_for_form**    No        将特殊字符的转换，以便可以在表单域中显示 HTML 数据，而不会破坏它
+**prep_url**         No        当 URL 丢失 "http://" 时，添加 "http://"
+**strip_image_tags** No        移除 HTML 中的 image 标签，只保留 URL
+**encode_php_tags**  No        将 PHP 标签转成实体
 ==================== ========= =======================================================================================================
 
-.. note:: You can also use any native PHP functions that permits one
-	parameter, like ``trim()``, ``htmlspecialchars()``, ``urldecode()``,
-	etc.
+.. note:: 你也可以使用任何一个接受一个参数的原生 PHP 函数。
+	例如： ``trim()`` 、 ``htmlspecialchars()`` 、 ``urldecode()`` 等
 
 .. _class-reference:
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Form_validation
@@ -1029,8 +926,7 @@ Class Reference
 		:returns:	CI_Form_validation instance (method chaining)
 		:rtype:	CI_Form_validation
 
-		Permits you to set validation rules, as described in the tutorial
-		sections above:
+		允许您设置验证规则，如在本教程上面描述的：
 
 		-  :ref:`setting-validation-rules`
 		-  :ref:`saving-groups`
@@ -1041,9 +937,8 @@ Class Reference
 		:returns:	TRUE on success, FALSE if validation failed
 		:rtype:	bool
 
-		Runs the validation routines. Returns boolean TRUE on success and FALSE
-		on failure. You can optionally pass the name of the validation group via
-		the method, as described in: :ref:`saving-groups`
+		运行验证程序。成功返回 TRUE，失败返回 FALSE。
+		您也可以传一个验证规则集的名称作为参数，参考 :ref:`saving-groups`
 
 	.. php:method:: set_message($lang[, $val = ''])
 
@@ -1052,7 +947,7 @@ Class Reference
 		:returns:	CI_Form_validation instance (method chaining)
 		:rtype:	CI_Form_validation
 
-		Permits you to set custom error messages. See :ref:`setting-error-messages`
+		允许您设置自定义错误消息，参考 :ref:`setting-error-messages`
 
 	.. php:method:: set_error_delimiters([$prefix = '<p>'[, $suffix = '</p>']])
 
@@ -1061,7 +956,7 @@ Class Reference
 		:returns:	CI_Form_validation instance (method chaining)
 		:rtype:	CI_Form_validation
 
-		Sets the default prefix and suffix for error messages.
+		设置错误消息的前缀和后缀。
 
 	.. php:method:: set_data($data)
 
@@ -1069,23 +964,21 @@ Class Reference
 		:returns:	CI_Form_validation instance (method chaining)
 		:rtype:	CI_Form_validation
 
-		Permits you to set an array for validation, instead of using the default
-		``$_POST`` array.
+		允许你设置一个数组来进行验证，取代默认的 ``$_POST`` 数组
 
 	.. php:method:: reset_validation()
 
 		:returns:	CI_Form_validation instance (method chaining)
 		:rtype:	CI_Form_validation
 
-		Permits you to reset the validation when you validate more than one array.
-		This method should be called before validating each new array.
+		当你验证多个数组时，该方法可以重置验证规则，当验证下一个新数组时应该调用它。
 
 	.. php:method:: error_array()
 
 		:returns:	Array of error messages
 		:rtype:	array
 
-		Returns the error messages as an array.
+		返回错误信息数组。
 
 	.. php:method:: error_string([$prefix = ''[, $suffix = '']])
 
@@ -1094,8 +987,7 @@ Class Reference
 		:returns:	Error messages as a string
 		:rtype:	string
 
-		Returns all error messages (as returned from error_array()) formatted as a
-		string and separated by a newline character.
+		返回所有的错误信息（和 error_array() 返回结果一样），并使用换行符分割格式化成字符串
 
 	.. php:method:: error($field[, $prefix = ''[, $suffix = '']])
 
@@ -1105,8 +997,7 @@ Class Reference
 		:returns:	Error message string
 		:rtype:	string
 
-		Returns the error message for a specific field, optionally adding a
-		prefix and/or suffix to it (usually HTML tags).
+		返回特定域的错误消息，也可以添加一个前缀和/或后缀（通常是 HTML 标签）
 
 	.. php:method:: has_rule($field)
 
@@ -1114,16 +1005,15 @@ Class Reference
 		:returns:	TRUE if the field has rules set, FALSE if not
 		:rtype:	bool
 
-		Checks to see if there is a rule set for the specified field.
+		检查某个域是否有验证规则。
 
 .. _helper-functions:
 
 ****************
-Helper Reference
+辅助库参考
 ****************
 
-Please refer to the :doc:`Form Helper <../helpers/form_helper>` manual for
-the following functions:
+请参考 :doc:`表单辅助库 <../helpers/form_helper>` 手册了解以下函数：
 
 -  :php:func:`form_error()`
 -  :php:func:`validation_errors()`
@@ -1132,5 +1022,4 @@ the following functions:
 -  :php:func:`set_checkbox()`
 -  :php:func:`set_radio()`
 
-Note that these are procedural functions, so they **do not** require you
-to prepend them with ``$this->form_validation``.
+注意这些都是过程式的函数，所以 **不需要** 添加 ``$this->form_validation`` 就可以直接调用它们。
