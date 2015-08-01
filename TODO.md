@@ -111,7 +111,7 @@
  - [ ]    460 ./source/libraries/loader.rst
  - [x]    473 ./source/libraries/image_lib.rst
  - [ ]    474 ./source/libraries/input.rst
- - [ ]    577 ./source/libraries/xmlrpc.rst
+ - [x]    577 ./source/libraries/xmlrpc.rst
  - [ ]    584 ./source/libraries/encryption.rst
  - [ ]    635 ./source/general/styleguide.rst
  - [ ]    720 ./source/helpers/form_helper.rst

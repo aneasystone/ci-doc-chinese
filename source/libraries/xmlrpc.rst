@@ -1,9 +1,9 @@
 ##################################
-XML-RPC and XML-RPC Server Classes
+XML-RPC 与 XML-RPC 服务器类
 ##################################
 
-CodeIgniter's XML-RPC classes permit you to send requests to another
-server, or set up your own XML-RPC server to receive requests.
+CodeIgniter 的 XML-RPC  类允许你向另一个服务器发送请求，
+或者建立一个你自己的 XML-RPC 服务器来接受请求。
 
 .. contents::
   :local:
@@ -13,67 +13,60 @@ server, or set up your own XML-RPC server to receive requests.
   <div class="custom-index container"></div>
 
 ****************
-What is XML-RPC?
+什么是 XML-RPC ？
 ****************
 
-Quite simply it is a way for two computers to communicate over the
-internet using XML. One computer, which we will call the client, sends
-an XML-RPC **request** to another computer, which we will call the
-server. Once the server receives and processes the request it will send
-back a **response** to the client.
+这是一种在两台计算机之间使用 XML 通过互联网进行通信的简单方法。
+一台计算机 , 我们称之为客户端 , 发送一个 XML-RPC 请求给另外一台计算机，
+我们称之为服务器，当服务器收到请求时，对其进行处理然后将结果返回给客户端。
 
-For example, using the MetaWeblog API, an XML-RPC Client (usually a
-desktop publishing tool) will send a request to an XML-RPC Server
-running on your site. This request might be a new weblog entry being
-sent for publication, or it could be a request for an existing entry for
-editing. When the XML-RPC Server receives this request it will examine
-it to determine which class/method should be called to process the
-request. Once processed, the server will then send back a response
-message.
+例如，使用 MetaWeblog API 时，XML-RPC 客户端（通常是桌面发布工具）
+将会发送请求到你站点上的 XML-RPC 服务器，这个请求可能是发布一篇新博客，
+或者编辑一篇已有的博客。当 XML-RPC 服务器收到该请求时，它会决定使用
+哪个类和方法来处理该请求，请求处理完成后，服务器将发送一条回复消息。
 
-For detailed specifications, you can visit the `XML-RPC <http://www.xmlrpc.com/>`_ site.
+关于 XML-RPC 的规范，你可以查看 `XML-RPC <http://www.xmlrpc.com/>`_ 的网站。
 
 ***********************
-Using the XML-RPC Class
+使用 XML-RPC 类
 ***********************
 
-Initializing the Class
+初始化类
 ======================
 
-Like most other classes in CodeIgniter, the XML-RPC and XML-RPCS classes
-are initialized in your controller using the $this->load->library
-function:
+跟 CodeIgniter 中的其他类一样，可以在你的控制器中使用 ``$this->load->library()`` 
+方法加载 XML-RPC 类和 XML-RPC 服务器类。
 
-To load the XML-RPC class you will use::
+加载 XML-RPC 类如下::
 
 	$this->load->library('xmlrpc');
 
-Once loaded, the xml-rpc library object will be available using:
-$this->xmlrpc
+一旦加载，XML-RPC 类就可以像下面这样使用::
 
-To load the XML-RPC Server class you will use::
+	$this->xmlrpc
+
+加载 XML-RPC 服务器类如下::
 
 	$this->load->library('xmlrpc');
 	$this->load->library('xmlrpcs');
 
-Once loaded, the xml-rpcs library object will be available using:
-$this->xmlrpcs
+一旦加载，XML-RPC 服务器类就可以像下面这样使用::
 
-.. note:: When using the XML-RPC Server class you must load BOTH the
-	XML-RPC class and the XML-RPC Server class.
+	$this->xmlrpcs
 
-Sending XML-RPC Requests
+.. note:: 当使用 XML-RPC 服务器类时，xmlrpc 和 xmlrpcs 都需要加载。
+
+发送 XML-RPC 请求
 ========================
 
-To send a request to an XML-RPC server you must specify the following
-information:
+向 XML-RPC 服务器发送一个请求，你需要指定以下信息：
 
--  The URL of the server
--  The method on the server you wish to call
--  The *request* data (explained below).
+-  服务器的 URL
+-  你想要调用的服务器方法
+-  **请求**数据（下面解释）
 
-Here is a basic example that sends a simple Weblogs.com ping to the
-`Ping-o-Matic <http://pingomatic.com/>`_
+下面是个基本的例子，向 `Ping-o-Matic <http://pingomatic.com/>`_
+发送一个简单的 Weblogs.com ping 请求。
 
 ::
 
@@ -90,38 +83,33 @@ Here is a basic example that sends a simple Weblogs.com ping to the
 		echo $this->xmlrpc->display_error();
 	}
 
-Explanation
+解释
 -----------
 
-The above code initializes the XML-RPC class, sets the server URL and
-method to be called (weblogUpdates.ping). The request (in this case, the
-title and URL of your site) is placed into an array for transportation,
-and compiled using the request() function. Lastly, the full request is
-sent. If the send_request() method returns false we will display the
-error message sent back from the XML-RPC Server.
+上面的代码初始化了一个 XML-RPC 类，并设置了服务器 URL 和要调用的方法
+（weblogUpdates.ping）。然后通过 request() 方法编译请求，
+例子中请求是一个数组（标题和你网站的 URL）。最后，使用 send_request()
+方法发送完整的请求。如果发送请求方法返回 FALSE ，我们会显示出 XML-RPC
+服务器返回的错误信息。
 
-Anatomy of a Request
+请求解析
 ====================
 
-An XML-RPC request is simply the data you are sending to the XML-RPC
-server. Each piece of data in a request is referred to as a request
-parameter. The above example has two parameters: The URL and title of
-your site. When the XML-RPC server receives your request, it will look
-for parameters it requires.
+XML-RPC 请求就是你发送给 XML-RPC 服务器的数据，请求中的每一个数据也被称为请求参数。
+上面的例子中有两个参数：你网站的 URL 和 标题。当 XML-RPC 服务器收到请求后，
+它会查找它所需要的参数。
 
-Request parameters must be placed into an array for transportation, and
-each parameter can be one of seven data types (strings, numbers, dates,
-etc.). If your parameters are something other than strings you will have
-to include the data type in the request array.
+请求参数必须放在一个数组中，且数组中的每个参数都必须是 7 种数据类型中的一种
+（string、number、date 等），如果你的参数不是 string 类型，你必须在请求数组中
+指定它的数据类型。
 
-Here is an example of a simple array with three parameters::
+下面是三个参数的简单例子::
 
 	$request = array('John', 'Doe', 'www.some-site.com');
 	$this->xmlrpc->request($request);
 
-If you use data types other than strings, or if you have several
-different data types, you will place each parameter into its own array,
-with the data type in the second position::
+如果你的数据类型不是 string ，或者你有几个不同类型的数据，那么你需要将
+每个参数放到它单独的数组中，并在数组的第二位声明其数据类型::
 
 	$request = array(
 		array('John', 'string'),
@@ -131,23 +119,19 @@ with the data type in the second position::
 	); 
 	$this->xmlrpc->request($request);
 
-The `Data Types <#datatypes>`_ section below has a full list of data
-types.
+下面的 `数据类型 <#datatypes>`_ 一节列出了所有支持的数据类型。
 
-Creating an XML-RPC Server
+创建一个 XML-RPC 服务器
 ==========================
 
-An XML-RPC Server acts as a traffic cop of sorts, waiting for incoming
-requests and redirecting them to the appropriate functions for
-processing.
+XML-RPC 服务器扮演着类似于交通警察的角色，等待进入的请求，
+并将它们转到恰当的函数进行处理。
 
-To create your own XML-RPC server involves initializing the XML-RPC
-Server class in your controller where you expect the incoming request to
-appear, then setting up an array with mapping instructions so that
-incoming requests can be sent to the appropriate class and method for
-processing.
+要创建你自己的 XML-RPC 服务器，你需要先在负责处理请求的控制器中初始化
+XML-RPC 服务器类，然后设置一个映射数组，用于将请求转发到合适的类和方法，
+以便进行处理。
 
-Here is an example to illustrate::
+下面是个例子::
 
 	$this->load->library('xmlrpc');
 	$this->load->library('xmlrpcs');
@@ -159,39 +143,30 @@ Here is an example to illustrate::
 	$this->xmlrpcs->initialize($config);
 	$this->xmlrpcs->serve();
 
-The above example contains an array specifying two method requests that
-the Server allows. The allowed methods are on the left side of the
-array. When either of those are received, they will be mapped to the
-class and method on the right.
+上例中包含了两个服务器允许的请求方法，数组的左边是允许的方法名，
+数组的右边是当请求该方法时，将会映射到的类和方法。
 
-The 'object' key is a special key that you pass an instantiated class
-object with, which is necessary when the method you are mapping to is
-not part of the CodeIgniter super object.
+其中，'object' 是个特殊的键，用于传递一个实例对象，当映射的方法无法使用
+CodeIgniter 超级对象时，它将是必须的。
 
-In other words, if an XML-RPC Client sends a request for the new_post
-method, your server will load the My_blog class and call the new_entry
-function. If the request is for the update_post method, your server
-will load the My_blog class and call the ``update_entry()`` method.
+换句话说，如果 XML-RPC 客户端发送一个请求到 new_post 方法，
+你的服务器会加载 My_blog 类并调用 new_entry 函数。如果这个请求是到 
+``update_post`` 方法的，那么你的服务器会加载 My_blog 类并调用 
+``update_entry `` 方法。
 
-The function names in the above example are arbitrary. You'll decide
-what they should be called on your server, or if you are using
-standardized APIs, like the Blogger or MetaWeblog API, you'll use their
-function names.
+上面例子中的函数名是任意的。你可以决定这些函数在你的服务器上叫什么名字，
+如果你使用的是标准的 API，比如 Blogger 或者 MetaWeblog 的 API，
+你必须使用标准的函数名。
 
-There are two additional configuration keys you may make use of when
-initializing the server class: debug can be set to TRUE in order to
-enable debugging, and xss_clean may be set to FALSE to prevent sending
-data through the Security library's ``xss_clean()`` method.
+这里还有两个附加的配置项，可以在服务器类初始化时配置使用。debug 设为 TRUE 以便调试，
+``xss_clean`` 可被设置为 FALSE 以避免数据被安全类库的 ``xss_clean`` 函数过滤。
 
-Processing Server Requests
+处理服务器请求
 ==========================
 
-When the XML-RPC Server receives a request and loads the class/method
-for processing, it will pass an object to that method containing the
-data sent by the client.
+当 XML-RPC 服务器收到请求并加载类与方法来处理时，它会接收一个包含客户端发送的数据参数。
 
-Using the above example, if the new_post method is requested, the
-server will expect a class to exist with this prototype::
+在上面的例子中，如果请求的是 new_post 方法，服务器请求的类与方法会像这样::
 
 	class My_blog extends CI_Controller {
 
@@ -201,16 +176,13 @@ server will expect a class to exist with this prototype::
 		}
 	}
 
-The $request variable is an object compiled by the Server, which
-contains the data sent by the XML-RPC Client. Using this object you will
-have access to the *request parameters* enabling you to process the
-request. When you are done you will send a Response back to the Client.
+$request 变量是一个由服务端汇集的对象，包含由 XML-RPC 客户端发送来的数据。
+使用该对象可以让你访问到请求参数以便处理请求。请求处理完成后，
+发送一个响应返回给客户端。
 
-Below is a real-world example, using the Blogger API. One of the methods
-in the Blogger API is ``getUserInfo()``. Using this method, an XML-RPC
-Client can send the Server a username and password, in return the Server
-sends back information about that particular user (nickname, user ID,
-email address, etc.). Here is how the processing function might look::
+下面是一个实际的例子，使用 Blogger API 。Blogger API 中的一个方法是 getUserInfo()，
+XML-RPC 客户端可以使用该方法发送用户名和密码到服务器，在服务器返回的数据中，
+会包含该用户的信息（昵称，用户 ID，Email 地址等等）。下面是处理的代码::
 
 	class My_blog extends CI_Controller {
 
@@ -244,34 +216,27 @@ email address, etc.). Here is how the processing function might look::
 		}
 	}
 
-Notes:
+注意
 ------
 
-The ``output_parameters()`` method retrieves an indexed array
-corresponding to the request parameters sent by the client. In the above
-example, the output parameters will be the username and password.
+``output_parameters()`` 函数获取一个由客户端发送的请求参数数组。
+上面的例子中输出参数将会是用户名和密码。
 
-If the username and password sent by the client were not valid, and
-error message is returned using ``send_error_message()``.
+如果客户端发送的用户名和密码无效的话，将使用 ``send_error_message()`` 函数返回错误信息。
 
-If the operation was successful, the client will be sent back a response
-array containing the user's info.
+如果操作成功，客户端会收到包含用户信息的响应数组。
 
-Formatting a Response
+格式化响应
 =====================
 
-Similar to *Requests*, *Responses* must be formatted as an array.
-However, unlike requests, a response is an array **that contains a
-single item**. This item can be an array with several additional arrays,
-but there can be only one primary array index. In other words, the basic
-prototype is this::
+和请求一样，响应也必须被格式化为数组。然而不同于请求信息，响应数组**只包含一项** 。
+该项可以是一个包含其他数组的数组，但是只能有一个主数组，换句话说，
+响应的结果大概是下面这个样子::
 
 	$response = array('Response data', 'array');
 
-Responses, however, usually contain multiple pieces of information. In
-order to accomplish this we must put the response into its own array so
-that the primary array continues to contain a single piece of data.
-Here's an example showing how this might be accomplished::
+但是，响应通常会包含多个信息。要做到这样，我们必须把各个信息放到他们自己的数组中，
+这样主数组就始终只有一个数据项。下面是一个例子展示如何实现这样的效果::
 
 	$response = array(
 		array(
@@ -283,36 +248,30 @@ Here's an example showing how this might be accomplished::
 		'struct'
 	);
 
-Notice that the above array is formatted as a struct. This is the most
-common data type for responses.
+注意：上面的数组被格式化为 struct，这是响应最常见的数据类型。
 
-As with Requests, a response can be one of the seven data types listed
-in the `Data Types <#datatypes>`_ section.
+如同请求一样，响应可以是七种数据类型中的一种，参见 `数据类型 <#datatypes>`_ 一节。
 
-Sending an Error Response
+发送错误信息
 =========================
 
-If you need to send the client an error response you will use the
-following::
+如果你需要发送错误信息给客户端，可以使用下面的代码::
 
 	return $this->xmlrpc->send_error_message('123', 'Requested data not available');
 
-The first parameter is the error number while the second parameter is
-the error message.
+第一个参数为错误编号，第二个参数为错误信息。
 
-Creating Your Own Client and Server
+创建你自己的客户端与服务端
 ===================================
 
-To help you understand everything we've covered thus far, let's create a
-couple controllers that act as XML-RPC Client and Server. You'll use the
-Client to send a request to the Server and receive a response.
+为了帮助你理解目前为止讲的这些内容，让我们来创建两个控制器，演示下 XML-RPC
+的客户端和服务端。你将用客户端来发送一个请求到服务端并从服务端收到一个响应。
 
-The Client
+客户端
 ----------
 
-Using a text editor, create a controller called Xmlrpc_client.php. In
-it, place this code and save it to your application/controllers/
-folder::
+使用文本编辑器创建一个控制器 Xmlrpc_client.php ，在这个控制器中，
+粘贴以下的代码并保存到 applications/controllers/ 目录::
 
 	<?php
 
@@ -345,15 +304,14 @@ folder::
 	}
 	?>
 
-.. note:: In the above code we are using a "url helper". You can find more
-	information in the :doc:`Helpers Functions <../general/helpers>` page.
+.. note:: 上面的代码中我们使用了一个 URL 辅助库，更多关于辅助库的信息，
+	你可以阅读 :doc:`这里 <../general/helpers>` 。
 
-The Server
+服务端
 ----------
 
-Using a text editor, create a controller called Xmlrpc_server.php. In
-it, place this code and save it to your application/controllers/
-folder::
+使用文本编辑器创建一个控制器 Xmlrpc_server.php ，在这个控制器中，
+粘贴以下的代码并保存到 applications/controllers/ 目录::
 
 	<?php
 
@@ -388,26 +346,23 @@ folder::
 	}
 
 
-Try it!
--------
+尝试一下
+-------------
 
-Now visit the your site using a URL similar to this::
+现在使用类似于下面这样的链接访问你的站点::
 
 	example.com/index.php/xmlrpc_client/
 
-You should now see the message you sent to the server, and its response
-back to you.
+你应该能看到你发送到服务端的信息，以及服务器返回的响应信息。
 
-The client you created sends a message ("How's is going?") to the
-server, along with a request for the "Greetings" method. The Server
-receives the request and maps it to the ``process()`` method, where a
-response is sent back.
+在客户端，你发送了一条消息（"How's is going?"）到服务端，
+随着一个请求发送到 "Greetings" 方法。服务端收到这个请求并映射到 
+"process" 函数，然后返回响应信息。
 
-Using Associative Arrays In a Request Parameter
+在请求参数中使用关联数组
 ===============================================
 
-If you wish to use an associative array in your method parameters you
-will need to use a struct datatype::
+如果你希望在你的方法参数中使用关联数组，那么你需要使用 struct 数据类型::
 
 	$request = array(
 		array(
@@ -427,8 +382,7 @@ will need to use a struct datatype::
 
 	$this->xmlrpc->request($request);
 
-You can retrieve the associative array when processing the request in
-the Server.
+你可以在服务端处理请求信息时获取该关联数组。
 
 ::
 
@@ -437,11 +391,10 @@ the Server.
 	$size = $parameters[1]['size'];
 	$shape = $parameters[1]['shape'];
 
-Data Types
+数据类型
 ==========
 
-According to the `XML-RPC spec <http://www.xmlrpc.com/spec>`_ there are
-seven types of values that you can send via XML-RPC:
+根据 `XML-RPC 规范 <http://www.xmlrpc.com/spec>`_ 一共有七种不同的数据类型可以在 XML-RPC 中使用：
 
 -  *int* or *i4*
 -  *boolean*
@@ -453,7 +406,7 @@ seven types of values that you can send via XML-RPC:
 -  *array* (contains array of values)
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Xmlrpc
@@ -463,7 +416,7 @@ Class Reference
 		:param	array	$config: Configuration data
 		:rtype:	void
 
-		Initializes the XML-RPC library. Accepts an associative array containing your settings.
+		初始化 XML-RPC 类，接受一个包含你设置的参数的关联数组。
 
 	.. php:method:: server($url[, $port = 80[, $proxy = FALSE[, $proxy_port = 8080]]])
 
@@ -473,11 +426,11 @@ Class Reference
 		:param	int	$proxy_port: Proxy listening port
 		:rtype:	void
 
-		Sets the URL and port number of the server to which a request is to be sent::
+		用于设置 XML-RPC 服务器端的 URL 和端口::
 
 			$this->xmlrpc->server('http://www.sometimes.com/pings.php', 80);
 
-		Basic HTTP authentication is also supported, simply add it to the server URL::
+		支持基本的 HTTP 身份认证，只需简单的将其添加到 URL中::
 
 			$this->xmlrpc->server('http://user:pass@localhost/', 80);
 
@@ -486,7 +439,7 @@ Class Reference
 		:param	int	$seconds: Timeout in seconds
 		:rtype:	void
 
-		Set a time out period (in seconds) after which the request will be canceled::
+		设置一个超时时间（单位为秒），超过该时间，请求将被取消::
 
 			$this->xmlrpc->timeout(6);
 
@@ -495,18 +448,18 @@ Class Reference
 		:param	string	$function: Method name
 		:rtype:	void
 
-		Sets the method that will be requested from the XML-RPC server::
+		设置 XML-RPC 服务器接受的请求方法::
 
 			$this->xmlrpc->method('method');
 
-		Where method is the name of the method.
+		其中 method 参数为请求方法名。
 
 	.. php:method:: request($incoming)
 
 		:param	array	$incoming: Request data
 		:rtype:	void
 
-		Takes an array of data and builds request to be sent to XML-RPC server::
+		接受一个数组参数，并创建一个发送到 XML-RPC 服务器的请求::
 
 			$request = array(array('My Photoblog', 'string'), 'http://www.yoursite.com/photoblog/');
 			$this->xmlrpc->request($request);
@@ -516,21 +469,21 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		The request sending method. Returns boolean TRUE or FALSE based on success for failure, enabling it to be used conditionally.
+		发送请求的方法，成功返回 TRUE，失败返回 FALSE ，可以用在条件判断里。
 
 	.. method set_debug($flag = TRUE)
 
 		:param	bool	$flag: Debug status flag
 		:rtype:	void
 
-		Enables or disables debugging, which will display a variety of information and error data helpful during development.
+		启用或禁用调试，在开发环境下，可以用它来显示调试信息和错误数据。
 
 	.. php:method:: display_error()
 
 		:returns:	Error message string
 		:rtype:	string
 
-		Returns an error message as a string if your request failed for some reason.
+		当请求失败后，返回错误信息。
 		::
 
 			echo $this->xmlrpc->display_error();
@@ -540,7 +493,7 @@ Class Reference
 		:returns:	Response
 		:rtype:	mixed
 
-		Returns the response from the remote server once request is received. The response will typically be an associative array.
+		远程服务器接收请求后返回的响应，返回的数据通常是一个关联数组。
 		::
 
 			$this->xmlrpc->display_response();
@@ -552,8 +505,8 @@ Class Reference
 		:returns:	XML_RPC_Response instance
 		:rtype:	XML_RPC_Response
 
-		This method lets you send an error message from your server to the client.
-		First parameter is the error number while the second parameter is the error message.
+		这个方法允许你从服务器发送一个错误消息到客户端。
+		第一个参数是错误编号，第二个参数是错误信息。
 		::
 
 			return $this->xmlrpc->send_error_message(123, 'Requested data not available');
@@ -564,7 +517,7 @@ Class Reference
 		:returns:	XML_RPC_Response instance
 		:rtype:	XML_RPC_Response
 
-		Lets you send the response from your server to the client. An array of valid data values must be sent with this method.
+		从服务器发送响应到客户端，发送的数组必须是有效的。
 		::
 
 			$response = array(
