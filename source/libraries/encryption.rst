@@ -1,11 +1,10 @@
 ##################
-Encryption Library
+加密类（新版）
 ##################
 
-.. important:: DO NOT use this or any other *encryption* library for
-	user password storage! Passwords must be *hashed* instead, and you
-	should do that via PHP's own `Password Hashing extension
-	<http://php.net/password>`_.
+.. important:: 绝不要使用这个类或其他任何加密类来进行密码处理！密码应该是被*哈希*，
+	你应该使用 PHP 自带的 `密码哈希扩展 <http://php.net/password>`_ 。
+
 
 The Encryption Library provides two-way data encryption. To do so in
 a cryptographically secure way, it utilizes PHP extensions that are
