@@ -1,15 +1,12 @@
 ############
-Loader Class
+加载器类
 ############
 
-Loader, as the name suggests, is used to load elements. These elements
-can be libraries (classes) :doc:`View files <../general/views>`,
-:doc:`Drivers <../general/drivers>`,
-:doc:`Helpers <../general/helpers>`,
-:doc:`Models <../general/models>`, or your own files.
+加载器，顾名思义，是用于加载元素的，加载的元素可以是库（类），:doc:`视图文件 <../general/views>` ，
+:doc:`驱动器 <../general/drivers>` ，:doc:`辅助库 <../general/helpers>` ，
+:doc:`模型 <../general/models>` 或其他你自己的文件。
 
-.. note:: This class is initialized automatically by the system so there
-	is no need to do it manually.
+.. note:: 该类由系统自动加载，你无需手工加载。
 
 .. contents::
   :local:
@@ -19,17 +16,15 @@ can be libraries (classes) :doc:`View files <../general/views>`,
   <div class="custom-index container"></div>
 
 **********************
-Application "Packages"
+应用程序"包"
 **********************
 
-An application package allows for the easy distribution of complete sets
-of resources in a single directory, complete with its own libraries,
-models, helpers, config, and language files. It is recommended that
-these packages be placed in the application/third_party directory. Below
-is a sample map of an package directory.
+应用程序包（Package）可以很便捷的将你的应用部署在一个独立的目录中，
+以实现自己整套的类库，模型，辅助函数，配置，文件和语言包。
+建议将这些应用程序包放置在 application/third_party 目录下。
+下面是一个简单应用程序包的目录结构。
 
-The following is an example of a directory for an application package
-named "Foo Bar".
+下面是一个名为 "Foo Bar" 的应用程序包目录的例子。
 
 ::
 
@@ -41,23 +36,20 @@ named "Foo Bar".
 	libraries/
 	models/
 
-Whatever the purpose of the "Foo Bar" application package, it has its
-own config files, helpers, language files, libraries, and models. To use
-these resources in your controllers, you first need to tell the Loader
-that you are going to be loading resources from a package, by adding the
-package path via the ``add_package_path()`` method.
+无论应用程序包是为了实现什么样的目的，它都包含了属于自己的配置文件、
+辅助函数、语言包、类库和模型。如果要在你的控制器里使用这些资源，
+你首先需要告知加载器（Loader）从应用程序包加载资源，使用
+``add_package_path()`` 方法来添加包的路径。
 
-Package view files
+包的视图文件
 ------------------
 
-By Default, package view files paths are set when ``add_package_path()``
-is called. View paths are looped through, and once a match is
-encountered that view is loaded.
+默认情况下，当调用 ``add_package_path()`` 方法时，包的视图文件路径就设置好了。
+视图文件的路径是通过一个循环来查找的，一旦找到第一个匹配的即加载该视图。
 
-In this instance, it is possible for view naming collisions within
-packages to occur, and possibly the incorrect package being loaded. To
-ensure against this, set an optional second parameter of FALSE when
-calling ``add_package_path()``.
+在这种情况下，它可能在包内产生视图命名冲突，并可能导致加载错误的包。
+为了确保不会发生此类问题，在调用 ``add_package_path()`` 方法时，
+可以将可选的第二个参数设置为 FALSE 。
 
 ::
 
@@ -74,7 +66,7 @@ calling ``add_package_path()``.
 	$this->load->view('welcome_message'); // Loads
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Loader
@@ -87,41 +79,36 @@ Class Reference
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		This method is used to load core classes.
+		该方法用于加载核心类。
 
-		.. note:: We use the terms "class" and "library" interchangeably.
+		.. note:: 我们有时候说 "类" ，有时候说 "库" ，这两个词不做区分。
 
-		For example, if you would like to send email with CodeIgniter, the first
-		step is to load the email class within your controller::
+		例如，如果你想使用 CodeIgniter 发送邮件，第一步就是在控制器中加载 email 类::
 
 			$this->load->library('email');
 
-		Once loaded, the library will be ready for use, using ``$this->email``.
+		加载完之后，email 类就可以使用 ``$this->email`` 来访问使用了。
 
-		Library files can be stored in subdirectories within the main
-		"libraries" directory, or within your personal *application/libraries*
-		directory. To load a file located in a subdirectory, simply include the
-		path, relative to the "libraries" directory. For example, if you have
-		file located at::
+		类库文件可以被保存到主 libraries 目录的子目录下面，或者保存到个人的 *application/libraries* 
+		目录下。要载入子目录下的文件，只需将路径包含进来就可以了，注意这里说的路径是指相对于 
+		libraries 目录的路径。 例如，当你有一个文件保存在下面这个位置::
 
 			libraries/flavors/Chocolate.php
 
-		You will load it using::
+		你应该使用下面的方式来载入它::
 
 			$this->load->library('flavors/chocolate');
 
-		You may nest the file in as many subdirectories as you want.
+		你可以随心所欲地将文件保存到多层的子目录下。
 
-		Additionally, multiple libraries can be loaded at the same time by
-		passing an array of libraries to the load method.
+		另外，你可以同时加载多个类，只需给 library 方法传入一个包含所有要载入的类名的数组即可::
 		::
 
 			$this->load->library(array('email', 'table'));
 
-		**Setting options**
+		**设置选项**
 
-		The second (optional) parameter allows you to optionally pass
-		configuration setting. You will typically pass these as an array::
+		第二个参数是可选的，用于选择性地传递配置参数。一般来说，你可以将参数以数组的形式传递过去::
 
 			$config = array (
 				'mailtype' => 'html',
@@ -131,30 +118,24 @@ Class Reference
 
 			$this->load->library('email', $config);
 
-		Config options can usually also be set via a config file. Each library
-		is explained in detail in its own page, so please read the information
-		regarding each one you would like to use.
+		配置参数通常也可以保存在一个配置文件中，在每个类库自己的页面中有详细的说明，
+		所以在使用类库之前，请认真阅读说明。
 
-		Please take note, when multiple libraries are supplied in an array for
-		the first parameter, each will receive the same parameter information.
+		请注意，当第一个参数使用数组来同时载入多个类时，每个类将获得相同的参数信息。
 
-		**Assigning a Library to a different object name**
+		**给类库分配不同的对象名**
 
-		If the third (optional) parameter is blank, the library will usually be
-		assigned to an object with the same name as the library. For example, if
-		the library is named Calendar, it will be assigned to a variable named
-		``$this->calendar``.
+		第三个参数也是可选的，如果为空，类库通常就会被赋值给一个与类库同名的对象。
+		例如，如果类库名为 Calendar ，它将会被赋值给一个名为 ``$this->calendar`` 的变量。
 
-		If you prefer to set your own class names you can pass its value to the
-		third parameter::
+		如果你希望使用你的自定义名称，你可以通过第三个参数把它传递过去::
 
 			$this->load->library('calendar', NULL, 'my_calendar');
 
 			// Calendar class is now accessed using:
 			$this->my_calendar
 
-		Please take note, when multiple libraries are supplied in an array for
-		the first parameter, this parameter is discarded.
+		请注意，当第一个参数使用数组来同时载入多个类时，第三个参数将不起作用。
 
 	.. php:method:: driver($library[, $params = NULL[, $object_name]])
 
@@ -164,31 +145,26 @@ Class Reference
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		This method is used to load driver libraries, acts very much like the
-		``library()`` method.
+		该方法用于加载驱动器类，和 ``library()`` 方法非常相似。
 
-		As an example, if you would like to use sessions with CodeIgniter, the first
-		step is to load the session driver within your controller::
+		例如，如果你想在 CodeIgniter 中使用会话，第一步就是在控制器中加载 session 驱动器::
 
 			$this->load->driver('session');
 
-		Once loaded, the library will be ready for use, using ``$this->session``.
+		加载完之后，session 驱动器就可以使用 ``$this->session`` 来访问使用了。
 
-		Driver files must be stored in a subdirectory within the main
-		"libraries" directory, or within your personal *application/libraries*
-		directory. The subdirectory must match the parent class name. Read the
-		:doc:`Drivers <../general/drivers>` description for details.
+		驱动器文件可以被保存到主 libraries 目录的子目录下面，或者保存到个人的 *application/libraries* 
+		目录下。子目录的名称必须和驱动器父类的名称一致，你可以阅读 :doc:`驱动器 <../general/drivers>`
+		了解详细信息。
 
-		Additionally, multiple driver libraries can be loaded at the same time by
-		passing an array of drivers to the load method.
+		另外，你可以同时加载多个驱动器，只需给 driver 方法传入一个包含所有要载入的驱动器名的数组即可::
 		::
 
 			$this->load->driver(array('session', 'cache'));
 
-		**Setting options**
+		**设置选项**
 
-		The second (optional) parameter allows you to optionally pass
-		configuration settings. You will typically pass these as an array::
+		第二个参数是可选的，用于选择性地传递配置参数。一般来说，你可以将参数以数组的形式传递过去::
 
 			$config = array(
 				'sess_driver' => 'cookie',
@@ -198,21 +174,17 @@ Class Reference
 
 			$this->load->driver('session', $config);
 
-		Config options can usually also be set via a config file. Each library
-		is explained in detail in its own page, so please read the information
-		regarding each one you would like to use.
+		配置参数通常也可以保存在一个配置文件中，在每个类库自己的页面中有详细的说明，
+		所以在使用类库之前，请认真阅读说明。
 
-		**Assigning a Driver to a different object name**
+		**给类库分配不同的对象名**
 
-		If the third (optional) parameter is blank, the library will be assigned
-		to an object with the same name as the parent class. For example, if
-		the library is named Session, it will be assigned to a variable named
-		``$this->session``.
+		第三个参数也是可选的，如果为空，驱动器通常就会被赋值给一个与它同名的对象。
+		例如，如果驱动器名为 Session ，它将会被赋值给一个名为 ``$this->session`` 的变量。
 
-		If you prefer to set your own class names you can pass its value to the
-		third parameter::
+		如果你希望使用你的自定义名称，你可以通过第三个参数把它传递过去::
 
-			$this->load->library('session', '', 'my_session');
+			$this->load->driver('session', '', 'my_session');
 
 			// Session class is now accessed using:
 			$this->my_session
@@ -225,29 +197,21 @@ Class Reference
 		:returns:	View content string if $return is set to TRUE, otherwise CI_Loader instance (method chaining)
 		:rtype:	mixed
 
-		This method is used to load your View files. If you haven't read the
-		:doc:`Views <../general/views>` section of the user guide it is
-		recommended that you do since it shows you how this method is
-		typically used.
+		该方法用于加载你的视图文件。如果你尚未阅读本手册的 :doc:`视图 <../general/views>`
+		章节的话，建议你先去阅读那里的内容，会有更详细的函数使用说明。
 
-		The first parameter is required. It is the name of the view file you
-		would like to load.
+		第一个参数是必须的，指定你要载入的视图文件的名称。
 
-		.. note:: The .php file extension does not need to be specified unless
-			you use something other than .php.
+		.. note:: 无需加上 .php 扩展名，除非你使用了其他的扩展名。
 
-		The second **optional** parameter can take an associative array or an
-		object as input, which it runs through the PHP
-		`extract() <http://php.net/extract>`_ function to convert to variables
-		that can be used in your view files. Again, read the
-		:doc:`Views <../general/views>` page to learn how this might be useful.
+		第二个参数是**可选的**，允许你传入一个数组或对象参数，传入的参数将使用 PHP 的
+		`extract() <http://php.net/extract>`_  函数进行提取，提取出来的变量可以在视图中使用。
+		再说一遍，请阅读 :doc:`视图 <../general/views>` 章节了解该功能的更多用法。
 
-		The third **optional** parameter lets you change the behavior of the
-		method so that it returns data as a string rather than sending it to
-		your browser. This can be useful if you want to process the data in some
-		way. If you set the parameter to TRUE (boolean) it will return data. The
-		default behavior is FALSE, which sends it to your browser. Remember to
-		assign it to a variable if you want the data returned::
+		第三个参数是**可选的**，用于改变方法的行为，将数据以字符串的形式返回，
+		而不是发送给浏览器。当你希望对数据进行一些特殊处理时，这个参数就非常有用。
+		如果你将这个参数设置为 TRUE，方法就会返回数据。这个参数的默认值是 FALSE，
+		也就是数据将会被发送给浏览器。如果你希望数据被返回，记得要将它赋值给一个变量::
 
 			$string = $this->load->view('myfile', '', TRUE);
 
@@ -258,15 +222,12 @@ Class Reference
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		This method takes an associative array as input and generates
-		variables using the PHP `extract() <http://php.net/extract>`_
-		function. This method produces the same result as using the second
-		parameter of the ``$this->load->view()`` method above. The reason you
-		might want to use this method independently is if you would like to
-		set some global variables in the constructor of your controller and have
-		them become available in any view file loaded from any method. You can
-		have multiple calls to this method. The data get cached and merged
-		into one array for conversion to variables.
+		这个方法以一个关联数组作为输入参数,将这个数组用 PHP 的 `extract() 
+		<http://php.net/extract>`_ 函数转化成与之对应的变量。这个方法的结果与上面的 
+		``$this->load->view()`` 方法使用第二个参数的结果一样。
+		假如你想在控制器的构造函数中定义一些全局变量，并希望这些变量在控制器的
+		每一个方法加载的视图文件中都可用，这种情况下你可能想单独使用这个函数。
+		你可以多次调用该方法，数据将被缓存，并被合并为一个数组，以便转换成变量。
 
 	.. php:method:: get_var($key)
 
@@ -274,23 +235,23 @@ Class Reference
 		:returns:	Value if key is found, NULL if not
 		:rtype:	mixed
 
-		This method checks the associative array of variables available to
-		your views. This is useful if for any reason a var is set in a library
-		or another controller method using ``$this->load->vars()``.
+		该方法检查关联数组中的变量对你的视图是否可用。当一个变量在一个类
+		或者控制器的另一个方法里被以这样的方式定义时：``$this->load->vars()``，
+		会做这样的检查。
 
 	.. php:method:: get_vars()
 
 		:returns:	An array of all assigned view variables
 		:rtype:	array
 
-		This method retrieves all variables available to your views.
+		该方法返回所有对视图可用的变量。
 
 	.. php:method:: clear_vars()
 
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		Clears cached view variables.
+		清除缓存的视图变量。
 
 	.. php:method:: model($model[, $name = ''[, $db_conn = FALSE]])
 
@@ -305,14 +266,13 @@ Class Reference
 			$this->load->model('model_name');
 
 
-		If your model is located in a subdirectory, include the relative path
-		from your models directory. For example, if you have a model located at
-		*application/models/blog/Queries.php* you'll load it using::
+		如果你的模型位于子目录下，加载时将路径包含进来即可。例如，
+		如果你有一个模型位于 *application/models/blog/Queries.php* ，
+		你可以使用下面的方法来加载::
 
 			$this->load->model('blog/queries');
 
-		If you would like your model assigned to a different object name you can
-		specify it via the second parameter of the loading method::
+		如果你希望将你的模型赋值给一个不同的变量，你可以在第二个参数中指定::
 
 			$this->load->model('model_name', 'fubar');
 			$this->fubar->method();
@@ -325,9 +285,8 @@ Class Reference
 		:returns:	Loaded CI_DB instance or FALSE on failure if $return is set to TRUE, otherwise CI_Loader instance (method chaining)
 		:rtype:	mixed
 
-		This method lets you load the database class. The two parameters are
-		**optional**. Please see the :doc:`database <../database/index>`
-		section for more info.
+		该方法用于加载数据库类，有两个可选的参数。
+		更多信息，请阅读 :doc:`数据库 <../database/index>` 。
 
 	.. php:method:: dbforge([$db = NULL[, $return = FALSE]])
 
@@ -336,8 +295,7 @@ Class Reference
 		:returns:	Loaded CI_DB_forge instance if $return is set to TRUE, otherwise CI_Loader instance (method chaining)
 		:rtype:	mixed
 
-		Loads the :doc:`Database Forge <../database/forge>` class, please refer
-		to that manual for more info.
+		加载 :doc:`数据库工厂类 <../database/forge>` ，更多信息，请参考该页面。
 
 	.. php:method:: dbutil([$db = NULL[, $return = FALSE]])
 
@@ -346,8 +304,7 @@ Class Reference
 		:returns:	Loaded CI_DB_utility instance if $return is set to TRUE, otherwise CI_Loader instance (method chaining)
 		:rtype:	mixed
 
-		Loads the :doc:`Database Utilities <../database/utilities>` class, please
-		refer to that manual for more info.
+		加载 :doc:`数据库工具类 <../database/utilities>` ，更多信息，请参考该页面。
 
 	.. php:method:: helper($helpers)
 
@@ -355,8 +312,7 @@ Class Reference
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		This method loads helper files, where file_name is the name of the
-		file, without the _helper.php extension.
+		该方法用于加载辅助库文件，其中 file_name 为加载的文件名，不带 _helper.php 后缀。
 
 	.. php:method:: file($path[, $return = FALSE])
 
@@ -365,11 +321,10 @@ Class Reference
 		:returns:	File contents if $return is set to TRUE, otherwise CI_Loader instance (method chaining)
 		:rtype:	mixed
 
-		This is a generic file loading method. Supply the filepath and name in
-		the first parameter and it will open and read the file. By default the
-		data is sent to your browser, just like a View file, but if you set the
-		second parameter to boolean TRUE it will instead return the data as a
-		string.
+		这是一个通用的文件载入方法，在第一个参数中给出文件所在的路径和文件名，
+		将会打开并读取对应的文件。默认情况下，数据会被发送给浏览器，
+		就如同视图文件一样，但如果你将第二个参数设置为 TRUE ，
+		那么数据就会以字符串的形式被返回，而不是发送给浏览器。
 
 	.. php:method:: language($files[, $lang = ''])
 
@@ -378,8 +333,7 @@ Class Reference
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		This method is an alias of the :doc:`language loading
-		method <language>`: ``$this->lang->load()``.
+		该方法是 :doc:`语言加载方法 <language>` ``$this->lang->load()`` 的一个别名。
 
 	.. php:method:: config($file[, $use_sections = FALSE[, $fail_gracefully = FALSE]])
 
@@ -389,8 +343,7 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		This method is an alias of the :doc:`config file loading
-		method <config>`: ``$this->config->load()``
+		该方法是 :doc:`配置文件加载方法 <config>` ``$this->config->load()`` 的一个别名。
 
 	.. php:method:: is_loaded($class)
 
@@ -398,20 +351,19 @@ Class Reference
 		:returns:	Singleton property name if found, FALSE if not
 		:rtype:	mixed
 
-		Allows you to check if a class has already been loaded or not.
+		用于检查某个类是否已经被加载。
 
-		.. note:: The word "class" here refers to libraries and drivers.
+		.. note:: 这里的类指的是类库和驱动器。
 
-		If the requested class has been loaded, the method returns its assigned
-		name in the CI Super-object and FALSE if it's not::
+		如果类已经被加载，方法返回它在 CodeIgniter 超级对象中被赋值的变量的名称，
+		如果没有加载，返回 FALSE::
 
 			$this->load->library('form_validation');
 			$this->load->is_loaded('Form_validation');	// returns 'form_validation'
 
 			$this->load->is_loaded('Nonexistent_library');	// returns FALSE
 
-		.. important:: If you have more than one instance of a class (assigned to
-			different properties), then the first one will be returned.
+		.. important:: 如果你有类的多个实例（被赋值给多个不同的属性），那么将返回第一个的名称。
 
 		::
 
@@ -427,10 +379,9 @@ Class Reference
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		Adding a package path instructs the Loader class to prepend a given path
-		for subsequent requests for resources. As an example, the "Foo Bar"
-		application package above has a library named Foo_bar.php. In our
-		controller, we'd do the following::
+		添加一个包路径，用于告诉加载器类使用给定的路径来加载后续请求的资源。
+		例如，"Foo Bar" 应用程序包里有一个名为 Foo_bar.php 的类，在控制器中，
+		我们可以按照如下的方法调用::
 
 			$this->load->add_package_path(APPPATH.'third_party/foo_bar/')
 				->library('foo_bar');
@@ -441,14 +392,12 @@ Class Reference
 		:returns:	CI_Loader instance (method chaining)
 		:rtype:	CI_Loader
 
-		When your controller is finished using resources from an application
-		package, and particularly if you have other application packages you
-		want to work with, you may wish to remove the package path so the Loader
-		no longer looks in that directory for resources. To remove the last path
-		added, simply call the method with no parameters.
+		当你的控制器完成从应用程序包中读取资源，如果你还需要读取其他的应用程序包的资源，
+		你会希望删除当前使用的包路径来让加载器不再使用这个文件夹中的资源。
+		要删除最后一次使用的包路径，你可以直接不带参数的调用该方法。
 
-		Or to remove a specific package path, specify the same path previously
-		given to ``add_package_path()`` for a package.::
+		或者你也可以删除一个特定的包路径，指定与之前使用 ``add_package_path()`` 方法时
+		所加载的包相同的路径::
 
 			$this->load->remove_package_path(APPPATH.'third_party/foo_bar/');
 
@@ -458,4 +407,4 @@ Class Reference
 		:returns:	An array of package paths
 		:rtype:	array
 
-		Returns all currently available package paths.
+		返回当前所有可用的包路径。

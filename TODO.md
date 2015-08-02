@@ -108,7 +108,7 @@
  - [x]    417 ./source/database/results.rst
  - [x]    419 ./source/database/db_driver_reference.rst
  - [x]    436 ./source/helpers/date_helper.rst
- - [ ]    460 ./source/libraries/loader.rst
+ - [x]    460 ./source/libraries/loader.rst
  - [x]    473 ./source/libraries/image_lib.rst
  - [ ]    474 ./source/libraries/input.rst
  - [x]    577 ./source/libraries/xmlrpc.rst
