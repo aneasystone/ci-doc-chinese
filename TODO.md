@@ -110,7 +110,7 @@
  - [x]    436 ./source/helpers/date_helper.rst
  - [x]    460 ./source/libraries/loader.rst
  - [x]    473 ./source/libraries/image_lib.rst
- - [ ]    474 ./source/libraries/input.rst
+ - [x]    474 ./source/libraries/input.rst
  - [x]    577 ./source/libraries/xmlrpc.rst
  - [ ]    584 ./source/libraries/encryption.rst
  - [ ]    635 ./source/general/styleguide.rst

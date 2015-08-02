@@ -1,14 +1,13 @@
 ###########
-Input Class
+输入类
 ###########
 
-The Input Class serves two purposes:
+输入类有两个用途：
 
-#. It pre-processes global input data for security.
-#. It provides some helper methods for fetching input data and pre-processing it.
+#. 为了安全性，对输入数据进行预处理
+#. 提供了一些辅助方法来获取输入数据并处理
 
-.. note:: This class is initialized automatically by the system so there
-	is no need to do it manually.
+.. note:: 该类由系统自动加载，你无需手工加载
 
 .. contents::
   :local:
@@ -18,117 +17,94 @@ The Input Class serves two purposes:
   <div class="custom-index container"></div>
 
 ***************
-Input Filtering
+对输入进行过滤
 ***************
 
-Security Filtering
+安全性过滤
 ==================
 
-The security filtering method is called automatically when a new
-:doc:`controller <../general/controllers>` is invoked. It does the
-following:
+当访问 :doc:`控制器 <../general/controllers>` 时，安全过滤方法会自动被调用，
+它做了以下几件事情：
 
--  If ``$config['allow_get_array']`` is FALSE (default is TRUE), destroys
-   the global GET array.
--  Destroys all global variables in the event register_globals is
-   turned on.
--  Filters the GET/POST/COOKIE array keys, permitting only alpha-numeric
-   (and a few other) characters.
--  Provides XSS (Cross-site Scripting Hacks) filtering. This can be
-   enabled globally, or upon request.
--  Standardizes newline characters to ``PHP_EOL`` (\\n in UNIX-based OSes,
-   \\r\\n under Windows). This is configurable.
+-  如果 ``$config['allow_get_array']`` 设置为 FALSE （默认是 TRUE），销毁全局的 GET 数组。
+-  当开启 register_globals 时，销毁所有的全局变量。
+-  过滤 GET/POST/COOKIE 数据的键值，只允许出现字母和数字（和其他一些）字符。
+-  提供了 XSS （跨站脚本攻击）过滤，可全局启用，或按需启用。
+-  将换行符统一为 ``PHP_EOL`` （基于 UNIX 的系统下为 \\n，Windows 系统下为 \\r\\n），这个是可配置的。
 
-XSS Filtering
+XSS 过滤
 =============
 
-The Input class has the ability to filter input automatically to prevent
-cross-site scripting attacks. If you want the filter to run
-automatically every time it encounters POST or COOKIE data you can
-enable it by opening your *application/config/config.php* file and setting
-this::
+输入类可以自动的对输入数据进行过滤，来阻止跨站脚本攻击。如果你希望在每次遇到 POST 或 COOKIE
+数据时自动运行过滤，你可以在 *application/config/config.php* 配置文件中设置如下参数::
 
 	$config['global_xss_filtering'] = TRUE;
 
-Please refer to the :doc:`Security class <security>` documentation for
-information on using XSS Filtering in your application.
+关于 XSS 过滤的信息，请参考 :doc:`安全类 <security>` 文档。
 
-.. important:: The 'global_xss_filtering' setting is DEPRECATED and kept
-	solely for backwards-compatibility purposes. XSS escaping should
-	be performed on *output*, not *input*!
+.. important:: 参数 'global_xss_filtering' 已经废弃，保留它只是为了实现向前兼容。
+	XSS 过滤应该在*输出*的时候进行，而不是*输入*的时候！
 
 *******************
-Accessing form data
+访问表单数据
 *******************
 
-Using POST, GET, COOKIE, or SERVER Data
+使用 POST、GET、COOKIE 和 SERVER 数据
 =======================================
 
-CodeIgniter comes with helper methods that let you fetch POST, GET,
-COOKIE or SERVER items. The main advantage of using the provided
-methods rather than fetching an item directly (``$_POST['something']``)
-is that the methods will check to see if the item is set and return
-NULL if not. This lets you conveniently use data without
-having to test whether an item exists first. In other words, normally
-you might do something like this::
+CodeIgniter 提供了几个辅助方法来从 POST、GET、COOKIE 和 SERVER 数组中获取数据。
+使用这些方法来获取数据而不是直接访问数组（``$_POST['something']``）的最大的好处是，
+这些方法会检查获取的数据是否存在，如果不存在则返回 NULL 。这使用起来将很方便，
+你不再需要去检查数据是否存在。换句话说，通常你需要像下面这样做::
 
 	$something = isset($_POST['something']) ? $_POST['something'] : NULL;
 
-With CodeIgniter's built in methods you can simply do this::
+使用 CodeIgniter 的方法，你可以简单的写成::
 
 	$something = $this->input->post('something');
 
-The main methods are:
+主要有下面几个方法：
 
 -  ``$this->input->post()``
 -  ``$this->input->get()``
 -  ``$this->input->cookie()``
 -  ``$this->input->server()``
 
-Using the php://input stream
+使用 php://input 流
 ============================
 
-If you want to utilize the PUT, DELETE, PATCH or other exotic request
-methods, they can only be accessed via a special input stream, that
-can only be read once. This isn't as easy as just reading from e.g.
-the ``$_POST`` array, because it will always exist and you can try
-and access multiple variables without caring that you might only have
-one shot at all of the POST data.
+如果你需要使用 PUT、DELETE、PATCH 或其他的请求方法，你只能通过一个特殊的输入流来访问，
+这个流只能被读一次，这和从诸如 ``$_POST`` 数组中读取数据相比起来要复杂一点，因为 POST
+数组可以被访问多次来获取多个变量，而不用担心它会消失。
 
-CodeIgniter will take care of that for you, and you can read the data
-from the **php://input** stream at any time, just by using the
-``$raw_input_stream`` property::
+CodeIgniter 为你解决了这个问题，你只需要使用下面的 ``$raw_input_stream`` 属性即可，
+就可以在任何时候读取 **php://input** 流中的数据::
 
 	$this->input->raw_input_stream;
 
-Additionally if the input stream is form-encoded like $_POST you can 
-access its values by calling the
-``input_stream()`` method::
+另外，如果输入流的格式和 $_POST 数组一样，你也可以通过 ``input_stream()`` 方法来访问它的值::
 
 	$this->input->input_stream('key');
 
-Similar to other methods such as ``get()`` and ``post()``, if the
-requested data is not found, it will return NULL and you can also
-decide whether to run the data through ``xss_clean()`` by passing
-a boolean value as the second parameter::
+和其他的 ``get()`` 和 ``post()`` 方法类似，如果请求的数据不存在，则返回 NULL 。
+你也可以将第二个参数设置为 TRUE ，来让数据经过 ``xss_clean()`` 的检查::
 
 	$this->input->input_stream('key', TRUE); // XSS Clean
 	$this->input->input_stream('key', FALSE); // No XSS filter
 
-.. note:: You can utilize ``method()`` in order to know if you're reading
-	PUT, DELETE or PATCH data.
+.. note:: 你可以使用 ``method()`` 方法来获取你读取的是什么数据，PUT、DELETE 还是 PATCH 。
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Input
 
 	.. attribute:: $raw_input_stream
 		
-		Read only property that will return php://input data as is.
+		返回只读的 php://input 流数据。
 		
-		The property can be read multiple times.
+		该属性可以被多次读取。
 
 	.. php:method:: post([$index = NULL[, $xss_clean = NULL]])
 
@@ -137,39 +113,32 @@ Class Reference
 		:returns:	$_POST if no parameters supplied, otherwise the POST value if found or NULL if not
 		:rtype:	mixed
 
-		The first parameter will contain the name of the POST item you are
-		looking for::
+		第一个参数为你想要获取的 POST 数据名::
 
 			$this->input->post('some_data');
 
-		The method returns NULL if the item you are attempting to retrieve
-		does not exist.
+		如果获取的数据不存在，该方法返回 NULL 。
 
-		The second optional parameter lets you run the data through the XSS
-		filter. It's enabled by setting the second parameter to boolean TRUE
-		or by setting your ``$config['global_xss_filtering']`` to TRUE.
+		第二个参数可选，用于决定是否使用 XSS 过滤器对数据进行过滤。
+		要使用过滤器，可以将第二个参数设置为 TRUE ，或者将 
+		``$config['global_xss_filtering']`` 参数设置为 TRUE 。
 		::
 
 			$this->input->post('some_data', TRUE);
 
-		To return an array of all POST items call without any parameters.
+		如果不带任何参数该方法将返回 POST 中的所有元素。
 
-		To return all POST items and pass them through the XSS filter set the
-		first parameter NULL while setting the second parameter to boolean TRUE.
-		::
+		如果希望返回 POST 所有元素并将它们通过 XSS 过滤器进行过滤，
+		可以将第一个参数设为 NULL ，第二个参数设为 TRUE ::
 
 			$this->input->post(NULL, TRUE); // returns all POST items with XSS filter
 			$this->input->post(NULL, FALSE); // returns all POST items without XSS filter
 
-		To return an array of multiple POST parameters, pass all the required keys
-		as an array.
-		::
+		如果要返回 POST 中的多个元素，将所有需要的键值作为数组传给它::
 
 			$this->input->post(array('field1', 'field2'));
 
-		Same rule applied here, to retrive the parameters with XSS filtering enabled, set the
-		second parameter to boolean TRUE.
-		::
+		和上面一样，如果希望数据通过 XSS 过滤器进行过滤，将第二个参数设置为 TRUE::
 
 			$this->input->post(array('field1', 'field2'), TRUE);
 
@@ -180,29 +149,24 @@ Class Reference
 		:returns:	$_GET if no parameters supplied, otherwise the GET value if found or NULL if not
 		:rtype:	mixed
 
-		This method is identical to ``post()``, only it fetches GET data.
+		该函数和 ``post()`` 一样，只是它用于获取 GET 数据。
 		::
 
 			$this->input->get('some_data', TRUE);
 
-		To return an array of all GET items call without any parameters.
+		如果不带任何参数该方法将返回 GET 中的所有元素。
 
-		To return all GET items and pass them through the XSS filter set the
-		first parameter NULL while setting the second parameter to boolean TRUE.
-		::
+		如果希望返回 GET 所有元素并将它们通过 XSS 过滤器进行过滤，
+		可以将第一个参数设为 NULL ，第二个参数设为 TRUE ::
 
 			$this->input->get(NULL, TRUE); // returns all GET items with XSS filter
 			$this->input->get(NULL, FALSE); // returns all GET items without XSS filtering
 
-		To return an array of multiple GET parameters, pass all the required keys
-		as an array.
-		::
+		如果要返回 GET 中的多个元素，将所有需要的键值作为数组传给它::
 
 			$this->input->get(array('field1', 'field2'));
 
-		Same rule applied here, to retrive the parameters with XSS filtering enabled, set the
-		second parameter to boolean TRUE.
-		::
+		和上面一样，如果希望数据通过 XSS 过滤器进行过滤，将第二个参数设置为 TRUE::
 
 			$this->input->get(array('field1', 'field2'), TRUE);
 
@@ -213,9 +177,8 @@ Class Reference
 		:returns:	POST/GET value if found, NULL if not
 		:rtype:	mixed
 
-		This method works pretty much the same way as ``post()`` and ``get()``,
-		only combined. It will search through both POST and GET streams for data,
-		looking in POST first, and then in GET::
+		该方法和 ``post()`` 和 ``get()`` 方法类似，它会同时查找 POST 和 GET 两个数组来获取数据，
+		先查找 POST ，再查找 GET::
 
 			$this->input->post_get('some_data', TRUE);
 
@@ -226,13 +189,11 @@ Class Reference
 		:returns:	GET/POST value if found, NULL if not
 		:rtype:	mixed
 
-		This method works the same way as ``post_get()`` only it looks for GET
-		data first.
+		该方法和 ``post_get()`` 方法一样，只是它先查找 GET 数据::
 
 			$this->input->get_post('some_data', TRUE);
 
-		.. note:: This method used to act EXACTLY like ``post_get()``, but it's
-			behavior has changed in CodeIgniter 3.0.
+		.. note:: 这个方法在之前的版本中和 ``post_get()`` 方法是完全一样的，在 CodeIgniter 3.0 中有所修改。
 
 	.. php:method:: cookie([$index = NULL[, $xss_clean = NULL]])
 
@@ -241,21 +202,17 @@ Class Reference
 		:returns:	$_COOKIE if no parameters supplied, otherwise the COOKIE value if found or NULL if not
 		:rtype:	mixed
 
-		This method is identical to ``post()`` and ``get()``, only it fetches cookie
-		data::
+		该方法和 ``post()`` 和 ``get()`` 方法一样，只是它用于获取 COOKIE 数据::
 
 			$this->input->cookie('some_cookie');
 			$this->input->cookie('some_cookie, TRUE); // with XSS filter
 
-		To return an array of multiple cookie values, pass all the required keys
-		as an array.
-		::
+		如果要返回 COOKIE 中的多个元素，将所有需要的键值作为数组传给它::
 
 			$this->input->cookie(array('some_cookie', 'some_cookie2'));
 
-		.. note:: Unlike the :doc:`Cookie Helper <../helpers/cookie_helper>`
-			function :php:func:`get_cookie()`, this method does NOT prepend
-			your configured ``$config['cookie_prefix']`` value.
+		.. note:: 和 :doc:`Cookie 辅助库 <../helpers/cookie_helper>` 中的 :php:func:`get_cookie()`
+			函数不同的是，这个方法不会根据 ``$config['cookie_prefix']`` 来添加前缀。
 
 	.. php:method:: server($index[, $xss_clean = NULL])
 
@@ -264,14 +221,11 @@ Class Reference
 		:returns:	$_SERVER item value if found, NULL if not
 		:rtype:	mixed
 
-		This method is identical to the ``post()``, ``get()`` and ``cookie()``
-		methods, only it fetches server data (``$_SERVER``)::
+		该方法和 ``post()`` 、 ``get()`` 和 ``cookie()`` 方法一样，只是它用于获取 SERVER 数据::
 
 			$this->input->server('some_data');
 
-		To return an array of multiple ``$_SERVER`` values, pass all the required keys
-		as an array.
-		::
+		如果要返回 SERVER 中的多个元素，将所有需要的键值作为数组传给它::
 
 			$this->input->server(array('SERVER_PROTOCOL', 'REQUEST_URI'));
 
@@ -282,8 +236,7 @@ Class Reference
 		:returns:	Input stream array if no parameters supplied, otherwise the specified value if found or NULL if not
 		:rtype:	mixed
 
-		This method is identical to ``get()``, ``post()`` and ``cookie()``,
-		only it fetches the *php://input* stream data.
+		该方法和 ``get()`` 、 ``post()`` 和 ``cookie()`` 方法一样，只是它用于获取 *php://input* 流数据。
 
 	.. php:method:: set_cookie($name = ''[, $value = ''[, $expire = ''[, $domain = ''[, $path = '/'[, $prefix = ''[, $secure = FALSE[, $httponly = FALSE]]]]]]])
 
@@ -298,14 +251,11 @@ Class Reference
 		:rtype:	void
 
 
-		Sets a cookie containing the values you specify. There are two ways to
-		pass information to this method so that a cookie can be set: Array
-		Method, and Discrete Parameters:
+		设置 COOKIE 的值，有两种方法来设置 COOKIE 值：数组方式和参数方式。
 
-		**Array Method**
+		**数组方式**
 
-		Using this method, an associative array is passed to the first
-		parameter::
+		使用这种方式，可以将第一个参数设置为一个关联数组::
 
 			$cookie = array(
 				'name'   => 'The Cookie Name',
@@ -319,32 +269,27 @@ Class Reference
 
 			$this->input->set_cookie($cookie);
 
-		**Notes**
+		**注意**
 
-		Only the name and value are required. To delete a cookie set it with the
-		expiration blank.
+		只有 name 和 value 两项是必须的，要删除 COOKIE 的话，将 expire 设置为空。
 
-		The expiration is set in **seconds**, which will be added to the current
-		time. Do not include the time, but rather only the number of seconds
-		from *now* that you wish the cookie to be valid. If the expiration is
-		set to zero the cookie will only last as long as the browser is open.
+		COOKIE 的过期时间是 **秒** ，将它加到当前时间上就是 COOKIE 的过期时间。
+		记住不要把它设置成时间了，只要设置成距离当前时间的秒数即可，那么在这段
+		时间内，COOKIE 都将保持有效。如果将过期时间设置为 0 ，那么 COOKIE 只在
+		浏览器打开的期间是有效的，关闭后就失效了。
 
-		For site-wide cookies regardless of how your site is requested, add your
-		URL to the **domain** starting with a period, like this:
-		.your-domain.com
+		如果需要设置一个全站范围内的 COOKIE ，而不关心用户是如何访问你的站点的，
+		可以将 **domain** 参数设置为你的 URL 前面以句点开头，如：.your-domain.com
 
-		The path is usually not needed since the method sets a root path.
+		path 参数通常不用设，上面的例子设置为根路径。
 
-		The prefix is only needed if you need to avoid name collisions with
-		other identically named cookies for your server.
+		prefix 只在你想避免和其他相同名称的 COOKIE 冲突时才需要使用。
 
-		The secure boolean is only needed if you want to make it a secure cookie
-		by setting it to TRUE.
+		secure 参数只有当你需要使用安全的 COOKIE 时使用。
 
-		**Discrete Parameters**
+		**参数方式**
 
-		If you prefer, you can set the cookie by passing data using individual
-		parameters::
+		如果你喜欢，你也可以使用下面的方式来设置 COOKIE::
 
 			$this->input->set_cookie($name, $value, $expire, $domain, $path, $prefix, $secure);
 
@@ -353,15 +298,12 @@ Class Reference
 		:returns:	Visitor's IP address or '0.0.0.0' if not valid
 		:rtype:	string
 
-		Returns the IP address for the current user. If the IP address is not
-		valid, the method will return '0.0.0.0'::
+		返回当前用户的 IP 地址，如果 IP 地址无效，则返回 '0.0.0.0'::
 
 			echo $this->input->ip_address();
 
-		.. important:: This method takes into account the ``$config['proxy_ips']``
-			setting and will return the reported HTTP_X_FORWARDED_FOR,
-			HTTP_CLIENT_IP, HTTP_X_CLIENT_IP or HTTP_X_CLUSTER_CLIENT_IP
-			address for the allowed IP addresses.
+		.. important:: 该方法会根据 ``$config['proxy_ips']`` 配置，来返回 HTTP_X_FORWARDED_FOR、
+			HTTP_CLIENT_IP、HTTP_X_CLIENT_IP 或 HTTP_X_CLUSTER_CLIENT_IP 。
 
 	.. php:method:: valid_ip($ip[, $which = ''])
 
@@ -370,11 +312,9 @@ Class Reference
 		:returns:	TRUE if the address is valid, FALSE if not
 		:rtype:	bool
 
-		Takes an IP address as input and returns TRUE or FALSE (boolean) depending
-		on whether it is valid or not.
+		判断一个 IP 地址是否有效，返回 TRUE/FALSE 。
 
-		.. note:: The $this->input->ip_address() method above automatically
-			validates the IP address.
+		.. note:: 上面的 $this->input->ip_address() 方法会自动验证 IP 地址的有效性。
 
 		::
 
@@ -387,8 +327,7 @@ Class Reference
 				echo 'Valid';
 			}
 
-		Accepts an optional second string parameter of 'ipv4' or 'ipv6' to specify
-		an IP format. The default checks for both formats.
+		第二个参数可选，可以是字符串 'ipv4' 或 'ipv6' 用于指定 IP 的格式，默认两种格式都会检查。
 
 	.. php:method:: user_agent([$xss_clean = NULL])
 
@@ -396,14 +335,12 @@ Class Reference
 		:param	bool	$xss_clean: Whether to apply XSS filtering
 		:rtype:	mixed
 
-		Returns the user agent string (web browser) being used by the current user,
-		or NULL if it's not available.
+		返回当前用户的用户代理字符串（Web 浏览器），如果不可用则返回 FALSE 。
 		::
 
 			echo $this->input->user_agent();
 
-		See the :doc:`User Agent Class <user_agent>` for methods which extract
-		information from the user agent string.
+		关于用户代理的相关方法请参考 :doc:`用户代理类 <user_agent>` 。
 
 	.. php:method:: request_headers([$xss_clean = FALSE])
 
@@ -411,10 +348,9 @@ Class Reference
 		:returns:	An array of HTTP request headers
 		:rtype:	array
 
-		Returns an array of HTTP request headers.
-		Useful if running in a non-Apache environment where
-		`apache_request_headers() <http://php.net/apache_request_headers>`_
-		will not be supported.
+		返回 HTTP 请求头数组。当在非 Apache 环境下运行时，
+		`apache_request_headers() <http://php.net/apache_request_headers>`_ 函数不可用，
+		这个方法将很有用。
 		::
 
 			$headers = $this->input->request_headers();
@@ -426,8 +362,7 @@ Class Reference
 		:returns:	An HTTP request header or NULL if not found
 		:rtype:	string
 
-		Returns a single member of the request headers array or NULL
-		if the searched header is not found.
+		返回某个指定的 HTTP 请求头，如果不存在，则返回 NULL 。
 		::
 
 			$this->input->get_request_header('some-header', TRUE);
@@ -437,27 +372,23 @@ Class Reference
 		:returns:	TRUE if it is an Ajax request, FALSE if not
 		:rtype:	bool
 
-		Checks to see if the HTTP_X_REQUESTED_WITH server header has been
-		set, and returns boolean TRUE if it is or FALSE if not.
+		检查服务器头中是否含有 HTTP_X_REQUESTED_WITH ，如果有返回 TRUE ，否则返回 FALSE 。
 
 	.. php:method:: is_cli_request()
 
 		:returns:	TRUE if it is a CLI request, FALSE if not
 		:rtype:	bool
 
-		Checks to see if the application was run from the command-line
-		interface.
+		检查程序是否从命令行界面运行。
 
-		.. note:: This method checks both the PHP SAPI name currently in use
-			and if the ``STDIN`` constant is defined, which is usually a
-			failsafe way to see if PHP is being run via the command line.
+		.. note:: 该方法检查当前正在使用的 PHP SAPI 名称，同时检查是否定义了 ``STDIN`` 常量，
+			来判断当前 PHP 是否从命令行运行。
 
 		::
 
 			$this->input->is_cli_request()
 
-		.. note:: This method is DEPRECATED and is now just an alias for the
-			:func:`is_cli()` function.
+		.. note:: 该方法已经被废弃，现在只是 :func:`is_cli()` 函数的一个别名而已。
 
 	.. php:method:: method([$upper = FALSE])
 
@@ -465,8 +396,7 @@ Class Reference
 		:returns:	HTTP request method
 		:rtype:	string
 
-		Returns the ``$_SERVER['REQUEST_METHOD']``, with the option to set it
-		in uppercase or lowercase.
+		返回 ``$_SERVER['REQUEST_METHOD']`` 的值，它有一个参数用于设置返回大写还是小写。
 		::
 
 			echo $this->input->method(TRUE); // Outputs: POST
