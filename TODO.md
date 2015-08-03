@@ -112,7 +112,7 @@
  - [x]    473 ./source/libraries/image_lib.rst
  - [x]    474 ./source/libraries/input.rst
  - [x]    577 ./source/libraries/xmlrpc.rst
- - [ ]    584 ./source/libraries/encryption.rst
+ - [x]    584 ./source/libraries/encryption.rst
  - [ ]    635 ./source/general/styleguide.rst
  - [x]    720 ./source/helpers/form_helper.rst
  - [ ]   1057 ./source/libraries/sessions.rst
