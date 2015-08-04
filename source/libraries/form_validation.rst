@@ -850,22 +850,22 @@ TRUE 的东西都可以作为规则。
 下表列出了所有可用的原生规则：
 
 ========================= ========== ============================================================================================= =======================
-规则                      参数  描述                                                                                   例子
+规则                      参数        描述                                                                                          例子
 ========================= ========== ============================================================================================= =======================
 **required**              No         如果表单元素为空，返回 FALSE 
-**matches**               Yes        如果表单元素值与参数中对应的表单字段的值不相等，返回 FALSE                    matches[form_item]
-**regex_match**           Yes        如果表单元素不匹配正则表达式，返回 FALSE                      regex_match[/regex/]
-**differs**               Yes        如果表单元素值与参数中对应的表单字段的值相等，返回 FALSE              differs[form_item]
-**is_unique**             Yes        如果表单元素值在指定的表和字段中并不唯一，返回 FALSE            is_unique[table.field]
+**matches**               Yes        如果表单元素值与参数中对应的表单字段的值不相等，返回 FALSE                                     matches[form_item]
+**regex_match**           Yes        如果表单元素不匹配正则表达式，返回 FALSE                                                       regex_match[/regex/]
+**differs**               Yes        如果表单元素值与参数中对应的表单字段的值相等，返回 FALSE                                       differs[form_item]
+**is_unique**             Yes        如果表单元素值在指定的表和字段中并不唯一，返回 FALSE                                           is_unique[table.field]
                                      注意：这个规则需要启用 :doc:`查询构造器 <../database/query_builder>`
-**min_length**            Yes        如果表单元素值的长度小于参数值，返回 FALSE                        min_length[3]
-**max_length**            Yes       如果表单元素值的长度大于参数值，返回 FALSE                          max_length[12]
-**exact_length**          Yes       如果表单元素值的长度不等于参数值，返回 FALSE                          exact_length[8]
-**greater_than**          Yes        如果表单元素值小于或等于参数值或非数字，返回 FALSE         greater_than[8]
-**greater_than_equal_to** Yes        如果表单元素值小于参数值或非数字，返回 FALSE                           greater_than_equal_to[8]
-**less_than**             Yes        如果表单元素值大于或等于参数值或非数字，返回 FALSE          less_than[8]
-**less_than_equal_to**    Yes        如果表单元素值大于参数值或非数字，返回 FALSE                        less_than_equal_to[8]
-**in_list**               Yes        如果表单元素值不在规定的列表中，返回 FALSE                         in_list[red,blue,green]
+**min_length**            Yes        如果表单元素值的长度小于参数值，返回 FALSE                                                     min_length[3]
+**max_length**            Yes        如果表单元素值的长度大于参数值，返回 FALSE                                                     max_length[12]
+**exact_length**          Yes        如果表单元素值的长度不等于参数值，返回 FALSE                                                   exact_length[8]
+**greater_than**          Yes        如果表单元素值小于或等于参数值或非数字，返回 FALSE                                             greater_than[8]
+**greater_than_equal_to** Yes        如果表单元素值小于参数值或非数字，返回 FALSE                                                   greater_than_equal_to[8]
+**less_than**             Yes        如果表单元素值大于或等于参数值或非数字，返回 FALSE                                             less_than[8]
+**less_than_equal_to**    Yes        如果表单元素值大于参数值或非数字，返回 FALSE                                                   less_than_equal_to[8]
+**in_list**               Yes        如果表单元素值不在规定的列表中，返回 FALSE                                                     in_list[red,blue,green]
 **alpha**                 No         如果表单元素值包含除字母以外的其他字符，返回 FALSE
 **alpha_numeric**         No         如果表单元素值包含除字母和数字以外的其他字符，返回 FALSE
 **alpha_numeric_spaces**  No         如果表单元素值包含除字母、数字和空格以外的其他字符，返回 FALSE
@@ -899,7 +899,7 @@ TRUE 的东西都可以作为规则。
 下表列出了所有可用的预处理方法：
 
 ==================== ========= =======================================================================================================
-名称                 参数 描述
+名称                 参数      描述
 ==================== ========= =======================================================================================================
 **prep_for_form**    No        将特殊字符的转换，以便可以在表单域中显示 HTML 数据，而不会破坏它
 **prep_url**         No        当 URL 丢失 "http://" 时，添加 "http://"
