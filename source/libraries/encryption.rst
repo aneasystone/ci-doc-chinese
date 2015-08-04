@@ -52,7 +52,7 @@
 而在加密的过程和认证的过程中使用相同的密钥可不是个好的做法。
 
 正因为此，程序会从你的配置的 *encryption_key* 参数中派生出两个密钥来：
-一个用于加密，另一个用于认证。这其实是通过一种叫做 `HKDF <<http://en.wikipedia.org/wiki/HKDF>>`_ 
+一个用于加密，另一个用于认证。这其实是通过一种叫做 `HKDF <http://en.wikipedia.org/wiki/HKDF>`_ 
 （HMAC-based Key Derivation Function）的技术实现的。
 
 设置 encryption_key 参数

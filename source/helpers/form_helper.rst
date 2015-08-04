@@ -443,7 +443,7 @@
 		echo form_label('What is your Name', 'username');
 		// Would produce:  <label for="username">What is your Name</label>
 
-	和其他的函数一样，如果你想添加额外的属性的话，可以传一个关联数组给第三个参数::
+	和其他的函数一样，如果你想添加额外的属性的话，可以传一个关联数组给第三个参数。
 
 	例如::
 
