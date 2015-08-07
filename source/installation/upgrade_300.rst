@@ -1,5 +1,5 @@
 #############################
-Upgrading from 2.2.x to 3.0.0
+从 2.2.x 版本更新到 3.0.0
 #############################
 
 Before performing an update you should take your site offline by replacing the index.php file with a static one.
