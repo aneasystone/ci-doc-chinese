@@ -1,20 +1,18 @@
 ###############
-Session Library
+Session 类
 ###############
 
-The Session class permits you maintain a user's "state" and track their
-activity while they browse your site.
+Session（会话）类可以让你保持一个用户的 "状态" ，并跟踪他在浏览你的网站时的活动。
 
-CodeIgniter comes with a few session storage drivers:
+CodeIgniter 自带了几个存储 session 的驱动：
 
-  - files (default; file-system based)
-  - database
-  - redis
-  - memcached
+  - 文件（默认的，基于文件系统）
+  - 数据库
+  - Redis
+  - Memcached
 
-In addition, you may create your own, custom session drivers based on other
-kinds of storage, while still taking advantage of the features of the
-Session class.
+另外，你也可以基于其他的存储机制来创建你自己的自定义 session 存储驱动，
+使用自定义的驱动，同样也可以使用 Session 类提供的那些功能。
 
 .. contents::
   :local:
@@ -24,89 +22,74 @@ Session class.
   <div class="custom-index container"></div>
 
 ***********************
-Using the Session Class
+使用 Session 类
 ***********************
 
-Initializing a Session
+初始化 Session 类
 ======================
 
-Sessions will typically run globally with each page load, so the Session
-class should either be initialized in your :doc:`controller
-<../general/controllers>` constructors, or it can be :doc:`auto-loaded
-<../general/autoloader>` by the system.
-For the most part the session class will run unattended in the background,
-so simply initializing the class will cause it to read, create, and update
-sessions when necessary.
+Session 通常会在每个页面载入的时候全局运行，所以 Session 类必须首先被初始化。
+您可以在 :doc:`控制器 <../general/controllers>` 的构造函数中初始化它，
+也可以在系统中 :doc:`自动加载 <../general/autoloader>`。Session 类基本上都是在后台运行，
+你不会注意到。所以当初始化 session 之后，系统会自动读取、创建和更新 session 数据 。
 
-To initialize the Session class manually in your controller constructor,
-use the ``$this->load->library()`` method::
+要手动初始化 Session 类，你可以在控制器的构造函数中使用 ``$this->load->library()``
+方法::
 
 	$this->load->library('session');
 
-Once loaded, the Sessions library object will be available using::
+初始化之后，就可以使用下面的方法来访问 Session 对象了::
 
 	$this->session
 
-.. important:: Because the :doc:`Loader Class </libraries/loader>` is instantiated
-	by CodeIgniter's base controller, make sure to call
-	``parent::__construct()`` before trying to load a library from
-	inside a controller constructor.
+.. important:: 由于 :doc:`加载类 </libraries/loader>` 是在 CodeIgniter 的控制器基类中实例化的，
+	所以如果要在你的控制器构造函数中加载类库的话，确保先调用 ``parent::__construct()`` 方法。
 
-How do Sessions work?
+Session 是如何工作的？
 =====================
 
-When a page is loaded, the session class will check to see if valid
-session cookie is sent by the user's browser. If a sessions cookie does
-**not** exist (or if it doesn't match one stored on the server or has
-expired) a new session will be created and saved.
+当页面载入后，Session 类就会检查用户的 cookie 中是否存在有效的 session 数据。
+如果 session 数据不存在（或者与服务端不匹配，或者已经过期），
+那么就会创建一个新的 session 并保存起来。
 
-If a valid session does exist, its information will be updated. With each
-update, the session ID may be regenerated if configured to do so.
+如果 session 数据存在并且有效，那么就会更新 session 的信息。
+根据你的配置，每一次更新都会生成一个新的 Session ID 。
 
-It's important for you to understand that once initialized, the Session
-class runs automatically. There is nothing you need to do to cause the
-above behavior to happen. You can, as you'll see below, work with session
-data, but the process of reading, writing, and updating a session is
-automatic.
+有一点非常重要，你需要了解一下，Session 类一旦被初始化，它就会自动运行。
+上面所说的那些，你完全不用做任何操作。正如接下来你将看到的那样，
+你可以正常的使用 session 数据，至于读、写和更新 session 的操作都是自动完成的。
 
-.. note:: Under CLI, the Session library will automatically halt itself,
-	as this is a concept based entirely on the HTTP protocol.
+.. note:: 在 CLI 模式下，Session 类将自动关闭，这种做法完全是基于 HTTP 协议的。
 
-A note about concurrency
-------------------------
+关于并发的注意事项
+----------------------------------
 
-Unless you're developing a website with heavy AJAX usage, you can skip this
-section. If you are, however, and if you're experiencing performance
-issues, then this note is exactly what you're looking for.
+如果你开发的网站并不是大量的使用 AJAX 技术，那么你可以跳过这一节。
+如果你的网站是大量的使用了 AJAX，并且遇到了性能问题，那么下面的注意事项，
+可能正是你需要的。
 
-Sessions in previous versions of CodeIgniter didn't implement locking,
-which meant that two HTTP requests using the same session could run exactly
-at the same time. To use a more appropriate technical term - requests were
-non-blocking.
+在 CodeIgniter 之前的版本中，Session 类并没有实现锁机制，这也就意味着，
+两个 HTTP 请求可能会同时使用同一个 session 。说的更专业点就是，
+请求是非阻塞的。（requests were non-blocking）
 
-However, non-blocking requests in the context of sessions also means
-unsafe, because modifications to session data (or session ID regeneration)
-in one request can interfere with the execution of a second, concurrent
-request. This detail was at the root of many issues and the main reason why
-CodeIgniter 3.0 has a completely re-written Session library.
+在处理 session 时使用非阻塞的请求同样意味着不安全，因为在一个请求中修改 session 
+数据（或重新生成 Session ID）会对并发的第二个请求造成影响。这是导致很多问题的根源，
+同时也是为什么 CodeIgniter 3.0 对 Session 类完全重写的原因。
 
-Why are we telling you this? Because it is likely that after trying to
-find the reason for your performance issues, you may conclude that locking
-is the issue and therefore look into how to remove the locks ...
+那么为什么要告诉你这些呢？这是因为在你查找性能问题的原因时，
+可能会发现加锁机制正是导致性能问题的罪魁祸首，因此就想着如何去掉锁 ...
 
-DO NOT DO THAT! Removing locks would be **wrong** and it will cause you
-more problems!
+**请不要这样做！** 去掉加锁机制是完全错误的，它会给你带来更多的问题！
 
-Locking is not the issue, it is a solution. Your issue is that you still
-have the session open, while you've already processed it and therefore no
-longer need it. So, what you need is to close the session for the
-current request after you no longer need it.
+锁并不是问题，它是一种解决方案。你的问题是当 session 已经处理完毕不再需要时，
+你还将 session 保持是打开的状态。所以，你需要做的其实是，当结束当前请求时，
+将不再需要的 session 关闭掉。
 
-Long story short - call ``session_write_close()`` once you no longer need
-anything to do with session variables.
+简单来说就是：当你不再需要使用某个 session 变量时，就使用 ``session_write_close()`` 方法来关闭它。
 
-What is Session Data?
+什么是 Session 数据？
 =====================
+
 
 Session data is simply an array associated with a particular session ID
 (cookie).
