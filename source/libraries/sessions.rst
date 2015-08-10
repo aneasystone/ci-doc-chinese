@@ -598,33 +598,25 @@ Memcached 驱动和 Redis 驱动非常相似，除了它的可用性可能要好
 
 言归正传，当你为 CodeIgniter 创建 session 驱动时，有三条规则你必须遵循：
 
-  - Put your driver's file under **application/libraries/Session/drivers/**
-    and follow the naming conventions used by the Session class.
+  - 将你的驱动文件放在 **application/libraries/Session/drivers/** 目录下，并遵循 Session 类所使用的命名规范。
 
-    For example, if you were to create a 'dummy' driver, you would have
-    a ``Session_dummy_driver`` class name, that is declared in
-    *application/libraries/Session/drivers/Session_dummy_driver.php*.
+    例如，如果你想创建一个名为 'dummy' 的驱动，那么你需要创建一个名为 ``Session_dummy_driver`` 的类，
+    并将其放在 *application/libraries/Session/drivers/Session_dummy_driver.php* 文件中。
 
-  - Extend the ``CI_Session_driver`` class.
+  - 扩展 ``CI_Session_driver`` 类。
 
-    This is just a basic class with a few internal helper methods. It is
-    also extendable like any other library, if you really need to do that,
-    but we are not going to explain how ... if you're familiar with how
-    class extensions/overrides work in CI, then you already know how to do
-    it. If not, well, you shouldn't be doing it in the first place.
+    这只是一个拥有几个内部辅助方法的基本类，同样可以和其他类库一样被扩展。如果你真的需要这样做，
+    我们并不打算在这里多做解释，因为如果你知道如何在 CI 中扩展或覆写类，那么你已经知道这样做的方法了。
+    如果你还不知道，那么可能你根本就不应该这样做。
 
+  - 实现 `SessionHandlerInterface <http://php.net/sessionhandlerinterface>`_ 接口。
 
-  - Implement the `SessionHandlerInterface
-    <http://php.net/sessionhandlerinterface>`_ interface.
+    .. note:: 你可能已经注意到 ``SessionHandlerInterface`` 接口已经在 PHP 5.4.0 之后的版本中提供了。
+    	CodeIgniter 会在你运行老版本的 PHP 时自动声明这个接口。
 
-    .. note:: You may notice that ``SessionHandlerInterface`` is provided
-    	by PHP since version 5.4.0. CodeIgniter will automatically declare
-    	the same interface if you're running an older PHP version.
+    参考连接中的内容，了解为什么以及如何实现。
 
-    The link will explain why and how.
-
-So, based on our 'dummy' driver example above, you'd end up with something
-like this::
+所以，使用我们上面的 'dummy' 驱动的例子，你可能会写如下代码::
 
 	// application/libraries/Session/drivers/Session_dummy_driver.php:
 
@@ -671,11 +663,10 @@ like this::
 
 	}
 
-If you've done everything properly, you can now set your *sess_driver*
-configuration value to 'dummy' and use your own driver. Congratulations!
+如果一切顺利，现在你就可以将 *sess_driver* 参数设置为 'dummy' ，来使用你自定义的驱动。恭喜你！
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Session
@@ -686,32 +677,28 @@ Class Reference
 		:returns:	Value of the specified item key, or an array of all userdata
 		:rtype:	mixed
 
-		Gets the value for a specific ``$_SESSION`` item, or an
-		array of all "userdata" items if not key was specified.
+		从 ``$_SESSION`` 数组中获取指定的项。如果没有指定参数，返回所有 "userdata" 的数组。
 	
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. You should
-			directly access ``$_SESSION`` instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			你可以直接使用 ``$_SESSION`` 替代它。
 
 	.. php:method:: all_userdata()
 
 		:returns:	An array of all userdata
 		:rtype:	array
 
-		Returns an array containing all "userdata" items.
+		返回所有 "userdata" 的数组。
 
-		.. note:: This method is DEPRECATED. Use ``userdata()``
-			with no parameters instead.
+		.. note:: 该方法已废弃，使用不带参数的 ``userdata()`` 方法来代替。
 
 	.. php:method:: &get_userdata()
 
 		:returns:	A reference to ``$_SESSION``
 		:rtype:	array
 
-		Returns a reference to the ``$_SESSION`` array.
+		返回一个 ``$_SESSION`` 数组的引用。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: has_userdata($key)
 
@@ -719,12 +706,10 @@ Class Reference
 		:returns:	TRUE if the specified key exists, FALSE if not
 		:rtype:	bool
 
-		Checks if an item exists in ``$_SESSION``.
+		检查 ``$_SESSION`` 数组中是否存在某项。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. It is just
-			an alias for ``isset($_SESSION[$key])`` - please
-			use that instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			它只是 ``isset($_SESSION[$key])`` 的一个别名，请使用这个来替代它。
 
 	.. php:method:: set_userdata($data[, $value = NULL])
 
@@ -732,23 +717,19 @@ Class Reference
 		:param	mixed	$value:	The value to set for a specific session item, if $data is a key
 		:rtype:	void
 
-		Assigns data to the ``$_SESSION`` superglobal.
+		将数据赋值给 ``$_SESSION`` 全局变量。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: unset_userdata($key)
 
 		:param	mixed	$key: Key for the session data item to unset, or an array of multiple keys
 		:rtype:	void
 
-		Unsets the specified key(s) from the ``$_SESSION``
-		superglobal.
+		从 ``$_SESSION`` 全局变量中删除某个值。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. It is just
-			an alias for ``unset($_SESSION[$key])`` - please
-			use that instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			它只是 ``unset($_SESSION[$key])`` 的一个别名，请使用这个来替代它。
 
 	.. php:method:: mark_as_flash($key)
 
@@ -756,24 +737,21 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Marks a ``$_SESSION`` item key (or multiple ones) as
-		"flashdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）标记为 "flashdata" 。
 
 	.. php:method:: get_flash_keys()
 
 		:returns:	Array containing the keys of all "flashdata" items.
 		:rtype:	array
 
-		Gets a list of all ``$_SESSION`` that have been marked as
-		"flashdata".
+		获取 ``$_SESSION`` 数组中所有标记为 "flashdata" 的一个列表。
 
 	.. php:method:: umark_flash($key)
 
 		:param	mixed	$key: Key to be un-marked as flashdata, or an array of multiple keys
 		:rtype:	void
 
-		Unmarks a ``$_SESSION`` item key (or multiple ones) as
-		"flashdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）移除 "flashdata" 标记。
 
 	.. php:method:: flashdata([$key = NULL])
 
@@ -781,13 +759,11 @@ Class Reference
 		:returns:	Value of the specified item key, or an array of all flashdata
 		:rtype:	mixed
 
-		Gets the value for a specific ``$_SESSION`` item that has
-		been marked as "flashdata", or an array of all "flashdata"
-		items if no key was specified.
+		从 ``$_SESSION`` 数组中获取某个标记为 "flashdata" 的指定项。
+		如果没有指定参数，返回所有 "flashdata" 的数组。
 	
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. You should
-			directly access ``$_SESSION`` instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			你可以直接使用 ``$_SESSION`` 替代它。
 
 	.. php:method:: keep_flashdata($key)
 
@@ -795,12 +771,10 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Retains the specified session data key(s) as "flashdata"
-		through the next request.
+		将某个指定的 "flashdata" 设置为在下一次请求中仍然保持有效。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. It is just
-			an alias for the ``mark_as_flash()`` method.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			它只是 ``mark_as_flash()`` 方法的一个别名。
 
 	.. php:method:: set_flashdata($data[, $value = NULL])
 
@@ -808,11 +782,9 @@ Class Reference
 		:param	mixed	$value:	The value to set for a specific session item, if $data is a key
 		:rtype:	void
 
-		Assigns data to the ``$_SESSION`` superglobal and marks it
-		as "flashdata".
+		将数据赋值给 ``$_SESSION`` 全局变量，并标记为 "flashdata" 。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: mark_as_temp($key[, $ttl = 300])
 
@@ -821,24 +793,21 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Marks a ``$_SESSION`` item key (or multiple ones) as
-		"tempdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）标记为 "tempdata" 。
 
 	.. php:method:: get_temp_keys()
 
 		:returns:	Array containing the keys of all "tempdata" items.
 		:rtype:	array
 
-		Gets a list of all ``$_SESSION`` that have been marked as
-		"tempdata".
+		获取 ``$_SESSION`` 数组中所有标记为 "tempdata" 的一个列表。
 
 	.. php:method:: umark_temp($key)
 
 		:param	mixed	$key: Key to be un-marked as tempdata, or an array of multiple keys
 		:rtype:	void
 
-		Unmarks a ``$_SESSION`` item key (or multiple ones) as
-		"tempdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）移除 "tempdata" 标记。
 
 	.. php:method:: tempdata([$key = NULL])
 
@@ -846,13 +815,11 @@ Class Reference
 		:returns:	Value of the specified item key, or an array of all tempdata
 		:rtype:	mixed
 
-		Gets the value for a specific ``$_SESSION`` item that has
-		been marked as "tempdata", or an array of all "tempdata"
-		items if no key was specified.
-	
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. You should
-			directly access ``$_SESSION`` instead.
+		从 ``$_SESSION`` 数组中获取某个标记为 "tempdata" 的指定项。
+		如果没有指定参数，返回所有 "tempdata" 的数组。
+
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			你可以直接使用 ``$_SESSION`` 替代它。
 
 	.. php:method:: set_tempdata($data[, $value = NULL])
 
@@ -861,37 +828,31 @@ Class Reference
 		:param	int	$ttl: Time-to-live value for the tempdata item(s), in seconds
 		:rtype:	void
 
-		Assigns data to the ``$_SESSION`` superglobal and marks it
-		as "tempdata".
+		将数据赋值给 ``$_SESSION`` 全局变量，并标记为 "tempdata" 。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: sess_regenerate([$destroy = FALSE])
 
 		:param	bool	$destroy: Whether to destroy session data
 		:rtype:	void
 
-		Regenerate session ID, optionally destroying the current
-		session's data.
+		重新生成 session ID ，$destroy 参数可选，用于销毁当前的 session 数据。
 
-		.. note:: This method is just an alias for PHP's native
-			`session_regenerate_id()
-			<http://php.net/session_regenerate_id>`_ function.
+		.. note:: 该方法只是 PHP 原生的 `session_regenerate_id()
+			<http://php.net/session_regenerate_id>`_ 函数的一个别名而已。
 
 	.. php:method:: sess_destroy()
 
 		:rtype:	void
 
-		Destroys the current session.
+		销毁当前 session 。
 
-		.. note:: This must be the *last* session-related function
-			that you call. All session data will be lost after
-			you do that.
+		.. note:: 这个方法必须在处理 session 相关的操作的**最后**调用。
+			如果调用这个方法，所有的 session 数据都会丢失。
 
-		.. note:: This method is just an alias for PHP's native
-			`session_destroy()
-			<http://php.net/session_destroy>`_ function.
+		.. note:: 该方法只是 PHP 原生的 `session_destroy()
+			<http://php.net/session_destroy>`_  函数的一个别名而已。
 
 	.. php:method:: __get($key)
 
@@ -899,13 +860,10 @@ Class Reference
 		:returns:	The requested session data item, or NULL if it doesn't exist
 		:rtype:	mixed
 
-		A magic method that allows you to use
-		``$this->session->item`` instead of ``$_SESSION['item']``,
-		if that's what you prefer.
+		魔术方法，根据你的喜好，使用 ``$this->session->item`` 这种方式来替代 
+		``$_SESSION['item']`` 。
 
-		It will also return the session ID by calling
-		``session_id()`` if you try to access
-		``$this->session->session_id``.
+		如果你访问 ``$this->session->session_id`` 它也会调用 ``session_id()`` 方法来返回 session ID 。
 
 	.. php:method:: __set($key, $value)
 
@@ -913,9 +871,7 @@ Class Reference
 		:param	mixed	$value: Value to assign to the session item key
 		:returns:	void
 
-		A magic method that allows you to assign items to
-		``$_SESSION`` by accessing them as ``$this->session``
-		properties::
+		魔术方法，直接赋值给 ``$this->session`` 属性，以此来替代赋值给 ``$_SESSION`` 数组::
 
 			$this->session->foo = 'bar';
 
