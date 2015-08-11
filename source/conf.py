@@ -261,3 +261,8 @@ epub_copyright = u'2014 - 2015, British Columbia Institute of Technology'
 
 # Allow duplicate toc entries.
 #epub_tocdup = True
+
+# http://sphinx-doc.org/config.html#confval-html_context
+html_context = {
+	'ga_tracking_id' : ''
+}
