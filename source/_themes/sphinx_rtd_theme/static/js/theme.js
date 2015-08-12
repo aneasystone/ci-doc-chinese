@@ -195,7 +195,6 @@ $( document ).ready(function() {
         $('table.ciNav a').each(function(){
             $(this).attr('href', $(this).attr("href").replace('../', ''));
         });
-        console.log(1111);
     }
     //
     $('#openToc').click(function(){
