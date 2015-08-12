@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'CodeIgniter'
-copyright = u'2014 - 2015, British Columbia Institute of Technology'
+copyright = u'2014 - 2015, 不列颠哥伦比亚理工学院'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -109,7 +109,7 @@ html_theme_path = ["./_themes"]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = u'CodeIgniter 3.0 中文文档'
+html_title = u'CodeIgniter 3.0。0 中文文档'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -130,7 +130,7 @@ html_favicon = 'images/ci-icon.ico'
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-html_last_updated_fmt = '%b %d, %Y'
+html_last_updated_fmt = '%Y-%m-%d'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
@@ -185,8 +185,8 @@ html_copy_source = False
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'CodeIgniter.tex', u'CodeIgniter Documentation',
-   u'British Columbia Institute of Technology', 'manual'),
+  ('index', 'CodeIgniter.tex', u'CodeIgniter 文档',
+   u'不列颠哥伦比亚理工学院', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -218,8 +218,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'codeigniter', u'CodeIgniter Documentation',
-     [u'British Columbia Institute of Technology'], 1)
+    ('index', 'codeigniter', u'CodeIgniter 文档',
+     [u'不列颠哥伦比亚理工学院'], 1)
 ]
 
 
@@ -227,9 +227,9 @@ man_pages = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'CodeIgniter'
-epub_author = u'British Columbia Institute of Technology'
-epub_publisher = u'British Columbia Institute of Technology'
-epub_copyright = u'2014 - 2015, British Columbia Institute of Technology'
+epub_author = u'不列颠哥伦比亚理工学院'
+epub_publisher = u'不列颠哥伦比亚理工学院'
+epub_copyright = u'2014 - 2015, 不列颠哥伦比亚理工学院'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
@@ -264,5 +264,5 @@ epub_copyright = u'2014 - 2015, British Columbia Institute of Technology'
 
 # http://sphinx-doc.org/config.html#confval-html_context
 html_context = {
-	'ga_tracking_id' : ''
+    'ga_tracking_id' : ''
 }
