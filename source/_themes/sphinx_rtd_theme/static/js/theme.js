@@ -201,7 +201,7 @@ $( document ).ready(function() {
     $('#openToc').click(function(){
         $('#nav').slideToggle();
     });
-    $('.wy-breadcrumbs').append('<div style="float:right;"><div style="text-decoration:underline;color:blue;margin-left:5px;" id="closeMe"><img title="目录" alt="toc" src="data:image/gif;base64,R0lGODlhFAAUAJEAAAAAADMzM////wAAACH5BAUUAAIALAAAAAAUABQAAAImlI+py+0PU5gRBRDM3DxbWoXis42X13USOLauUIqnlsaH/eY6UwAAOw==" /></div></div>');
+    $('.wy-breadcrumbs').append('<div style="float:right;"><div style="text-decoration:underline;color:blue;margin-left:5px;cursor:pointer;" id="closeMe"><img title="目录" alt="toc" src="data:image/gif;base64,R0lGODlhFAAUAJEAAAAAADMzM////wAAACH5BAUUAAIALAAAAAAUABQAAAImlI+py+0PU5gRBRDM3DxbWoXis42X13USOLauUIqnlsaH/eY6UwAAOw==" /></div></div>');
     $('#closeMe').toggle(
         function()
         {
