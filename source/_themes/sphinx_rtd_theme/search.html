@@ -8,7 +8,7 @@
     :license: BSD, see LICENSE for details.
 #}
 {%- extends "layout.html" %}
-{% set title = _('Search') %}
+{% set title = _('搜索') %}
 {% set script_files = script_files + ['_static/searchtools.js'] %}
 {% block footer %}
   <script type="text/javascript">
@@ -30,9 +30,9 @@
   </noscript>
 
   {% if search_performed %}
-    <h2>{{ _('Search Results') }}</h2>
+    <h2>{{ _('搜索结果') }}</h2>
     {% if not search_results %}
-      <p>{{ _('Your search did not match any documents. Please make sure that all words are spelled correctly and that you\'ve selected enough categories.') }}</p>
+      <p>{{ _('找不到和您的查询相符的文档。请检查输入字词有无错误，或尝试其他查询词，或改用较常见的字词，或减少查询字词的数量。') }}</p>
     {% endif %}
   {% endif %}
   <div id="search-results">
