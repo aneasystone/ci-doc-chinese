@@ -13,7 +13,9 @@
       {% elif show_source and has_source and sourcename %}
       <a href="{{ pathto('_sources/' + sourcename, true)|e }}" rel="nofollow"> View page source</a>
       {% endif %}
-      <a href="http://www.codeigniter.com/user_guide/{{ pagename|e }}{{ file_suffix|e }}" rel="nofollow">查看原文</a>
+      {% if pagename != 'search' %}
+      <a href="http://www.codeigniter.com/user_guide/{{ pagename|e }}{{ file_suffix|e }}" rel="nofollow" target="_blank">查看原文</a>
+      {% endif %}
     </li>
   </ul>
   <hr/>
