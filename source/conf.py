@@ -109,7 +109,7 @@ html_theme_path = ["./_themes"]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = u'CodeIgniter 3.0 中文文档'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -261,3 +261,8 @@ epub_copyright = u'2014 - 2015, British Columbia Institute of Technology'
 
 # Allow duplicate toc entries.
 #epub_tocdup = True
+
+# http://sphinx-doc.org/config.html#confval-html_context
+html_context = {
+	'ga_tracking_id' : ''
+}

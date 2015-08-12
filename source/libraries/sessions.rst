@@ -1,20 +1,18 @@
 ###############
-Session Library
+Session 类
 ###############
 
-The Session class permits you maintain a user's "state" and track their
-activity while they browse your site.
+Session（会话）类可以让你保持一个用户的 "状态" ，并跟踪他在浏览你的网站时的活动。
 
-CodeIgniter comes with a few session storage drivers:
+CodeIgniter 自带了几个存储 session 的驱动：
 
-  - files (default; file-system based)
-  - database
-  - redis
-  - memcached
+  - 文件（默认的，基于文件系统）
+  - 数据库
+  - Redis
+  - Memcached
 
-In addition, you may create your own, custom session drivers based on other
-kinds of storage, while still taking advantage of the features of the
-Session class.
+另外，你也可以基于其他的存储机制来创建你自己的自定义 session 存储驱动，
+使用自定义的驱动，同样也可以使用 Session 类提供的那些功能。
 
 .. contents::
   :local:
@@ -24,129 +22,104 @@ Session class.
   <div class="custom-index container"></div>
 
 ***********************
-Using the Session Class
+使用 Session 类
 ***********************
 
-Initializing a Session
+初始化 Session 类
 ======================
 
-Sessions will typically run globally with each page load, so the Session
-class should either be initialized in your :doc:`controller
-<../general/controllers>` constructors, or it can be :doc:`auto-loaded
-<../general/autoloader>` by the system.
-For the most part the session class will run unattended in the background,
-so simply initializing the class will cause it to read, create, and update
-sessions when necessary.
+Session 通常会在每个页面载入的时候全局运行，所以 Session 类必须首先被初始化。
+您可以在 :doc:`控制器 <../general/controllers>` 的构造函数中初始化它，
+也可以在系统中 :doc:`自动加载 <../general/autoloader>`。Session 类基本上都是在后台运行，
+你不会注意到。所以当初始化 session 之后，系统会自动读取、创建和更新 session 数据 。
 
-To initialize the Session class manually in your controller constructor,
-use the ``$this->load->library()`` method::
+要手动初始化 Session 类，你可以在控制器的构造函数中使用 ``$this->load->library()``
+方法::
 
 	$this->load->library('session');
 
-Once loaded, the Sessions library object will be available using::
+初始化之后，就可以使用下面的方法来访问 Session 对象了::
 
 	$this->session
 
-.. important:: Because the :doc:`Loader Class </libraries/loader>` is instantiated
-	by CodeIgniter's base controller, make sure to call
-	``parent::__construct()`` before trying to load a library from
-	inside a controller constructor.
+.. important:: 由于 :doc:`加载类 </libraries/loader>` 是在 CodeIgniter 的控制器基类中实例化的，
+	所以如果要在你的控制器构造函数中加载类库的话，确保先调用 ``parent::__construct()`` 方法。
 
-How do Sessions work?
-=====================
-
-When a page is loaded, the session class will check to see if valid
-session cookie is sent by the user's browser. If a sessions cookie does
-**not** exist (or if it doesn't match one stored on the server or has
-expired) a new session will be created and saved.
-
-If a valid session does exist, its information will be updated. With each
-update, the session ID may be regenerated if configured to do so.
-
-It's important for you to understand that once initialized, the Session
-class runs automatically. There is nothing you need to do to cause the
-above behavior to happen. You can, as you'll see below, work with session
-data, but the process of reading, writing, and updating a session is
-automatic.
-
-.. note:: Under CLI, the Session library will automatically halt itself,
-	as this is a concept based entirely on the HTTP protocol.
-
-A note about concurrency
-------------------------
-
-Unless you're developing a website with heavy AJAX usage, you can skip this
-section. If you are, however, and if you're experiencing performance
-issues, then this note is exactly what you're looking for.
-
-Sessions in previous versions of CodeIgniter didn't implement locking,
-which meant that two HTTP requests using the same session could run exactly
-at the same time. To use a more appropriate technical term - requests were
-non-blocking.
-
-However, non-blocking requests in the context of sessions also means
-unsafe, because modifications to session data (or session ID regeneration)
-in one request can interfere with the execution of a second, concurrent
-request. This detail was at the root of many issues and the main reason why
-CodeIgniter 3.0 has a completely re-written Session library.
-
-Why are we telling you this? Because it is likely that after trying to
-find the reason for your performance issues, you may conclude that locking
-is the issue and therefore look into how to remove the locks ...
-
-DO NOT DO THAT! Removing locks would be **wrong** and it will cause you
-more problems!
-
-Locking is not the issue, it is a solution. Your issue is that you still
-have the session open, while you've already processed it and therefore no
-longer need it. So, what you need is to close the session for the
-current request after you no longer need it.
-
-Long story short - call ``session_write_close()`` once you no longer need
-anything to do with session variables.
-
-What is Session Data?
-=====================
-
-Session data is simply an array associated with a particular session ID
-(cookie).
-
-If you've used sessions in PHP before, you should be familiar with PHP's
-`$_SESSION superglobal <http://php.net/manual/en/reserved.variables.session.php>`_
-(if not, please read the content on that link).
-
-CodeIgniter gives access to its session data through the same means, as it
-uses the session handlers' mechanism provided by PHP. Using session data is
-as simple as manipulating (read, set and unset values) the ``$_SESSION``
-array.
-
-In addition, CodeIgniter also provides 2 special types of session data
-that are further explained below: flashdata and tempdata.
-
-.. note:: In previous versions, regular session data in CodeIgniter was
-	referred to as 'userdata'. Have this in mind if that term is used
-	elsewhere in the manual. Most of it is written to explain how
-	the custom 'userdata' methods work.
-
-Retrieving Session Data
+Session 是如何工作的？
 =======================
 
-Any piece of information from the session array is available through the
-``$_SESSION`` superglobal::
+当页面载入后，Session 类就会检查用户的 cookie 中是否存在有效的 session 数据。
+如果 session 数据不存在（或者与服务端不匹配，或者已经过期），
+那么就会创建一个新的 session 并保存起来。
+
+如果 session 数据存在并且有效，那么就会更新 session 的信息。
+根据你的配置，每一次更新都会生成一个新的 Session ID 。
+
+有一点非常重要，你需要了解一下，Session 类一旦被初始化，它就会自动运行。
+上面所说的那些，你完全不用做任何操作。正如接下来你将看到的那样，
+你可以正常的使用 session 数据，至于读、写和更新 session 的操作都是自动完成的。
+
+.. note:: 在 CLI 模式下，Session 类将自动关闭，这种做法完全是基于 HTTP 协议的。
+
+关于并发的注意事项
+----------------------------------
+
+如果你开发的网站并不是大量的使用 AJAX 技术，那么你可以跳过这一节。
+如果你的网站是大量的使用了 AJAX，并且遇到了性能问题，那么下面的注意事项，
+可能正是你需要的。
+
+在 CodeIgniter 之前的版本中，Session 类并没有实现锁机制，这也就意味着，
+两个 HTTP 请求可能会同时使用同一个 session 。说的更专业点就是，
+请求是非阻塞的。（requests were non-blocking）
+
+在处理 session 时使用非阻塞的请求同样意味着不安全，因为在一个请求中修改 session 
+数据（或重新生成 Session ID）会对并发的第二个请求造成影响。这是导致很多问题的根源，
+同时也是为什么 CodeIgniter 3.0 对 Session 类完全重写的原因。
+
+那么为什么要告诉你这些呢？这是因为在你查找性能问题的原因时，
+可能会发现加锁机制正是导致性能问题的罪魁祸首，因此就想着如何去掉锁 ...
+
+**请不要这样做！** 去掉加锁机制是完全错误的，它会给你带来更多的问题！
+
+锁并不是问题，它是一种解决方案。你的问题是当 session 已经处理完毕不再需要时，
+你还将 session 保持是打开的状态。所以，你需要做的其实是，当结束当前请求时，
+将不再需要的 session 关闭掉。
+
+简单来说就是：当你不再需要使用某个 session 变量时，就使用 ``session_write_close()`` 方法来关闭它。
+
+什么是 Session 数据？
+=====================
+
+Session 数据是个简单的数组，带有一个特定的 session ID （cookie）。
+
+如果你之前在 PHP 里使用过 session ，你应该对 PHP 的 `$_SESSION 全局变量 <http://php.net/manual/en/reserved.variables.session.php>`_
+很熟悉（如果没有，请阅读下链接中的内容）。
+
+CodeIgniter 使用了相同的方式来访问 session 数据，同时使用了 PHP 自带的 session 处理机制，
+使用 session 数据和操作 ``$_SESSION`` 数组一样简单（包括读取，设置，取消设置）。
+
+另外，CodeIgniter 还提供了两种特殊类型的 session 数据：flashdata 和 tempdata ，在下面将有介绍。
+
+.. note:: 在之前的 CodeIgniter 版本中，常规的 session 数据被称之为 'userdata' ，当文档中出现这个词时请记住这一点。
+	大部分都是用于解释自定义 'userdata' 方法是如何工作的。
+
+获取 Session 数据
+=======================
+
+session 数组中的任何信息都可以通过 ``$_SESSION`` 全局变量获取::
 
 	$_SESSION['item']
 
-Or through the magic getter::
+或使用下面的方法（magic getter）::
 
 	$this->session->item
 
-And for backwards compatibility, through the ``userdata()`` method::
+同时，为了和之前的版本兼容，也可以使用 ``userdata()`` 方法::
 
 	$this->session->userdata('item');
 
-Where item is the array key corresponding to the item you wish to fetch.
-For example, to assign a previously stored 'name' item to the ``$name``
-variable, you will do this::
+其中，item 是你想获取的数组的键值。例如，将 'name' 键值对应的项赋值给 ``$name`` 变量，
+你可以这样::
 
 	$name = $_SESSION['name'];
 
@@ -158,11 +131,9 @@ variable, you will do this::
 
 	$name = $this->session->userdata('name');
 
-.. note:: The ``userdata()`` method returns NULL if the item you are trying
-	to access does not exist.
+.. note:: 如果你访问的项不存在，``userdata()`` 方法返回 NULL 。
 
-If you want to retrieve all of the existing userdata, you can simply
-omit the item key (magic getter only works for properties)::
+如果你想获取所有已存在的 userdata ，你可以忽略 item 参数::
 
 	$_SESSION
 
@@ -170,25 +141,20 @@ omit the item key (magic getter only works for properties)::
 
 	$this->session->userdata();
 
-Adding Session Data
+添加 Session 数据
 ===================
 
-Let's say a particular user logs into your site. Once authenticated, you
-could add their username and e-mail address to the session, making that
-data globally available to you without having to run a database query when
-you need it.
+假设某个用户访问你的网站，当他完成认证之后，你可以将他的用户名和 email 地址添加到 session 中，
+这样当你需要的时候你就可以直接访问这些数据，而无法查询数据库了。
 
-You can simply assign data to the ``$_SESSION`` array, as with any other
-variable. Or as a property of ``$this->session``.
+你可以简单的将数据赋值给 ``$_SESSION`` 数组，或赋值给 ``$this->session`` 的某个属性。
 
-Alternatively, the old method of assigning it as "userdata" is also
-available. That however passing an array containing your new data to the
-``set_userdata()`` method::
+同时，老版本中的通过 "userdata" 来赋值的方法也还可以用，只不过是需要传递一个包含你的数据的数组
+给 ``set_userdata()`` 方法::
 
 	$this->session->set_userdata($array);
 
-Where ``$array`` is an associative array containing your new data. Here's
-an example::
+其中，``$array`` 是包含新增数据的一个关联数组，下面是个例子::
 
 	$newdata = array(
 		'username'  => 'johndoe',
@@ -198,27 +164,24 @@ an example::
 
 	$this->session->set_userdata($newdata);
 
-If you want to add userdata one value at a time, ``set_userdata()`` also
-supports this syntax::
+如果你想一次只添加一个值，``set_userdata()`` 也支持这种语法::
 
 	$this->session->set_userdata('some_name', 'some_value');
 
-If you want to verify that a session value exists, simply check with
-``isset()``::
+如果你想检查某个 session 值是否存在，可以使用 ``isset()``::
 
 	// returns FALSE if the 'some_name' item doesn't exist or is NULL,
 	// TRUE otherwise:
 	isset($_SESSION['some_name'])
 
-Or you can call ``has_userdata()``::
+或者，你也可以使用 ``has_userdata()``::
 
 	$this->session->has_userdata('some_name');
 
-Removing Session Data
+删除 Session 数据
 =====================
 
-Just as with any other variable, unsetting a value in ``$_SESSION`` can be
-done through ``unset()``::
+和其他的变量一样，可以使用 ``unset()`` 方法来删除 ``$_SESSION`` 数组中的某个值::
 
 	unset($_SESSION['some_name']);
 
@@ -229,79 +192,68 @@ done through ``unset()``::
 		$_SESSION['another_name']
 	);
 
-Also, just as ``set_userdata()`` can be used to add information to a
-session, ``unset_userdata()`` can be used to remove it, by passing the
-session key. For example, if you wanted to remove 'some_name' from your
-session data array::
+同时，正如 ``set_userdata()`` 方法可用于向 session 中添加数据，``unset_userdata()`` 
+方法可用于删除指定键值的数据。例如，如果你想从你的 session 数组中删除 'some_name'::
 
 	$this->session->unset_userdata('some_name');
 
-This method also accepts an array of item keys to unset::
+这个方法也可以使用一个数组来同时删除多个值::
 
 	$array_items = array('username', 'email');
 
 	$this->session->unset_userdata($array_items);
 
-.. note:: In previous versions, the ``unset_userdata()`` method used
-	to accept an associative array of ``key => 'dummy value'``
-	pairs. This is no longer supported.
+.. note:: 在 CodeIgniter 之前的版本中，``unset_userdata()`` 方法接受一个关联数组，
+	包含 ``key => 'dummy value'`` 这样的键值对，这种方式不再支持。
 
 Flashdata
 =========
 
-CodeIgniter supports "flashdata", or session data that will only be
-available for the next request, and is then automatically cleared.
+CodeIgniter 支持 "flashdata" ，它指的是一种只对下一次请求有效的 session 数据，
+之后将会自动被清除。
 
-This can be very useful, especially for one-time informational, error or
-status messages (for example: "Record 2 deleted").
+这用于一次性的信息时特别有用，例如错误或状态信息（诸如 "第二条记录删除成功" 这样的信息）。
 
-It should be noted that flashdata variables are regular session vars,
-only marked in a specific way under the '__ci_vars' key (please don't touch
-that one, you've been warned).
+要注意的是，flashdata 就是常规的 session 变量，只不过以特殊的方式保存在 '__ci_vars' 键下
+（警告：请不要乱动这个值）。
 
-To mark an existing item as "flashdata"::
+将已有的值标记为 "flashdata"::
 
 	$this->session->mark_as_flash('item');
 
-If you want to mark multiple items as flashdata, simply pass the keys as an
-array::
+通过传一个数组，同时标记多个值为 flashdata::
 
 	$this->session->mark_as_flash(array('item', 'item2'));
 
-To add flashdata::
+使用下面的方法来添加 flashdata::
 
 	$_SESSION['item'] = 'value';
 	$this->session->mark_as_flash('item');
 
-Or alternatively, using the ``set_flashdata()`` method::
+或者，也可以使用 ``set_flashdata()`` 方法::
 
 	$this->session->set_flashdata('item', 'value');
 
-You can also pass an array to ``set_flashdata()``, in the same manner as
-``set_userdata()``.
+你还可以传一个数组给 ``set_flashdata()`` 方法，和 ``set_userdata()`` 方法一样。
 
-Reading flashdata variables is the same as reading regular session data
-through ``$_SESSION``::
+读取 flashdata 和读取常规的 session 数据一样，通过 ``$_SESSION`` 数组::
 
 	$_SESSION['item']
 
-.. important:: The ``userdata()`` method will NOT return flashdata items.
+.. important:: ``userdata()`` 方法不会返回 flashdata 数据。
 
-However, if you want to be sure that you're reading "flashdata" (and not
-any other kind), you can also use the ``flashdata()`` method::
+如果你要确保你读取的就是 "flashdata" 数据，而不是其他类型的数据，可以使用 ``flashdata()`` 方法::
 
 	$this->session->flashdata('item');
 
-Or to get an array with all flashdata, simply omit the key parameter::
+或者不传参数，直接返回所有的 flashdata 数组::
 
 	$this->session->flashdata();
 
-.. note:: The ``flashdata()`` method returns NULL if the item cannot be
-	found.
+.. note:: 如果读取的值不存在，``flashdata()`` 方法返回 NULL 。
 
-If you find that you need to preserve a flashdata variable through an
-additional request, you can do so using the ``keep_flashdata()`` method.
-You can either pass a single item or an array of flashdata items to keep.
+如果你需要在另一个请求中还继续保持 flashdata 变量，你可以使用 ``keep_flashdata()`` 方法。
+可以传一个值，或包含多个值的一个数组。
 
 ::
 
@@ -311,22 +263,20 @@ You can either pass a single item or an array of flashdata items to keep.
 Tempdata
 ========
 
-CodeIgniter also supports "tempdata", or session data with a specific
-expiration time. After the value expires, or the session expires or is
-deleted, the value is automatically removed.
+CodeIgniter 还支持 "tempdata" ，它指的是一种带有有效时间的 session 数据，
+当它的有效时间已过期，或在有效时间内被删除，都会自动被清除。
 
-Similarly to flashdata, tempdata variables are regular session vars that
-are marked in a specific way under the '__ci_vars' key (again, don't touch
-that one).
+和 flashdata 一样， tempdata 也是常规的 session 变量，只不过以特殊的方式保存在 '__ci_vars' 键下
+（再次警告：请不要乱动这个值）。
 
-To mark an existing item as "tempdata", simply pass its key and expiry time
-(in seconds!) to the ``mark_as_temp()`` method::
+将已有的值标记为 "tempdata" ，只需简单的将要标记的键值和过期时间（单位为秒）传给 
+``mark_as_temp()`` 方法即可::
 
 	// 'item' will be erased after 300 seconds
 	$this->session->mark_as_temp('item', 300);
 
-You can mark multiple items as tempdata in two ways, depending on whether
-you want them all to have the same expiry time or not::
+你也可以同时标记多个值为 tempdata ，有下面两种不同的方式，
+这取决于你是否要将所有的值都设置成相同的过期时间::
 
 	// Both 'item' and 'item2' will expire after 300 seconds
 	$this->session->mark_as_temp(array('item', 'item2'), 300);
@@ -338,62 +288,54 @@ you want them all to have the same expiry time or not::
 		'item2'	=> 240
 	));
 
-To add tempdata::
+使用下面的方法来添加 tempdata::
 
 	$_SESSION['item'] = 'value';
 	$this->session->mark_as_temp('item', 300); // Expire in 5 minutes
 
-Or alternatively, using the ``set_tempdata()`` method::
+或者，也可以使用 ``set_tempdata()`` 方法::
 
 	$this->session->set_tempdata('item', 'value', 300);
 
-You can also pass an array to ``set_tempdata()``::
+你还可以传一个数组给 ``set_tempdata()`` 方法::
 
 	$tempdata = array('newuser' => TRUE, 'message' => 'Thanks for joining!');
 
 	$this->session->set_tempdata($tempdata, NULL, $expire);
 
-.. note:: If the expiration is omitted or set to 0, the default
-	time-to-live value of 300 seconds (or 5 minutes) will be used.
+.. note:: 如果没有设置 expiration 参数，或者设置为 0 ，将默认使用 300秒（5分钟）作为生存时间（time-to-live）。
 
-To read a tempdata variable, again you can just access it through the
-``$_SESSION`` superglobal array::
+要读取 tempdata 数据，你可以再一次通过 ``$_SESSION`` 数组::
 
 	$_SESSION['item']
 
-.. important:: The ``userdata()`` method will NOT return tempdata items.
+.. important:: ``userdata()`` 方法不会返回 tempdata 数据。
 
-Or if you want to be sure that you're reading "tempdata" (and not any
-other kind), you can also use the ``tempdata()`` method::
+如果你要确保你读取的就是 "tempdata" 数据，而不是其他类型的数据，可以使用 ``tempdata()`` 方法::
 
 	$this->session->tempdata('item');
 
-And of course, if you want to retrieve all existing tempdata::
+或者不传参数，直接返回所有的 tempdata 数组::
 
 	$this->session->tempdata();
 
-.. note:: The ``tempdata()`` method returns NULL if the item cannot be
-	found.
+.. note:: 如果读取的值不存在，``tempdata()`` 方法返回 NULL 。
 
-If you need to remove a tempdata value before it expires, you can directly
-unset it from the ``$_SESSION`` array::
+如果你需要在某个 tempdata 过期之前删除它，你可以直接通过 ``$_SESSION`` 数组来删除::
 
 	unset($_SESSION['item']);
 
-However, this won't remove the marker that makes this specific item to be
-tempdata (it will be invalidated on the next HTTP request), so if you
-intend to reuse that same key in the same request, you'd want to use
-``unset_tempdata()``::
+但是，这不会删除这个值的 tempdata 标记（会在下一次 HTTP 请求时失效），所以，
+如果你打算在相同的请求中重用这个值，你可以使用 ``unset_tempdata()``::
 
 	$this->session->unset_tempdata('item');
 
-Destroying a Session
+销毁 Session
 ====================
 
-To clear the current session (for example, during a logout), you may
-simply use either PHP's `session_destroy() <http://php.net/session_destroy>`_
-function, or the ``sess_destroy()`` method. Both will work in exactly the
-same way::
+要清除当前的 session（例如：退出登录时），你可以简单的使用 PHP 自带的 
+`session_destroy() <http://php.net/session_destroy>`_ 函数或者 ``sess_destroy()`` 方法。
+两种方式效果完全一样::
 
 	session_destroy();
 
@@ -401,197 +343,153 @@ same way::
 
 	$this->session->sess_destroy();
 
-.. note:: This must be the last session-related operation that you do
-	during the same request. All session data (including flashdata and
-	tempdata) will be destroyed permanently and functions will be
-	unusable during the same request after you destroy the session.
+.. note:: 这必须是同一个请求中关于 session 的最后一次操作，所有的 session 数据（包括 flashdata 
+	和 tempdata）都被永久性销毁，销毁之后，关于 session 的方法将不可用。
 
-Accessing session metadata
+访问 session 元数据
 ==========================
 
-In previous CodeIgniter versions, the session data array included 4 items
-by default: 'session_id', 'ip_address', 'user_agent', 'last_activity'.
+在之前的 CodeIgniter 版本中，session 数据默认包含 4 项：'session_id' 、 'ip_address' 、 'user_agent' 、 'last_activity' 。
 
-This was due to the specifics of how sessions worked, but is now no longer
-necessary with our new implementation. However, it may happen that your
-application relied on these values, so here are alternative methods of
-accessing them:
+这是由 session 具体的工作方式决定的，但是我们现在的实现没必要这样做了。
+尽管如此，你的应用程序可能还依赖于这些值，所以下面提供了访问这些值的替代方法：
 
   - session_id: ``session_id()``
   - ip_address: ``$_SERVER['REMOTE_ADDR']``
   - user_agent: ``$this->input->user_agent()`` (unused by sessions)
-  - last_activity: Depends on the storage, no straightforward way. Sorry!
+  - last_activity: 取决于 session 的存储方式，没有直接的方法，抱歉！
 
-Session Preferences
+Session 参数
 ===================
 
-CodeIgniter will usually make everything work out of the box. However,
-Sessions are a very sensitive component of any application, so some
-careful configuration must be done. Please take your time to consider
-all of the options and their effects.
+在 CodeIgniter 中通常所有的东西都是拿来直接就可以用的，尽管如此，session 对于所有的程序来说，
+都是一个非常敏感的部分，所以必须要小心的配置它。请花点时间研究下下面所有的选项以及每个选项的作用。
 
-You'll find the following Session related preferences in your
-**application/config/config.php** file:
+你可以在你的配置文件 **application/config/config.php** 中找到下面的关于 session 的配置参数：
 
 ============================ =============== ======================================== ============================================================================================
-Preference                   Default         Options                                  Description
+参数                               默认值         选项                                  描述
 ============================ =============== ======================================== ============================================================================================
-**sess_driver**              files           files/database/redis/memcached/*custom*  The session storage driver to use.
-**sess_cookie_name**         ci_session      [A-Za-z\_-] characters only              The name used for the session cookie.
-**sess_expiration**          7200 (2 hours)  Time in seconds (integer)                The number of seconds you would like the session to last.
-                                                                                      If you would like a non-expiring session (until browser is closed) set the value to zero: 0
-**sess_save_path**           NULL            None                                     Specifies the storage location, depends on the driver being used.
-**sess_match_ip**            FALSE           TRUE/FALSE (boolean)                     Whether to validate the user's IP address when reading the session cookie.
-                                                                                      Note that some ISPs dynamically changes the IP, so if you want a non-expiring session you
-                                                                                      will likely set this to FALSE.
-**sess_time_to_update**      300             Time in seconds (integer)                This option controls how often the session class will regenerate itself and create a new
-                                                                                      session ID. Setting it to 0 will disable session ID regeneration.
-**sess_regenerate_destroy**  FALSE           TRUE/FALSE (boolean)                     Whether to destroy session data associated with the old session ID when auto-regenerating
-                                                                                      the session ID. When set to FALSE, the data will be later deleted by the garbage collector.
+**sess_driver**              files           files/database/redis/memcached/*custom*  使用的存储 session 的驱动
+**sess_cookie_name**         ci_session      [A-Za-z\_-] characters only              session cookie 的名称
+**sess_expiration**          7200 (2 hours)  Time in seconds (integer)                你希望 session 持续的秒数
+                                                                                      如果你希望 session 不过期（直到浏览器关闭），将其设置为 0
+**sess_save_path**           NULL            None                                     指定存储位置，取决于使用的存储 session 的驱动
+**sess_match_ip**            FALSE           TRUE/FALSE (boolean)                     读取 session cookie 时，是否验证用户的 IP 地址
+                                                                                      注意有些 ISP 会动态的修改 IP ，所以如果你想要一个不过期的 session，将其设置为 FALSE 
+**sess_time_to_update**      300             Time in seconds (integer)                该选项用于控制过多久将重新生成一个新 session ID 
+                                                                                      设置为 0 将禁用 session ID 的重新生成
+**sess_regenerate_destroy**  FALSE           TRUE/FALSE (boolean)                     当自动重新生成 session ID 时，是否销毁老的 session ID 对应的数据
+                                                                                      如果设置为 FALSE ，数据之后将自动被垃圾回收器删除
 ============================ =============== ======================================== ============================================================================================
 
-.. note:: As a last resort, the Session library will try to fetch PHP's
-	session related INI settings, as well as legacy CI settings such as
-	'sess_expire_on_close' when any of the above is not configured.
-	However, you should never rely on this behavior as it can cause
-	unexpected results or be changed in the future. Please configure
-	everything properly.
+.. note:: 如果上面的某个参数没有配置，Session 类将会试图读取 php.ini 配置文件中的 session 相关的配置
+	（例如 'sess_expire_on_close'）。但是，请不要依赖于这个行为，因为这可能会导致不可预期的结果，而且
+	这也有可能在未来的版本中修改。请合理的配置每一个参数。
 
-In addition to the values above, the cookie and native drivers apply the
-following configuration values shared by the :doc:`Input <input>` and
-:doc:`Security <security>` classes:
+除了上面的这些参数之外，cookie 和 session 原生的驱动还会公用下面这些
+由 :doc:`输入类 <input>` 和 :doc:`安全类 <security>` 提供的配置参数。
 
 ================== =============== ===========================================================================
-Preference         Default         Description
+参数                 默认值         描述
 ================== =============== ===========================================================================
-**cookie_domain**  ''              The domain for which the session is applicable
-**cookie_path**    /               The path to which the session is applicable
-**cookie_secure**  FALSE           Whether to create the session cookie only on encrypted (HTTPS) connections
+**cookie_domain**  ''              session 可用的域
+**cookie_path**    /               session 可用的路径
+**cookie_secure**  FALSE           是否只在加密连接（HTTPS）时创建 session cookie
 ================== =============== ===========================================================================
 
-.. note:: The 'cookie_httponly' setting doesn't have an effect on sessions.
-	Instead the HttpOnly parameter is always enabled, for security
-	reasons. Additionaly, the 'cookie_prefix' setting is completely
-	ignored.
+.. note:: 'cookie_httponly' 配置对 session 没有影响。出于安全原因，HttpOnly 参数将一直启用。
+	另外，'cookie_prefix' 参数完全可以忽略。
 
-Session Drivers
+Session 驱动
 ===============
 
-As already mentioned, the Session library comes with 4 drivers, or storage
-engines, that you can use:
+正如上面提到的，Session 类自带了 4 种不同的驱动（或叫做存储引擎）可供使用：
 
   - files
   - database
   - redis
   - memcached
 
-By default, the `Files Driver`_ will be used when a session is initialized,
-because it is the most safe choice and is expected to work everywhere
-(virtually every environment has a file system).
+默认情况下，初始化 session 时将使用 `文件驱动`_ ，因为这是最安全的选择，可以在所有地方按预期工作
+（几乎所有的环境下都有文件系统）。
 
-However, any other driver may be selected via the ``$config['sess_driver']``
-line in your **application/config/config.php** file, if you chose to do so.
-Have it in mind though, every driver has different caveats, so be sure to
-get yourself familiar with them (below) before you make that choice.
+但是，你也可以通过 **application/config/config.php** 配置文件中的 ``$config['sess_driver']`` 
+参数来使用任何其他的驱动。特别提醒的是，每一种驱动都有它自己的注意事项，所以在你选择之前，
+确定你熟悉它们。
 
-In addition, you may also create and use `Custom Drivers`_, if the ones
-provided by default don't satisfy your use case.
+另外，如果默认提供的这些不能满足你的需求，你也可以创建和使用 `自定义驱动`_ 。
 
-.. note:: In previous CodeIgniter versions, a different, "cookie driver"
-	was the only option and we have received negative feedback on not
-	providing that option. While we do listen to feedback from the
-	community, we want to warn you that it was dropped because it is
-	**unsafe** and we advise you NOT to try to replicate it via a
-	custom driver.
+.. note:: 在之前版本的 CodeIgniter 中，只有 "cookie 驱动" 这唯一的一种选择，
+	因为这个我们收到了大量的负面的反馈。因此，我们吸取了社区的反馈意见，同时也要提醒你，
+	因为它**不安全**，所以已经被废弃了，建议你不要试着通过 自定义驱动 来重新实现它。
 
-Files Driver
+文件驱动
 ------------
 
-The 'files' driver uses your file system for storing session data.
+文件驱动利用你的文件系统来存储 session 数据。
 
-It can safely be said that it works exactly like PHP's own default session
-implementation, but in case this is an important detail for you, have it
-mind that it is in fact not the same code and it has some limitations
-(and advantages).
+可以说，文件驱动和 PHP 自带的默认 session 实现非常类似，但是有一个很重要的细节要注意的是，
+实际上它们的代码并不相同，而且有一些局限性（以及优势）。
 
-To be more specific, it doesn't support PHP's `directory level and mode
-formats used in session.save_path
-<http://php.net/manual/en/session.configuration.php#ini.session.save-path>`_,
-and it has most of the options hard-coded for safety. Instead, only
-absolute paths are supported for ``$config['sess_save_path']``.
+说的更具体点，它不支持 PHP 的 `session.save_path 参数的 目录分级（directory level）和 mode 格式 
+<http://php.net/manual/en/session.configuration.php#ini.session.save-path>`_ ，
+另外为了安全性大多数的参数都被硬编码。只提供了 ``$config['sess_save_path']`` 参数用于设置绝对路径。
 
-Another important thing that you should know, is to make sure that you
-don't use a publicly-readable or shared directory for storing your session
-files. Make sure that *only you* have access to see the contents of your
-chosen *sess_save_path* directory. Otherwise, anybody who can do that, can
-also steal any of the current sessions (also known as "session fixation"
-attack).
+另一个很重要的事情是，确保存储 session 文件的目录不能被公开访问到或者是共享目录，确保 **只有你**
+能访问并查看配置的 *sess_save_path* 目录中的内容。否则，如果任何人都能访问，
+他们就可以从中窃取到当前的 session （这也被称为 session 固定（session fixation）攻击）
 
-On UNIX-like operating systems, this is usually achieved by setting the
-0700 mode permissions on that directory via the `chmod` command, which
-allows only the directory's owner to perform read and write operations on
-it. But be careful because the system user *running* the script is usually
-not your own, but something like 'www-data' instead, so only setting those
-permissions will probable break your application.
+在类 UNIX 操作系统中，这可以通过在该目录上执行 `chmod` 命令，将权限设置为 0700 来实现，
+这样就可以只允许目录的所有者执行读取和写入操作。但是要注意的是，脚本的执行者通常不是你自己，
+而是类似于 'www-data' 这样的用户，所以只设置权限可能会破坏你的程序。
 
-Instead, you should do something like this, depending on your environment
+根据你的环境，你应该像下面这样来操作。
 ::
 
 	mkdir /<path to your application directory>/sessions/
 	chmod 0700 /<path to your application directory>/sessions/
 	chown www-data /<path to your application directory>/sessions/
 
-Bonus Tip
+小提示
 ^^^^^^^^^
 
-Some of you will probably opt to choose another session driver because
-file storage is usually slower. This is only half true.
+有些人可能会选择使用其他的 session 驱动，他们认为文件存储通常比较慢。其实这并不总是对的。
 
-A very basic test will probably trick you into believing that an SQL
-database is faster, but in 99% of the cases, this is only true while you
-only have a few current sessions. As the sessions count and server loads
-increase - which is the time when it matters - the file system will
-consistently outperform almost all relational database setups.
+执行一些简单的测试可能会让你真的相信 SQL 数据库更快一点，但是在 99% 的情况下，这只是当你的 
+session 并发非常少的时候是对的。当 session 的并发数越来越大，服务器的负载越来越高，
+这时就不一样了，文件系统将会胜过几乎所有的关系型数据库。
 
-In addition, if performance is your only concern, you may want to look
-into using `tmpfs <http://eddmann.com/posts/storing-php-sessions-file-caches-in-memory-using-tmpfs/>`_,
-(warning: external resource), which can make your sessions blazing fast.
+另外，如果性能是你唯一关心的，你可以看下 `tmpfs <http://eddmann.com/posts/storing-php-sessions-file-caches-in-memory-using-tmpfs/>`_
+（注意：外部资源），它可以让你的 session 非常快。
 
-Database Driver
+数据库驱动
 ---------------
 
-The 'database' driver uses a relational database such as MySQL or
-PostgreSQL to store sessions. This is a popular choice among many users,
-because it allows the developer easy access to the session data within
-an application - it is just another table in your database.
+数据库驱动使用诸如 MySQL 或 PostgreSQL 这样的关系型数据库来存储 session ，
+这是一个非常常见的选择，因为它可以让开发者非常方便的访问应用中的 session 数据，
+因为它只是你的数据库中的一个表而已。
 
-However, there are some conditions that must be met:
+但是，还是有几点要求必须满足：
 
-  - Only your **default** database connection (or the one that you access
-    as ``$this->db`` from your controllers) can be used.
-  - You must have the :doc:`Query Builder </database/query_builder>`
-    enabled.
-  - You can NOT use a persistent connection.
-  - You can NOT use a connection with the *cache_on* setting enabled.
+  - 只有设置为 **default** 的数据库连接可以使用（或者在控制器中使用 ``$this->db`` 来访问的连接）
+  - 你必须启用 :doc:`查询构造器 </database/query_builder>`
+  - 不能使用持久连接
+  - 使用的数据库连接不能启用 *cache_on* 参数
 
-In order to use the 'database' session driver, you must also create this
-table that we already mentioned and then set it as your
-``$config['sess_save_path']`` value.
-For example, if you would like to use 'ci_sessions' as your table name,
-you would do this::
+为了使用数据库驱动，你还需要创建一个我们刚刚已经提到的数据表，然后将 ``$config['sess_save_path']`` 
+参数设置为表名。例如，如果你想使用 'ci_sessions' 这个表名，你可以这样::
 
 	$config['sess_driver'] = 'database';
 	$config['sess_save_path'] = 'ci_sessions';
 
-.. note:: If you've upgraded from a previous version of CodeIgniter and
-	you don't have 'sess_save_path' configured, then the Session
-	library will look for the old 'sess_table_name' setting and use
-	it instead. Please don't rely on this behavior as it will get
-	removed in the future.
+.. note:: 如果你从 CodeIgniter 之前的版本中升级过来的，并且没有配置 'sess_save_path' 参数，
+	Session 类将查找并使用老的 'sess_table_name' 参数替代。请不要依赖这个行为，
+	因为它可能会在以后的版本中移除。
 
-And then of course, create the database table ...
+然后，新建数据表 。
 
-For MySQL::
+对于 MySQL::
 
 	CREATE TABLE IF NOT EXISTS `ci_sessions` (
 		`id` varchar(40) NOT NULL,
@@ -602,7 +500,7 @@ For MySQL::
 		KEY `ci_sessions_timestamp` (`timestamp`)
 	);
 
-For PostgreSQL::
+对于 PostgreSQL::
 
 	CREATE TABLE "ci_sessions" (
 		"id" varchar(40) NOT NULL,
@@ -614,151 +512,111 @@ For PostgreSQL::
 
 	CREATE INDEX "ci_sessions_timestamp" ON "ci_sessions" ("timestamp");
 
-However, if you want to turn on the *sess_match_ip* setting, you should
-also do the following, after creating the table::
+如果你想开启 *sess_match_ip* 参数，你还应该在新建表之后进行如下操作::
 
 	// Works both on MySQL and PostgreSQL
 	ALTER TABLE ci_sessions ADD CONSTRAINT ci_sessions_id_ip UNIQUE (id, ip_address);
 
-.. important:: Only MySQL and PostgreSQL databases are officially
-	supported, due to lack of advisory locking mechanisms on other
-	platforms. Using sessions without locks can cause all sorts of
-	problems, especially with heavy usage of AJAX, and we will not
-	support such cases. Use ``session_write_close()`` after you've
-	done processing session data if you're having performance
-	issues.
+.. important:: 只有 MySQL 和 PostgreSQL 数据库是被正式支持的，因为其他数据库平台都缺乏合适的锁机制。
+	在没锁的情况下使用 session 可能会导致大量的问题，特别是使用了大量的 AJAX ，
+	所以我们并不打算支持这种情况。如果你遇到了性能问题，请你在完成 session 数据的处理之后，
+	调用 ``session_write_close()`` 方法。
 
-Redis Driver
+Redis 驱动
 ------------
 
-.. note:: Since Redis doesn't have a locking mechanism exposed, locks for
-	this driver are emulated by a separate value that is kept for up
-	to 300 seconds.
+.. note:: 由于 Redis 没有锁机制，这个驱动的锁是通过一个保持 300 秒的值来模拟的
+	（emulated by a separate value that is kept for up to 300 seconds）。
 
-Redis is a storage engine typically used for caching and popular because
-of its high performance, which is also probably your reason to use the
-'redis' session driver.
+Redis 是一种存储引擎，通常用于缓存，并由于他的高性能而流行起来，这可能也正是你使用 Redis 驱动的原因。
 
-The downside is that it is not as ubiquitous as relational databases and
-requires the `phpredis <https://github.com/phpredis/phpredis>`_ PHP
-extension to be installed on your system, and that one doesn't come
-bundled with PHP.
-Chances are, you're only be using the 'redis' driver only if you're already
-both familiar with Redis and using it for other purposes.
+缺点是它并不像关系型数据库那样普遍，需要你的系统中安装了 `phpredis <https://github.com/phpredis/phpredis>`_ 
+这个 PHP 扩展，它并不是 PHP 程序自带的。
+可能的情况是，你使用 Redis 驱动的原因是你已经非常熟悉 Redis 了并且你使用它还有其他的目的。
 
-Just as with the 'files' and 'database' drivers, you must also configure
-the storage location for your sessions via the
-``$config['sess_save_path']`` setting.
-The format here is a bit different and complicated at the same time. It is
-best explained by the *phpredis* extension's README file, so we'll simply
-link you to it:
+和文件驱动和数据库驱动一样，你必须通过 ``$config['sess_save_path']`` 参数来配置存储 session 的位置。
+这里的格式有些不同，同时也要复杂一点，这在 *phpredis* 扩展的 README 文件中有很好的解释，链接如下::
 
 	https://github.com/phpredis/phpredis#php-session-handler
 
-.. warning:: CodeIgniter's Session library does NOT use the actual 'redis'
-	``session.save_handler``. Take note **only** of the path format in
-	the link above.
+.. warning:: CodeIgniter 的 Session 类并没有真的用到 'redis' 的 ``session.save_handler`` ，
+	**只是** 采用了它的路径的格式而已。
 
-For the most common case however, a simple ``host:port`` pair should be
-sufficient::
+最常见的情况是，一个简单 ``host:port`` 对就可以了::
 
 	$config['sess_driver'] = 'redis';
 	$config['sess_save_path'] = 'tcp://localhost:6379';
 
-Memcached Driver
+Memcached 驱动
 ----------------
 
-.. note:: Since Memcache doesn't have a locking mechanism exposed, locks
-	for this driver are emulated by a separate value that is kept for
-	up to 300 seconds.
+.. note:: 由于 Memcache 没有锁机制，这个驱动的锁是通过一个保持 300 秒的值来模拟的
+	（emulated by a separate value that is kept for up to 300 seconds）。
 
-The 'memcached' driver is very similar to the 'redis' one in all of its
-properties, except perhaps for availability, because PHP's `Memcached
-<http://php.net/memcached>`_ extension is distributed via PECL and some
-Linux distrubutions make it available as an easy to install package.
+Memcached 驱动和 Redis 驱动非常相似，除了它的可用性可能要好点，因为 PHP 的 `Memcached
+<http://php.net/memcached>`_ 扩展已经通过 PECL 发布了，并且在某些 Linux 发行版本中，
+可以非常方便的安装它。
 
-Other than that, and without any intentional bias towards Redis, there's
-not much different to be said about Memcached - it is also a popular
-product that is usually used for caching and famed for its speed.
+除了这一点，以及排除任何对 Redis 的偏见，关于 Memcached 要说的真的没什么区别，
+它也是一款通常用于缓存的产品，而且以它的速度而闻名。
 
-However, it is worth noting that the only guarantee given by Memcached
-is that setting value X to expire after Y seconds will result in it being
-deleted after Y seconds have passed (but not necessarily that it won't
-expire earlier than that time). This happens very rarely, but should be
-considered as it may result in loss of sessions.
+不过，值得注意的是，使用 Memcached 设置 X 的过期时间为 Y 秒，它只能保证 X 会在 Y 秒过后被删除
+（但不会早于这个时间）。这个是非常少见的，但是应该注意一下，因为它可能会导致 session 的丢失。
 
-The ``$config['sess_save_path']`` format is fairly straightforward here,
-being just a ``host:port`` pair::
+``$config['sess_save_path']`` 参数的格式相当简单，使用 ``host:port`` 对即可::
 
 	$config['sess_driver'] = 'memcached';
 	$config['sess_save_path'] = 'localhost:11211';
 
-Bonus Tip
+小提示
 ^^^^^^^^^
 
-Multi-server configuration with an optional *weight* parameter as the
-third colon-separated (``:weight``) value is also supported, but we have
-to note that we haven't tested if that is reliable.
+也可以使用一个可选的 *权重* 参数来支持多服务器的配置，权重参数使用冒号分割（``:weight``），
+但是我们并没有测试这是绝对可靠的。
 
-If you want to experiment with this feature (on your own risk), simply
-separate the multiple server paths with commas::
+如果你想体验这个特性（风险自负），只需简单的将多个服务器使用逗号分隔::
 
 	// localhost will be given higher priority (5) here,
 	// compared to 192.0.2.1 with a weight of 1.
 	$config['sess_save_path'] = 'localhost:11211:5,192.0.2.1:11211:1';
 
-Custom Drivers
+自定义驱动
 --------------
 
-You may also create your own, custom session drivers. However, have it in
-mind that this is typically not an easy task, as it takes a lot of
-knowledge to do it properly.
+你也可以创建你自己的自定义 session 驱动，但是要记住的是，这通常来说都不是那么简单，
+因为需要用到很多知识来正确实现它。
 
-You need to know not only how sessions work in general, but also how they
-work specifically in PHP, how the underlying storage mechanism works, how
-to handle concurrency, avoid deadlocks (but NOT through lack of locks) and
-last but not least - how to handle the potential security issues, which
-is far from trivial.
+你不仅要知道 session 一般的工作原理，而且要知道它在 PHP 中是如何实现的，
+还要知道它的内部存储机制是如何工作的，如何去处理并发，如何去避免死锁（不是通过去掉锁机制），
+以及最后一点但也是很重要的一点，如何去处理潜在的安全问题。
 
-Long story short - if you don't know how to do that already in raw PHP,
-you shouldn't be trying to do it within CodeIgniter either. You've been
-warned.
+总的来说，如果你不知道怎么在原生的 PHP 中实现这些，那么你也不应该在 CodeIgniter 中尝试实现它。
+我已经警告过你了。
 
-If you only want to add some extra functionality to your sessions, just
-extend the base Session class, which is a lot more easier. Read the
-:doc:`Creating Libraries <../general/creating_libraries>` article to
-learn how to do that.
+如果你只想给你的 session 添加一些额外的功能，你只要扩展 Session 基类就可以了，这要容易的多。
+要学习如何实现这点，请阅读 :doc:`创建你的类库 <../general/creating_libraries>` 这一节。
 
-Now, to the point - there are three general rules that you must follow
-when creating a session driver for CodeIgniter:
+言归正传，当你为 CodeIgniter 创建 session 驱动时，有三条规则你必须遵循：
 
-  - Put your driver's file under **application/libraries/Session/drivers/**
-    and follow the naming conventions used by the Session class.
+  - 将你的驱动文件放在 **application/libraries/Session/drivers/** 目录下，并遵循 Session 类所使用的命名规范。
 
-    For example, if you were to create a 'dummy' driver, you would have
-    a ``Session_dummy_driver`` class name, that is declared in
-    *application/libraries/Session/drivers/Session_dummy_driver.php*.
+    例如，如果你想创建一个名为 'dummy' 的驱动，那么你需要创建一个名为 ``Session_dummy_driver`` 的类，
+    并将其放在 *application/libraries/Session/drivers/Session_dummy_driver.php* 文件中。
 
-  - Extend the ``CI_Session_driver`` class.
+  - 扩展 ``CI_Session_driver`` 类。
 
-    This is just a basic class with a few internal helper methods. It is
-    also extendable like any other library, if you really need to do that,
-    but we are not going to explain how ... if you're familiar with how
-    class extensions/overrides work in CI, then you already know how to do
-    it. If not, well, you shouldn't be doing it in the first place.
+    这只是一个拥有几个内部辅助方法的基本类，同样可以和其他类库一样被扩展。如果你真的需要这样做，
+    我们并不打算在这里多做解释，因为如果你知道如何在 CI 中扩展或覆写类，那么你已经知道这样做的方法了。
+    如果你还不知道，那么可能你根本就不应该这样做。
 
+  - 实现 `SessionHandlerInterface <http://php.net/sessionhandlerinterface>`_ 接口。
 
-  - Implement the `SessionHandlerInterface
-    <http://php.net/sessionhandlerinterface>`_ interface.
+    .. note:: 你可能已经注意到 ``SessionHandlerInterface`` 接口已经在 PHP 5.4.0 之后的版本中提供了。
+    	CodeIgniter 会在你运行老版本的 PHP 时自动声明这个接口。
 
-    .. note:: You may notice that ``SessionHandlerInterface`` is provided
-    	by PHP since version 5.4.0. CodeIgniter will automatically declare
-    	the same interface if you're running an older PHP version.
+    参考连接中的内容，了解为什么以及如何实现。
 
-    The link will explain why and how.
-
-So, based on our 'dummy' driver example above, you'd end up with something
-like this::
+所以，使用我们上面的 'dummy' 驱动的例子，你可能会写如下代码::
 
 	// application/libraries/Session/drivers/Session_dummy_driver.php:
 
@@ -805,11 +663,10 @@ like this::
 
 	}
 
-If you've done everything properly, you can now set your *sess_driver*
-configuration value to 'dummy' and use your own driver. Congratulations!
+如果一切顺利，现在你就可以将 *sess_driver* 参数设置为 'dummy' ，来使用你自定义的驱动。恭喜你！
 
 ***************
-Class Reference
+类参考
 ***************
 
 .. php:class:: CI_Session
@@ -820,32 +677,28 @@ Class Reference
 		:returns:	Value of the specified item key, or an array of all userdata
 		:rtype:	mixed
 
-		Gets the value for a specific ``$_SESSION`` item, or an
-		array of all "userdata" items if not key was specified.
+		从 ``$_SESSION`` 数组中获取指定的项。如果没有指定参数，返回所有 "userdata" 的数组。
 	
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. You should
-			directly access ``$_SESSION`` instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			你可以直接使用 ``$_SESSION`` 替代它。
 
 	.. php:method:: all_userdata()
 
 		:returns:	An array of all userdata
 		:rtype:	array
 
-		Returns an array containing all "userdata" items.
+		返回所有 "userdata" 的数组。
 
-		.. note:: This method is DEPRECATED. Use ``userdata()``
-			with no parameters instead.
+		.. note:: 该方法已废弃，使用不带参数的 ``userdata()`` 方法来代替。
 
 	.. php:method:: &get_userdata()
 
 		:returns:	A reference to ``$_SESSION``
 		:rtype:	array
 
-		Returns a reference to the ``$_SESSION`` array.
+		返回一个 ``$_SESSION`` 数组的引用。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: has_userdata($key)
 
@@ -853,12 +706,10 @@ Class Reference
 		:returns:	TRUE if the specified key exists, FALSE if not
 		:rtype:	bool
 
-		Checks if an item exists in ``$_SESSION``.
+		检查 ``$_SESSION`` 数组中是否存在某项。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. It is just
-			an alias for ``isset($_SESSION[$key])`` - please
-			use that instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			它只是 ``isset($_SESSION[$key])`` 的一个别名，请使用这个来替代它。
 
 	.. php:method:: set_userdata($data[, $value = NULL])
 
@@ -866,23 +717,19 @@ Class Reference
 		:param	mixed	$value:	The value to set for a specific session item, if $data is a key
 		:rtype:	void
 
-		Assigns data to the ``$_SESSION`` superglobal.
+		将数据赋值给 ``$_SESSION`` 全局变量。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: unset_userdata($key)
 
 		:param	mixed	$key: Key for the session data item to unset, or an array of multiple keys
 		:rtype:	void
 
-		Unsets the specified key(s) from the ``$_SESSION``
-		superglobal.
+		从 ``$_SESSION`` 全局变量中删除某个值。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. It is just
-			an alias for ``unset($_SESSION[$key])`` - please
-			use that instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			它只是 ``unset($_SESSION[$key])`` 的一个别名，请使用这个来替代它。
 
 	.. php:method:: mark_as_flash($key)
 
@@ -890,24 +737,21 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Marks a ``$_SESSION`` item key (or multiple ones) as
-		"flashdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）标记为 "flashdata" 。
 
 	.. php:method:: get_flash_keys()
 
 		:returns:	Array containing the keys of all "flashdata" items.
 		:rtype:	array
 
-		Gets a list of all ``$_SESSION`` that have been marked as
-		"flashdata".
+		获取 ``$_SESSION`` 数组中所有标记为 "flashdata" 的一个列表。
 
 	.. php:method:: umark_flash($key)
 
 		:param	mixed	$key: Key to be un-marked as flashdata, or an array of multiple keys
 		:rtype:	void
 
-		Unmarks a ``$_SESSION`` item key (or multiple ones) as
-		"flashdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）移除 "flashdata" 标记。
 
 	.. php:method:: flashdata([$key = NULL])
 
@@ -915,13 +759,11 @@ Class Reference
 		:returns:	Value of the specified item key, or an array of all flashdata
 		:rtype:	mixed
 
-		Gets the value for a specific ``$_SESSION`` item that has
-		been marked as "flashdata", or an array of all "flashdata"
-		items if no key was specified.
+		从 ``$_SESSION`` 数组中获取某个标记为 "flashdata" 的指定项。
+		如果没有指定参数，返回所有 "flashdata" 的数组。
 	
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. You should
-			directly access ``$_SESSION`` instead.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			你可以直接使用 ``$_SESSION`` 替代它。
 
 	.. php:method:: keep_flashdata($key)
 
@@ -929,12 +771,10 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Retains the specified session data key(s) as "flashdata"
-		through the next request.
+		将某个指定的 "flashdata" 设置为在下一次请求中仍然保持有效。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. It is just
-			an alias for the ``mark_as_flash()`` method.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			它只是 ``mark_as_flash()`` 方法的一个别名。
 
 	.. php:method:: set_flashdata($data[, $value = NULL])
 
@@ -942,11 +782,9 @@ Class Reference
 		:param	mixed	$value:	The value to set for a specific session item, if $data is a key
 		:rtype:	void
 
-		Assigns data to the ``$_SESSION`` superglobal and marks it
-		as "flashdata".
+		将数据赋值给 ``$_SESSION`` 全局变量，并标记为 "flashdata" 。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: mark_as_temp($key[, $ttl = 300])
 
@@ -955,24 +793,21 @@ Class Reference
 		:returns:	TRUE on success, FALSE on failure
 		:rtype:	bool
 
-		Marks a ``$_SESSION`` item key (or multiple ones) as
-		"tempdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）标记为 "tempdata" 。
 
 	.. php:method:: get_temp_keys()
 
 		:returns:	Array containing the keys of all "tempdata" items.
 		:rtype:	array
 
-		Gets a list of all ``$_SESSION`` that have been marked as
-		"tempdata".
+		获取 ``$_SESSION`` 数组中所有标记为 "tempdata" 的一个列表。
 
 	.. php:method:: umark_temp($key)
 
 		:param	mixed	$key: Key to be un-marked as tempdata, or an array of multiple keys
 		:rtype:	void
 
-		Unmarks a ``$_SESSION`` item key (or multiple ones) as
-		"tempdata".
+		将 ``$_SESSION`` 数组中的一项（或多项）移除 "tempdata" 标记。
 
 	.. php:method:: tempdata([$key = NULL])
 
@@ -980,13 +815,11 @@ Class Reference
 		:returns:	Value of the specified item key, or an array of all tempdata
 		:rtype:	mixed
 
-		Gets the value for a specific ``$_SESSION`` item that has
-		been marked as "tempdata", or an array of all "tempdata"
-		items if no key was specified.
-	
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications. You should
-			directly access ``$_SESSION`` instead.
+		从 ``$_SESSION`` 数组中获取某个标记为 "tempdata" 的指定项。
+		如果没有指定参数，返回所有 "tempdata" 的数组。
+
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
+			你可以直接使用 ``$_SESSION`` 替代它。
 
 	.. php:method:: set_tempdata($data[, $value = NULL])
 
@@ -995,37 +828,31 @@ Class Reference
 		:param	int	$ttl: Time-to-live value for the tempdata item(s), in seconds
 		:rtype:	void
 
-		Assigns data to the ``$_SESSION`` superglobal and marks it
-		as "tempdata".
+		将数据赋值给 ``$_SESSION`` 全局变量，并标记为 "tempdata" 。
 
-		.. note:: This is a legacy method kept only for backwards
-			compatibility with older applications.
+		.. note:: 这是个遗留方法，只是为了和老的应用程序向前兼容而保留。
 
 	.. php:method:: sess_regenerate([$destroy = FALSE])
 
 		:param	bool	$destroy: Whether to destroy session data
 		:rtype:	void
 
-		Regenerate session ID, optionally destroying the current
-		session's data.
+		重新生成 session ID ，$destroy 参数可选，用于销毁当前的 session 数据。
 
-		.. note:: This method is just an alias for PHP's native
-			`session_regenerate_id()
-			<http://php.net/session_regenerate_id>`_ function.
+		.. note:: 该方法只是 PHP 原生的 `session_regenerate_id()
+			<http://php.net/session_regenerate_id>`_ 函数的一个别名而已。
 
 	.. php:method:: sess_destroy()
 
 		:rtype:	void
 
-		Destroys the current session.
+		销毁当前 session 。
 
-		.. note:: This must be the *last* session-related function
-			that you call. All session data will be lost after
-			you do that.
+		.. note:: 这个方法必须在处理 session 相关的操作的**最后**调用。
+			如果调用这个方法，所有的 session 数据都会丢失。
 
-		.. note:: This method is just an alias for PHP's native
-			`session_destroy()
-			<http://php.net/session_destroy>`_ function.
+		.. note:: 该方法只是 PHP 原生的 `session_destroy()
+			<http://php.net/session_destroy>`_  函数的一个别名而已。
 
 	.. php:method:: __get($key)
 
@@ -1033,13 +860,10 @@ Class Reference
 		:returns:	The requested session data item, or NULL if it doesn't exist
 		:rtype:	mixed
 
-		A magic method that allows you to use
-		``$this->session->item`` instead of ``$_SESSION['item']``,
-		if that's what you prefer.
+		魔术方法，根据你的喜好，使用 ``$this->session->item`` 这种方式来替代 
+		``$_SESSION['item']`` 。
 
-		It will also return the session ID by calling
-		``session_id()`` if you try to access
-		``$this->session->session_id``.
+		如果你访问 ``$this->session->session_id`` 它也会调用 ``session_id()`` 方法来返回 session ID 。
 
 	.. php:method:: __set($key, $value)
 
@@ -1047,9 +871,7 @@ Class Reference
 		:param	mixed	$value: Value to assign to the session item key
 		:returns:	void
 
-		A magic method that allows you to assign items to
-		``$_SESSION`` by accessing them as ``$this->session``
-		properties::
+		魔术方法，直接赋值给 ``$this->session`` 属性，以此来替代赋值给 ``$_SESSION`` 数组::
 
 			$this->session->foo = 'bar';
 

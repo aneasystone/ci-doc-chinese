@@ -163,5 +163,5 @@ CodeIgniter 有一个 :doc:`表单验证类 <../libraries/form_validation>` 用�
 
 如果你不允许这样做，你可以使用 .htaccess 文件来限制对这些资源的访问。
 
-CodeIgniter 在每个目录下放置了一个 index.html 文件，视图隐藏这些敏感数据，
+CodeIgniter 在每个目录下放置了一个 index.html 文件，试图隐藏这些敏感数据，
 但是要记住的是，这对于防止一个真正的攻击者来说并不够。
