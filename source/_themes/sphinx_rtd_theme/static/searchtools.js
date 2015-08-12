@@ -301,7 +301,7 @@ var Search = {
     this.status = $('<p style="display: none"></p>').appendTo(this.out);
     this.output = $('<ul class="search"/>').appendTo(this.out);
 
-    $('#search-progress').text(_('Preparing search...'));
+    $('#search-progress').text(_('预搜索...'));
     this.startPulse();
 
     // index already loaded, the browser was quick!
@@ -460,9 +460,9 @@ var Search = {
         Search.stopPulse();
         Search.title.text(_('搜索结果'));
         if (!resultCount)
-          Search.status.text(_('Your search did not match any documents. Please make sure that all words are spelled correctly and that you\'ve selected enough categories.'));
+          Search.status.text(_('找不到和您的查询相符的文档。请检查输入字词有无错误，或尝试其他查询词，或改用较常见的字词，或减少查询字词的数量。'));
         else
-            Search.status.text(_('Search finished, found %s page(s) matching the search query.').replace('%s', resultCount));
+            Search.status.text(_('搜索完成，找到 %s 页匹配的文档。').replace('%s', resultCount));
         Search.status.fadeIn(500);
       }
     }
