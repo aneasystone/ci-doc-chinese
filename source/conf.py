@@ -109,7 +109,7 @@ html_theme_path = ["./_themes"]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = u'CodeIgniter 3.0.0 中文文档'
+html_title = u'CodeIgniter 3.0.0 中文手册|用户手册|用户指南|中文文档'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
