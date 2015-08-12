@@ -10,6 +10,7 @@
     </div>
   {% endif %}
 
+  {% if pagename != 'general/welcome' %}
   <div id="notes">
   <!-- 多说评论框 start -->
     <div class="ds-thread" data-thread-key="userguide3/{{ pagename|e }}" data-title="{{ title|striptags|e }}" data-url="http://codeigniter.org.cn/user_guide/{{ pagename|e }}{{ file_suffix|e }}"></div>
@@ -28,6 +29,7 @@
     </script>
   <!-- 多说公共JS代码 end -->
   </div>
+  {% endif %}
 
   <hr/>
 
