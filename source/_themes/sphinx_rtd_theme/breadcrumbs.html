@@ -4,7 +4,7 @@
     {% for doc in parents %}
     <li><a href="{{ doc.link|e }}">{{ doc.title }}</a> &raquo; </li>
     {% endfor %}
-    <li>{{ title }}</li>
+    <li>{% if pagename == 'search' %}搜索{% else %}{{ title }}{% endif %}</li>
     <li class="wy-breadcrumbs-aside">
       {% if display_github %}
       <a href="https://github.com/{{ github_user }}/{{ github_repo }}/blob/{{ github_version }}{{ conf_py_path }}{{ pagename }}{{ source_suffix }}" class="fa fa-github"> Edit on GitHub</a>
@@ -13,6 +13,7 @@
       {% elif show_source and has_source and sourcename %}
       <a href="{{ pathto('_sources/' + sourcename, true)|e }}" rel="nofollow"> View page source</a>
       {% endif %}
+      <a href="http://www.codeigniter.com/user_guide/{{ pagename|e }}{{ file_suffix|e }}" rel="nofollow">查看原文</a>
     </li>
   </ul>
   <hr/>

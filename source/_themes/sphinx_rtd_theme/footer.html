@@ -10,8 +10,9 @@
     </div>
   {% endif %}
 
+  {% if pagename != 'search' %}
   <div id="notes">
-  {% if pagename != 'general/welcome' and pagename != 'index' and pagename != 'DCO' and pagename != 'license' and pagename != 'search' %}
+  {% if pagename != 'general/welcome' and pagename != 'index' and pagename != 'DCO' and pagename != 'license' %}
   <!-- 多说评论框 start -->
     <div class="ds-thread" data-thread-key="userguide3/{{ pagename|e }}" data-title="{{ title|striptags|e }}" data-url="http://codeigniter.org.cn/user_guide/{{ pagename|e }}{{ file_suffix|e }}"></div>
   <!-- 多说评论框 end -->
@@ -47,6 +48,7 @@
     </script>
   <!-- 多说公共JS代码 end -->
   </div>
+  {% endif %}
 
   <hr/>
 
