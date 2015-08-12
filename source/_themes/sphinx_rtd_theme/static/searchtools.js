@@ -462,7 +462,7 @@ var Search = {
         if (!resultCount)
           Search.status.text(_('找不到和您的查询相符的文档。请检查输入字词有无错误，或尝试其他查询词，或改用较常见的字词，或减少查询字词的数量。'));
         else
-            Search.status.text(_('搜索完成，找到 %s 页匹配的文档。').replace('%s', resultCount));
+            Search.status.text(_('搜索完成，找到 %s 个匹配的页面。').replace('%s', resultCount));
         Search.status.fadeIn(500);
       }
     }
