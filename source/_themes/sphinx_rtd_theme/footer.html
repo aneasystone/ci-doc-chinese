@@ -12,7 +12,7 @@
 
   <div id="notes">
   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="userguide3/{{ pagename }}" data-title="{{ title }}" data-url="http://codeigniter.org.cn/user_guide/{{ pagename }}{{ source_suffix }}"></div>
+    <div class="ds-thread" data-thread-key="userguide3/{{ pagename|e }}" data-title="{{ title|striptags|e }}" data-url="http://codeigniter.org.cn/user_guide/{{ pagename|e }}{{ file_suffix|e }}"></div>
   <!-- 多说评论框 end -->
   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
   <script type="text/javascript">
