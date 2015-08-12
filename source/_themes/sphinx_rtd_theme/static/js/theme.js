@@ -189,8 +189,8 @@ $( document ).ready(function() {
     ciNav +=    '</div>';
     $('body').prepend(ciNav);
     //
-    var a = ['Index', 'CodeIgniter User Guide¶', 'Change Log¶', 'Developer’s Certificate of Origin 1.1¶', 'The MIT License (MIT)¶'];
-    if ($.inArray($('h1').text(), a) > 0 || $('h2').text() == 'Search Results')
+    var a = ['Index', 'CodeIgniter 用户指南¶', '变更记录¶', 'Developer’s Certificate of Origin 1.1¶', 'The MIT License (MIT)¶'];
+    if ($.inArray($('h1').text(), a) > 0 || $('h2').text() == '搜索结果')
     {
         $('table.ciNav a').each(function(){
             $(this).attr('href', $(this).attr("href").replace('../', ''));
