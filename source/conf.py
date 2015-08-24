@@ -266,3 +266,7 @@ epub_copyright = u'2014 - 2015, 不列颠哥伦比亚理工学院'
 html_context = {
     'ga_tracking_id' : ''
 }
+
+# Custom tab-width
+from sphinx.environment import default_settings
+default_settings['tab_width'] = 4
